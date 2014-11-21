@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		<h:form id="formConsultNotification">
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+			<p:panel style="width:1010px">
+				<h:panelGrid width="100%">
+					<h:outputText value="Consulta de Aviso" styleClass="title" />
+					<h:outputText value="Dados do Aviso" styleClass="sub-title" />
+					<p:separator style="height:1px;" />
+					<p:column>
+						<h:outputText value="* " styleClass="ast" />
+						<h:outputText value="Endereçado a" styleClass="lbl" />
+					</p:column>
+					<p:inputText value="#{notificationController.filtroEnderecado}"
+						styleClass="vl" />
+					<p:column>
+						<h:outputText value="* " styleClass="ast" />
+						<h:outputText value="Assunto" styleClass="lbl" />
+					</p:column>
+					<p:inputText value="#{notificationController.filtroAssunto}"
+						styleClass="vl" />
+					<h:outputText value="Descrição" styleClass="lbl" />
+					<p:inputText value="#{notificationController.filtroDescricao}"
+						styleClass="vl" />
+					<p:panel style="text-align:right;">
+						<h:outputText value="(*) " styleClass="ast" />
+						<h:outputText value="Campos de preenchimento obrigatório"
+							styleClass="lbl" />
+					</p:panel>
+
+					<p:separator style="height: 1px; " />
+
+					<p:panel style="text-align: right; ">
+						<p:commandButton value="Consultar" style="tex" />
+					</p:panel>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

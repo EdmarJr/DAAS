@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<p:panel header="Tarefa(s) Demanda do Documento" id="demanda" styleClass="saad-border-solid" toggleable="true">
+	<div style="width: 100%; display: flex;">
+		<span style="width: 100%;"> <p:outputLabel value="Tarefa:"
+				for="descrcaoDemanda" style="text-align:left;" /> <p:inputTextarea disabled="#{!controller.alterar}" required="true"
+				id="descrcaoDemanda"
+				value="#{controllerSecundario.tarefaNova.descricaoTarefa}" />
+		</span>
+	</div>
+	<div style="width: 100%; margin-top: 1%; display: flex; margin-bottom: 15px;">
+		<span style="width: 40%;"><p:outputLabel  value="Responsável:"
+				for="responsible" style="text-align:left;" /> <p:selectOneMenu disabled="#{!controller.alterar}" required="true"
+				id="responsible" value="#{controllerSecundario.tarefaNova.usuario}">
+				<f:selectItem />
+				<f:selectItems itemLabel="#{usuario.nome}"
+					value="#{controllerSecundario.usuariosDisponiveis}" var="usuario"
+					itemValue="#{usuario}" />
+			</p:selectOneMenu></span> <span style="width: 60%;"> <p:outputLabel
+				value="Situação da Tarefa:" style="width:120px;padding-top: 9px;"
+				for="situacaoDemanda" /> <p:selectOneRadio disabled="#{!controller.alterar}" id="situacaoDemanda"
+				value="#{controllerSecundario.tarefaNova.situacaoTarefa}" required="true"> 
+				<f:selectItems
+					value="#{controllerSecundario.obterSituacoesTarefaPossiveis()}"
+					var="situacaoTarefa" itemLabel="#{msg[situacaoTarefa.codLabel]}"
+					itemValue="#{situacaoTarefa.valor}" />
+					<p:ajax event="change" update="dataConclusaoPanel"/>
+			</p:selectOneRadio>
+		</span>
+	</div>
+	<h:panelGroup id="dataConclusaoPanel">
+		<div class="pure-g">		
+			<div class="pure-u-1-4">
+				<p:outputLabel disabled="#{!controller.alterar}" for="calendarIncludeTo" value="Data de Inclusão:" style="text-align:left;width:100px;" /> 
+			</div>
+			<div class="pure-u-1-24">
+			</div>
+			<div class="pure-u-1-4">
+				<p:outputLabel disabled="#{!controller.alterar}" for="calendarResolvTo" value="Resolver até:"	style="text-align:left;width:100px;" /> 
+			</div>
+			<div class="pure-u-1-24">
+			</div>
+			<div class="pure-u-1-4" style="margin-right: 12px;">
+				<p:outputLabel id="labelDoneTo"
+						rendered="#{controllerSecundario.tarefaNova.situacaoTarefa == controllerSecundario.obterSituacaoTarefaResolvidoEnum().valor}"
+						for="calendarDoneTo" value="Data de Conclusão:"
+						style="text-align:left;width:100px;" />
+			</div>			
+			<div class="pure-u-1-4">
+				<p:inputText disabled="#{!controller.alterar}" id="calendarIncludeTo" readonly="true"
+					value="#{controllerSecundario.tarefaNova.dataInclusaoTarefa}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</p:inputText>
+			</div>
+			<div class="pure-u-1-24">
+			</div>
+			<div  class="pure-u-1-4">
+				<p:calendar disabled="#{!controller.alterar}" id="calendarResolvTo" mask="true" pattern="dd/MM/yyyy" required="true"
+					value="#{controllerSecundario.tarefaNova.dataLimiteConclusao}" mindate="#{controllerSecundario.tarefaNova.dataInclusaoTarefa}"/>	
+			</div>
+			<div class="pure-u-1-24">
+			</div>
+			<div class="pure-u-1-4">			
+				<p:calendar disabled="#{!controller.alterar}"
+					rendered="#{controllerSecundario.tarefaNova.situacaoTarefa == controllerSecundario.obterSituacaoTarefaResolvidoEnum().valor}"
+					required="#{controllerSecundario.tarefaNova.situacaoTarefa == controllerSecundario.obterSituacaoTarefaResolvidoEnum().valor}"
+					id="calendarDoneTo" mask="true" pattern="dd/MM/yyyy"
+					value="#{controllerSecundario.tarefaNova.dataConclusaoTarefa}"
+					style="text-align:left;width:10px;" />				
+			</div>
+		</div>
+	</h:panelGroup>
+
+	<div style="width: 100%; margin-top: 1%;">
+		<span style="width: 100%; padding-left: 87%;"> <p:commandButton disabled="#{!controller.alterar}"
+				process="demanda" ajax="true" update="demanda"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+				value="Adicionar Tarefa"
+				actionListener="#{controllerSecundario.comandoAdicionarTarefa()}">
+			</p:commandButton>
+		</span>
+	</div>
+	<p:panel header="Lista de Tarefas da Demanda" id="datatableDemandas"
+		style="border: #C4C4C4 solid 1px !important;margin-top: 1%;"
+		toggleable="true">
+		<div style="width: 100%; margin-top: 1%;">
+			<p:dataTable value="#{controller.documento.tarefas}" var="tarefa"
+				emptyMessage="Nenhuma tarefa cadastrada."
+				selection="#{controllerSecundario.tarefasSelecionadas}"
+				selectionMode="multiple" rowKey="#{tarefa.hashCode()}">
+				<p:ajax event="rowSelect" update="@this" />
+				<p:ajax event="rowUnselect" update="@this"/>
+				<p:column
+					headerText="#{msg['label.datatable.column.header.responsible']}">
+					<h:outputText value="#{tarefa.usuario.nome}" />
+				</p:column>
+				<p:column headerText="#{msg['label.datatable.column.header.task']}">
+					<h:outputText value="#{tarefa.descricaoTarefa}" />
+				</p:column>
+				<p:column
+					headerText="#{msg['label.datatable.column.header.situation']}">
+					<h:outputText
+						value="#{msg[controllerSecundario.obterSituacaoTarefa(tarefa.situacaoTarefa).codLabel]}" />
+				</p:column>
+				<p:column
+					headerText="#{msg['datatable.demanda.incluir.datainclusao']}">
+					<h:outputText value="#{tarefa.dataInclusaoTarefa}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" type="date" />
+					</h:outputText>
+				</p:column>
+				<p:column
+					headerText="Resolver até">
+					<h:outputText value="#{tarefa.dataLimiteConclusao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" type="date" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+		</div>
+		<div style="width: 100%; margin-top: 1%;  text-align: right;">
+			<span style="width: 20%; ;"> <p:commandButton disabled="#{!controller.alterar}"
+					update="demanda"
+					icon="ui-icon-check" value="Alterar Tarefa" process="@this"
+					actionListener="#{controllerSecundario.comandoAlterarTarefa()}">
+				</p:commandButton>
+			</span> <span style="width: 20%"> <p:commandButton disabled="#{!controller.alterar}"
+					styleClass="ui-confirmdialog-yes" process="datatableDemandas"
+					icon="ui-icon-check" value="Excluir Tarefa" update="datatableDemandas"
+					actionListener="#{controllerSecundario.comandoExcluir()}">
+				</p:commandButton>
+			</span> <span style="width: 20%;"> 
+				<p:commandButton disabled="#{!controller.alterar}" ajax="true" icon="ui-icon-check" process="@this" value="Transferir Tarefas" rendered="#{transferenciaAlteracaoTarefa}"
+					actionListener="#{controllerSecundario.abrirDialogoTransferencia()}">
+				</p:commandButton>
+			</span>
+		</div>
+	</p:panel>		
+</p:panel>
+<p:dialog widgetVar="dialogTransferirTarefa" header="Transferir Tarefas" modal="false" draggable="false" resizable="false" height="40" width="400">
+    <div class="pure-g">
+	    <div class="pure-u-3-4">
+		    <p:selectOneMenu required="true" id="responsavelTransferencia" value="#{controllerSecundario.novoUsuarioResponsavel}">
+				<f:selectItems itemLabel="#{usuario.nome}" value="#{controllerSecundario.usuariosDisponiveis}" var="usuario"
+					itemValue="#{usuario}" />
+				<p:ajax event="change" update="@this"/>
+			</p:selectOneMenu>
+	    </div>
+	    <div class="pure-u-1-24">
+	    	 
+	    </div>
+	    <div class="pure-u-5-24">
+		    <p:commandButton ajax="true" icon="ui-icon-check" process="@this" value="Concluir"
+				actionListener="#{controllerSecundario.comandoTransferir()}" update="demanda">
+			</p:commandButton>
+	    </div>
+    </div>    
+</p:dialog>
+</html>

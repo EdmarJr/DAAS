@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		<style>
+label {
+	white-space: nowrap;
+}
+</style>
+		<h:form id="documentAddForm" enctype="multipart/form-data">
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:panel id="documentAddPanel">
+				<p:breadCrumb>
+					<p:menuitem value="Início" />
+					<p:menuitem value="Documento" />
+					<p:menuitem value="Inclusão de Documento Recebido" />
+				</p:breadCrumb>
+
+				<p:panel>
+					<h:outputText value="Inclusão de Documento Recebido"
+						styleClass="title" />
+					<br />
+					<br />
+					<h:outputText value="Dados do Documento" styleClass="sub-title" />
+
+					<p:separator style="height: 1px; " />
+
+					<p:panel collapsed="false">
+						<div>
+							<div style="float: right">
+								<b>Usuário:</b> Gestor Teste
+							</div>
+							<p:selectOneRadio id="selectOriginDocumentType"
+								value="#{documentController.document.entryType}">
+								<f:selectItems value="#{documentController.documentEntryType}"
+									var="type" itemValue="#{type}" itemLabel="#{type.toString()}" />
+								<f:ajax event="change" render="@form" />
+							</p:selectOneRadio>
+						</div>
+
+						<h:panelGrid columns="2" cellpadding="5"
+							rendered="#{documentController.seEntradaDocumentoIgualInterno()}">
+							<p:column>
+								<p:outputLabel value="Remetente:" for="remetente"
+									style="text-align: left; " />
+								<p:inputText id="remetente" />
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Local:" for="local"
+									style="text-align: left; " />
+								<p:inputText id="local" />
+							</p:column>
+							<br />
+						</h:panelGrid>
+						<h:panelGroup>
+							<div style="display: flex; margin-top: 1%">
+								<span style="width: 25%;"> <p:outputLabel
+										value="Tipo de Documento:" for="selectDocumentType"
+										style="text-align:left;width:100px;" /> <p:selectOneMenu
+										required="true" id="selectDocumentType"
+										value="#{documentController.document.documentType.id}"
+										style="text-align:left;width:100px;">
+										<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+										<f:selectItem itemLabel="Evento" itemValue="55" />
+										<f:selectItems var="documentType"
+											value="#{documentController.documentTypeList}"
+											itemLabel="#{documentType.name}"
+											itemValue="#{documentType.id}" />
+										<f:ajax event="change" render="@form" />
+									</p:selectOneMenu>
+								</span> <span style="width: 25%; padding-left: 5%"> <p:outputLabel
+										value="Número do documento:" for="inputDocumentNumber"
+										style="text-align:left;width:200px;" /> <p:inputText
+										id="inputDocumentNumber" required="true"
+										value="#{documentController.document.number}" />
+								</span> <span style="width: 25%; padding-left: 5%"> <p:outputLabel
+										value="Identificador do documento:"
+										for="inputIdentityDocument"
+										style="text-align:left;width:200px;" /> <p:inputText
+										id="inputIdentityDocument" required="true"
+										value="#{documentController.document.number}" />
+								</span>
+							</div>
+
+							<br />
+							<br />
+
+							<div>
+								<h:panelGrid columns="5">
+									<p:column>
+										<p:outputLabel for="outputDataOrigem" value="Data de origem:"
+											style="text-align: left; " />
+										<p:calendar id="outputDataOrigem" mask="true"
+											pattern="dd/MM/yyyy" pages="3"
+											value="#{documentController.document.entryDate}" />
+									</p:column>
+									<p:column>
+										<p:spacer width="10%" height="0px" />
+									</p:column>
+									<p:column>
+										<p:outputLabel for="outputDataCadastro"
+											value="Data de cadastro:" style="text-align: left; " />
+										<p:calendar id="outputDataCadastro" mask="true"
+											pattern="dd/MM/yyyy" pages="3" disabled="true"
+											value="#{documentController.dataCadastro}" />
+									</p:column>
+									<p:column>
+										<p:spacer width="10%" height="0px" />
+									</p:column>
+									<p:column>
+										<p:outputLabel for="outputDataRecebimento"
+											value="Data de recebimento:" style="text-align: left; " />
+										<p:calendar id="outputDataRecebimento" mask="true"
+											pattern="dd/MM/yyyy" pages="3" />
+									</p:column>
+								</h:panelGrid>
+							</div>
+
+							<br />
+							<br />
+
+							<p:panel header="Processos"
+								style="border: #C4C4C4 solid 1px !important;margin-top: 1%;"
+								toggleable="true">
+								<div style="width: 100%; display: flex; margin-top: 1%">
+									<span style="min-width: 50%; display: flex;"> <p:selectBooleanCheckbox
+											id="relativoProcessoJudicialCheck" /> <p:outputLabel
+											value="Relativo a processo judicial"
+											for="relativoProcessoJudicialCheck" />
+									</span> <span style="min-width: 50%; display: flex;"> <p:selectBooleanCheckbox
+											id="relativoProcessoAdministrativoCheck" /> <p:outputLabel
+											value="Relativo a processo administrativo"
+											for="relativoProcessoAdministrativoCheck" />
+									</span>
+								</div>
+
+								<div style="width: 100%; display: flex; margin-top: 1%;">
+
+									<span style="width: 50%; display: flex;"> <span
+										style="width: 30%; padding-left: 8%;"> <p:outputLabel
+												value="Nº do Registro" for="inputRegistryNumber" />
+									</span> <span style="width: 70%;"> <p:inputText
+												id="inputRegistryNumber"
+												value="#{documentController.document.physicalCabinet}" />
+									</span>
+									</span> <span style="width: 50%; display: flex;"> <span
+										style="width: 30%; padding-left: 20%;"> <p:outputLabel
+												value="Nº" for="inputProcessNumber" />
+									</span> <span style="width: 70%;"> <p:inputText
+												id="inputProcessNumber"
+												value="#{documentController.document.physicalCabinet}" />
+									</span>
+									</span>
+								</div>
+								<div style="width: 100%; display: flex; margin-top: 3%;">
+									<span> <p:commandButton
+											value="#{msg['botao.consultar.andamento']}" type="button" />
+									</span>
+									<!-- <span> <p:commandButton
+											value="#{msg['botao.visualizar.processo']}" type="button" />
+									</span> -->
+
+								</div>
+							</p:panel>
+
+
+							<div style="width: 100%; display: flex; margin-top: 1%;">
+								<span style="text-align: left; width: 200px;"> <p:outputLabel
+										value="Arquivado na pasta:" for="inputPhysicalCabinet" /> <p:inputText
+										id="inputPhysicalCabinet"
+										value="#{documentController.document.physicalCabinet}" />
+								</span>
+
+
+							</div>
+							<div style="width: 100%; margin-top: 1%; padding-bottom: 8%;">
+								<span style="float: left;"> <p:outputLabel
+										value="Assunto:" for="inputSubject" /></span><br /> <span
+									style="float: left; width: 100%"><p:inputTextarea
+										id="inputSubject" required="true"
+										value="#{documentController.document.subject}" /></span>
+							</div>
+
+
+
+
+							<p:panel header="Evento"
+								rendered="#{documentController.seTipoDocumentoIgualEvento()}"
+								style="border: #C4C4C4 solid 1px !important;" toggleable="true">
+								<h:panelGrid columns="1" width="50%">
+									<p:column>
+										<p:outputLabel value="Nome:" for="inputNomeEvento"
+											style="text-align:left;" />
+										<p:inputText id="inputNomeEvento"
+											value="#{documentController.document.stepDescription}" />
+									</p:column>
+								</h:panelGrid>
+								<h:panelGrid columns="3">
+									<f:facet name="header">
+										<p:outputLabel value="Período" />
+									</f:facet>
+									<p:column>
+										<p:outputLabel for="calendarFrom" value="De:" />
+										<p:calendar id="calendarFrom" mask="true" pattern="dd/MM/yyyy"
+											pages="3" />
+									</p:column>
+									<p:column>
+										<p:spacer width="50px" height="0px" />
+									</p:column>
+									<p:column>
+										<p:outputLabel for="calendarTo" value="Até:" />
+										<p:calendar id="calendarTo" mask="true" pattern="dd/MM/yyyy"
+											pages="3" />
+									</p:column>
+								</h:panelGrid>
+							</p:panel>
+
+							<h:panelGrid columns="1" cellpadding="5" width="100%">
+
+								<p:column>
+									<p:outputLabel value="Observação:" for="inputObservation"
+										style="text-align:left;" />
+									<p:inputTextarea id="inputObservation"
+										value="#{documentController.document.observation}" />
+								</p:column>
+							</h:panelGrid>
+
+							<h:panelGrid columns="1" cellpadding="5">
+								<p:column>
+									<p:outputLabel for="selectStatusDocument"
+										style="width:140px;padding-top: 9px;"
+										value="Situação do Documento:" />
+									<p:selectOneRadio id="selectStatusDocument"
+										value="#{documentController.document.documentType.id}">
+										<f:selectItem itemLabel="Pendente" itemValue="" />
+										<f:selectItem itemLabel="Resolvido" itemValue="" />
+									</p:selectOneRadio>
+								</p:column>
+							</h:panelGrid>
+							<p:panel header="Destinatário"
+								style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+								toggleable="true">
+								<h:panelGrid
+									rendered="#{documentController.isDocumentExternal()}"
+									cellpadding="5" columns="3">
+									<p:column>
+										<p:outputLabel value="Orgão do Destinatário:"
+											for="selectOrgaoDestinatario"
+											style="text-align:left;width:200px;" />
+										<p:selectOneMenu id="selectOrgaoDestinatario"
+											value="#{documentController.document.documentType.id}">
+											<f:selectItem itemLabel="Selecione..." itemValue="" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column>
+										<p:outputLabel value="Nome do Destinatário:"
+											for="inputNameDestinatario"
+											style="text-align:left;width:200px;" />
+										<p:selectOneMenu id="inputNameDestinatario"
+											value="#{documentController.document.documentType.id}">
+											<f:selectItem itemLabel="Selecione..." itemValue="" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column>
+										<p:outputLabel value="Cargo do Destinatário:"
+											for="inputCargoDestinatario"
+											style="text-align:left;width:200px;" />
+										<p:selectOneMenu id="inputCargoDestinatario"
+											value="#{documentController.document.documentType.id}">
+											<f:selectItem itemLabel="Selecione..." itemValue="" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column>
+										<p:outputLabel value="Telefone:"
+											for="inputTelefoneDestinatario" style="text-align:left;" />
+										<p:inputText id="inputTelefoneDestinatario"
+											value="#{documentController.document.stepDescription}" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="Logradouro:"
+											for="inputLogradouroDestinatario" style="text-align:left;" />
+										<p:inputText id="inputLogradouroDestinatario"
+											value="#{documentController.document.stepDescription}" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="Bairro:" for="inputBairroDestinatario"
+											style="text-align:left;" />
+										<p:inputText id="inputBairroDestinatario"
+											value="#{documentController.document.stepDescription}" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="Cidade:" for="inputCidadeDestinatario"
+											style="text-align:left;" />
+										<p:inputText id="inputCidadeDestinatario"
+											value="#{documentController.document.stepDescription}" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="UF:" for="inputUFDestinatario"
+											style="text-align:left;" />
+										<p:inputText id="inputUFDestinatario"
+											value="#{documentController.document.stepDescription}" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="CEP:" for="inputCEPDestinatario"
+											style="text-align:left;" />
+										<p:inputText id="inputCEPDestinatario"
+											value="#{documentController.document.stepDescription}" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="Complemento:"
+											for="inputComplementoDestinatario" style="text-align:left;" />
+										<p:inputText id="inputComplementoDestinatario"
+											value="#{documentController.document.stepDescription}" />
+									</p:column>
+								</h:panelGrid>
+								<h:panelGrid
+									rendered="#{documentController.isDocumentInternal()}"
+									cellpadding="5" columns="2">
+									<p:column>
+										<p:outputLabel value="Destinatário:" for="inputDestinatario"
+											style="text-align:left;width:200px;" />
+										<p:selectOneMenu id="inputDestinatario"
+											value="#{documentController.document.documentType.id}">
+											<f:selectItem itemLabel="Selecione..." itemValue="" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column>
+										<p:outputLabel value="Local:" for="inputLocal"
+											style="text-align:left;width:200px;" />
+										<p:selectOneMenu id="inputLocal"
+											value="#{documentController.document.documentType.id}">
+											<f:selectItem itemLabel="Selecione..." itemValue="" />
+										</p:selectOneMenu>
+									</p:column>
+								</h:panelGrid>
+							</p:panel>
+							<p:panel header="Demanda"
+								style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+								toggleable="true">
+								<div style="width: 100%; display: flex;">
+									<span style="width: 100%;"> <p:outputLabel
+											value="Tarefa:" for="descrcaoDemanda"
+											style="text-align:left;" /> <p:inputTextarea
+											id="descrcaoDemanda"
+											value="#{documentController.document.observation}" />
+									</span>
+								</div>
+								<div style="width: 100%; margin-top: 1%; display: flex;">
+									<span style="width: 40%;"><p:outputLabel
+											value="Responsável:" for="responsible"
+											style="text-align:left;" /> <p:selectOneMenu
+											id="responsible"
+											value="#{documentController.document.documentType.id}">
+											<f:selectItem itemLabel="Selecione..." itemValue="" />
+										</p:selectOneMenu></span> <span style="width: 20%; padding-left: 2%;"> <p:outputLabel
+											for="calendarResolvTo" value="Resolver até:"
+											style="text-align:left;width:100px;" /> <p:calendar
+											id="calendarResolvTo" mask="true" pattern="dd/MM/yyyy"
+											pages="3" style="text-align:left;width:10px;" />
+									</span> <span style="width: 40%;"> <p:outputLabel
+											value="Situação da Tarefa:"
+											style="width:120px;padding-top: 9px;" for="situacaoDemanda" />
+										<p:selectOneRadio id="situacaoDemanda"
+											value="#{documentController.document.documentType.id}">
+											<f:selectItem itemLabel="Pendente" itemValue="" />
+											<f:selectItem itemLabel="Resolvido" itemValue="" />
+										</p:selectOneRadio>
+									</span>
+								</div>
+								<div style="width: 100%; margin-top: 1%;">
+									<span style="width: 100%; padding-left: 80%;"> <p:commandButton
+											type="submit" styleClass="ui-confirmdialog-yes"
+											icon="ui-icon-check" value="Adicionar Tarefa"
+											action="#{documentController.add()}"
+											update=":documentAddForm:msgs">
+											<p:confirm icon="ui-icon-alert" />
+										</p:commandButton>
+									</span>
+								</div>
+								<p:panel header="Demandas"
+									style="border: #C4C4C4 solid 1px !important;margin-top: 1%;"
+									toggleable="true">
+									<div style="width: 100%; margin-top: 1%;">
+										<p:dataTable value="">
+											<p:column
+												headerText="#{msg['label.datatable.column.header.responsible']}">
+											</p:column>
+											<p:column
+												headerText="#{msg['label.datatable.column.header.task']}">
+											</p:column>
+											<p:column
+												headerText="#{msg['label.datatable.column.header.situation']}">
+											</p:column>
+											<p:column
+												headerText="#{msg['label.datatable.column.header.actions']}">
+											</p:column>
+										</p:dataTable>
+									</div>
+								</p:panel>
+							</p:panel>
+							<p:panel header="Arquivo(s)"
+								style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+								toggleable="true">
+
+								<p:panel header="Documento Principal"
+									style="border: #C4C4C4 solid 1px !important;margin-top: 5px; ">
+
+									<p:fileUpload id="mainDocumentUploadFile"
+										value="#{documentController.uploadedFile}" auto="false"
+										label="Procurar..." uploadLabel="Anexar"
+										cancelLabel="Cancelar"
+										fileUploadListener="#{documentController.fileUploadListener}"
+										dragDropSupport="true" allowTypes="/(\.|\/)(pdf)$/"
+										invalidFileMessage="Arquivo inválido!"
+										style="max-width: 27%; " />
+								</p:panel>
+
+								<p:panel header="Anexo(s)"
+									style="border: #C4C4C4 solid 1px !important;margin-top: 5px;">
+
+									<p:fileUpload id="attachmentDocumentUploadFile"
+										value="#{documentController.uploadedFile}" auto="false"
+										label="Procurar..." uploadLabel="Anexar"
+										cancelLabel="Cancelar"
+										fileUploadListener="#{documentController.fileUploadListener}"
+										dragDropSupport="true" allowTypes="/(\.|\/)(pdf)$/"
+										invalidFileMessage="Arquivo inválido!"
+										style="max-width: 27%; " />
+								</p:panel>
+
+							</p:panel>
+						</h:panelGroup>
+					</p:panel>
+
+					<p:separator style="height: 1px; " />
+
+					<p:panel style="text-align: right;">
+						<p:commandButton type="submit" styleClass="ui-confirmdialog-yes"
+							icon="ui-icon-check" value="Confirmar"
+							action="#{documentController.add()}"
+							update=":documentAddForm:msgs">
+							<p:confirm icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:commandButton type="button" styleClass="ui-confirmdialog-yes"
+							icon="ui-icon-check" value="Limpar"
+							update=":documentAddForm:msgs" />
+					</p:panel>
+
+					<p:panel id="confirmDialogAddPanel">
+
+						<p:confirmDialog id="confirmDialogAdd"
+							message="Confirma a inclusão do Documento para esta unidade ?"
+							header="#{label['confirm.add.header']}" global="true"
+							severity="alert" hideEffect="explode" showEffect="fade">
+
+							<p:panel style="text-align:center;">
+								<p:commandButton type="button" value="#{label['button.yes']}"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="#{label['button.no']}" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:panel>
+						</p:confirmDialog>
+					</p:panel>
+
+				</p:panel>
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

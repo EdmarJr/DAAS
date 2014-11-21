@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xml:lang="pt-br" lang="pt-br">
+
+	<ui:composition template="${msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			#{msg.lista_pendencias_ativas}
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236351" />
+
+		<ui:define name="corpo">
+			<form jsfc="h:form" id="formListarPendencias">
+
+				<div class="table-grid-rolagem">
+					<rich:dataTable id="saapPendenciaAdmPresidencias" var="saapPendenciaAdmPresidencia" rows="25" cellspacing="1"
+	                    binding="#{listarPendenciasAction.visao.dataTable}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col,col2" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{listarPendenciasAction.visao.lista}"
+	                    rendered="#{not empty listarPendenciasAction.visao.lista}">
+
+						<f:facet name="caption">
+							<h:column>
+								#{msg.pendencias}
+							</h:column>
+						</f:facet>
+
+						<rich:column id="colCodigo" width="20">
+							<cc:checkbox id="checkbox" name="visao-entidades[]-id" styleClass="form-check-radio-grid"
+								value="#{listarPendenciasAction.visao.idSelecionado}" onclick="configurarBotoes(this)" title="#{msg.hint_botao_seleciona}">
+								<f:selectItem itemValue="#{saapPendenciaAdmPresidencia.id}" itemLabel="" />
+							</cc:checkbox>
+						</rich:column>
+
+						<h:column id="colid">
+							<f:facet name="header">
+								#{msg.assunto}
+							</f:facet>
+							<h:commandLink id="lnkDetalharAdmtPendencia" actionListener="#{saapAdmtPendenciaAdmAction.carregarDetalhe}" action="${saapAdmtPendenciaAdmAction.detalhar}" immediate="true" title="#{msg.hint_botao_detalhar}" >
+								<f:attribute name="visao.pendenciaSelecionada" value="#{saapPendenciaAdmPresidencia}"/>
+								<f:attribute name="caminhoRetorno" value="listarPendenciasAction.consultar"/>
+								#{saapPendenciaAdmPresidencia.txtAssuntoPendencia}
+							</h:commandLink>
+						</h:column>
+
+						<h:column id="coltsEntradaPendencia">
+							<f:facet name="header">
+								#{msg.enderecado}
+							</f:facet>
+							#{saapPendenciaAdmPresidencia.descEnderecoPendencia}
+						</h:column>
+
+						<h:column id="coldescEnderecoPendencia">
+							<f:facet name="header">
+								#{msg.acompanhamento}
+							</f:facet>
+							<h:commandLink id="lnkDetalharAcomp" actionListener="#{saapAcompPendenciaAdmAction.carregarParametros}" action="${saapAcompPendenciaAdmAction.iniciarManutencaoAcomp}" immediate="true" title="#{msg.hint_botao_detalhar}" >
+								<f:attribute name="seqPendenciaAdm" value="#{saapPendenciaAdmPresidencia.id}"/>
+								<f:attribute name="caminhoRetorno" value="listarPendenciasAction.consultar"/>
+								#{msg.visualizar}
+							</h:commandLink>
+						</h:column>
+					</rich:dataTable>
+				</div>
+
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapPendenciaAdmPresidencias" fastControls="hide" id="datascroller" renderIfSinglePage="false" 
+							actionListener="#{listarPendenciasAction.consultar}" page="#{listarPendenciasAction.visao.pagina}" reRender="saapPendenciaAdmPresidencias,datascroller, mensagens"
+							onclick="desabilitaBotaoAcompanhar();desabilitaBotaoDesativar();">
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+
+				<t:div styleClass="form-barra-botoes" rendered="#{not empty listarPendenciasAction.visao.lista}">
+					<input id="btnAcompanhar" type="submit" jsfc="h:commandButton" value="#{msg.acompanhar}" title="#{msg.registra_acompanhamento}" class="form-button-m01-disabled"
+							action="#{listarPendenciasAction.acompanhar}" immediate="true" disabled="true"/>
+
+					<input id="btnDesativar" type="submit" jsfc="h:commandButton" value="#{msg.desativar}" title="#{msg.altera_a_situacao}" class="form-button-p03-disabled"
+							action="#{listarPendenciasAction.desativar}" onclick="return confirmar(this, '#{mensagem['MA022']}')" immediate="true" disabled="true"/>
+
+					<input id="btnImprimir" type="submit" jsfc="h:commandButton" value="#{msg.imprimir}" title="#{msg.gera_relatorio_conforme_conteudo_apresentado_em_tela}" class="form-button-p03"
+							action="#{listarPendenciasAction.imprimir}" />
+				</t:div>
+
+				<t:saveState value="#{listarPendenciasAction.visao.consultaExecutada}"/>
+				<t:saveState value="#{listarPendenciasAction.visao.consulta}"/>
+				<t:saveState value="#{listarPendenciasAction.visao.lista}"/>
+				<t:saveState value="#{listarPendenciasAction.visao.pagina}"/>
+			</form>
+
+			<script type="text/javascript">
+				//<![CDATA[  
+				function configurarBotoes(checkbox) {
+					var checks = document.getElementsByName(checkbox.name);
+					var checados = [];
+					for (var i = 0; i < checks.length; i++) {
+						if (checks[i].checked) {
+							checados[checados.length] = true;
+						}
+					}
+					var btn = document.getElementById(checkbox.form.name + ":btnAcompanhar");
+					if (btn) {
+						btn.disabled = (checados.length < 1);
+						configurarEstadoElemento(btn);
+					}
+					btn = document.getElementById(checkbox.form.name + ":btnDesativar");
+					if (btn) {
+						btn.disabled = (checados.length < 1);
+						configurarEstadoElemento(btn);
+					}
+				}
+				function desabilitaBotaoAcompanhar() {
+					var btn = utilobjeto.getObjeto("formListarPendencias:btnAcompanhar");
+					btn.className = "form-button-m01-disabled";
+					btn.disabled = true;
+				}
+				function desabilitaBotaoDesativar() {
+					var btn = utilobjeto.getObjeto("formListarPendencias:btnDesativar");
+					btn.className = "form-button-p03-disabled";
+					btn.disabled = true;
+				}
+				//se existir relatório, abra uma pop-up para exibição do mesmo.
+				if ("#{sessionScope["relatorio"]}" != "") {
+					var utiljanela = new UtilJanela();
+					utiljanela.abrirPopUp("#{request.contextPath}/br.jus.stj.alp01.jsf.servlet.ServletRelatorio.rel", 750, 500, "resizable=yes", "relatorio");
+				}
+				function iniciar() {
+					if ("#{sessionScope["relatorio"]}" == "") {
+						try {
+							document.getElementById('formListarPendencias:saapPendenciaAdmPresidencias:0:checkbox:0').focus();
+						}catch(e){}
+					}
+				}
+				// ]]>
+			</script>
+		</ui:define>
+	</ui:composition>
+</html>

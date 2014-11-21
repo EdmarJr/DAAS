@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xml:lang="pt-br" lang="pt-br">
+
+	<ui:composition template="${msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			#{msg.consulta_de_andamento_do_documento}
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236345" />
+
+		<ui:define name="corpo">
+			<form jsfc="h:form" id="formFiltroAndamento">
+				<h:inputHidden id="classBtnImprimir" value="#{saapAdmtAdmPresidenciaAction.visao.classBtnImprimir}" />
+				<h:inputHidden id="disabledBtnImprimir" value="#{saapAdmtAdmPresidenciaAction.visao.disabledBtnImprimir}" />
+				<h:inputHidden id="paginaVoltar" value="#{saapAdmtAdmPresidenciaAction.visao.paginaVoltar}" />
+				<h4>#{msg.dados_da_consulta}</h4>
+
+				<table class="form-table">
+					<tr>
+						<td width="25%">
+						    <span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario">
+								#{msg.n_do_registro}<br />
+								<input jsfc="h:inputText" class="form-text" type="text" value="#{ saapAdmtAdmPresidenciaAction.visao.consultaTO.saapDocAdmPresidencia.id }" 
+									size="20" maxlength="9" id="inputSeqDocAdm" 
+									onkeydown="return utilformatador.formatarNumericoDoCampo(event, this)" 
+									onkeypress="return utilformatador.formatarNumericoDoCampo(event, this)" 
+									onkeyup="utilformatador.formatarNumericoDoCampo(event, this)"
+									onchange="desabilitaBotaoImprimir();"/>
+							</label>
+						</td>
+						<td>
+						    <span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario">
+								#{msg.arquivado_na_pasta}<br />
+								<input jsfc="h:inputText" class="form-text" type="text" value="#{ saapAdmtAdmPresidenciaAction.visao.consultaTO.saapDocAdmPresidencia.nomeLocalFisicoDoc }" 
+									size="20" maxlength="20" id="inputNomeLocalFisicoDoc" onchange="desabilitaBotaoImprimir();"/>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%">
+							<label class="form-label-primario" for="form-select">
+								#{msg['tipo_de_documento']}<br />
+								<h:selectOneMenu
+									id="selectTipoDocumento" 
+									value="#{saapAdmtAdmPresidenciaAction.visao.consultaTO.saapDocAdmPresidencia.indTipoDoc}" 
+									styleClass="form-select" 
+									label="#{msg['tipo.de.documento']}" 
+									style="width:145px;" 
+									required="false" onchange="desabilitaBotaoImprimir();">
+										<f:selectItem itemValue="" itemLabel="#{msg['selecione']}"/>
+										<f:selectItems value="#{saapAdmtAdmPresidenciaAction.listaTiposDocumentos}"/>
+								</h:selectOneMenu>
+							</label>
+						</td>
+						<td>
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario">
+								#{msg.n_do_documento_descricao}<br />
+								<input jsfc="h:inputText" class="form-text" type="text" value="#{ saapAdmtAdmPresidenciaAction.visao.consultaTO.saapDocAdmPresidencia.descDoc }" 
+									size="61" maxlength="100" id="inputDescDoc" onchange="desabilitaBotaoImprimir();"/>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario">
+								#{msg.andamento}<br/>
+								<input jsfc="h:inputText" class="form-text" type="text" value="#{ saapAdmtAdmPresidenciaAction.visao.consultaTO.descAdmtAdm }" 
+									size="91" maxlength="100" id="inputDescAdmtAdm" onchange="desabilitaBotaoImprimir();"/>
+							</label>
+						</td>
+					</tr>
+				</table>
+				<h4>#{msg.periodo_de_entrada}</h4>
+				<table class="form-table">
+					<tr>
+						<td width="25%">
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario" for="form-text-data">#{msg['data.inicio']}</label>
+								<br />
+								<rich:calendar id="inputDataInicio" inputClass="form-text"
+									datePattern="dd/MM/yyyy" locale="pt-br" style="width:200px"
+									inputStyle="width:70px;" 
+									oninputkeydown="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeypress="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeyup="utilformatador.formatarDataDoCampo(event, this)"
+									required="false" label="#{msg['data.inicio']}" 
+									enableManualInput="true" onchanged="desabilitaBotaoImprimir();" 
+									oninputchange="desabilitaBotaoImprimir();"
+									title="#{msg['exibir.calendario']}"
+									converterMessage="#{msg['data.inicio']}: #{mensagem['MA007']}"
+									value="#{saapAdmtAdmPresidenciaAction.visao.consultaTO.dataInicio}"
+									buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif">
+									<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<a4j:support event="oncollapse" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<f:validator validatorId="ValidadorDeData"/>
+								</rich:calendar>
+						</td>
+						<td>
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario" for="form-text-data">#{msg['data.fim']}</label>
+								<br />
+		         				<rich:calendar id="inputDataFim" inputClass="form-text"
+									datePattern="dd/MM/yyyy" locale="pt-br" style="width:200px"
+									inputStyle="width:70px;" 
+									oninputkeydown="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeypress="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeyup="utilformatador.formatarDataDoCampo(event, this)"
+									required="false" label="#{msg['data.fim']}"
+									enableManualInput="true" onchanged="desabilitaBotaoImprimir();"
+									oninputchange="desabilitaBotaoImprimir();"
+									title="#{msg['exibir.calendario']}"
+									converterMessage="#{msg['data.fim']}: #{mensagem['MA007']}"
+									value="#{saapAdmtAdmPresidenciaAction.visao.consultaTO.dataFim}"
+									buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif">
+									<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<a4j:support event="oncollapse" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<f:validator validatorId="ValidadorDeData"/>
+								</rich:calendar>
+						</td>
+					</tr>
+				</table>
+				<p class="form-legenda-campo-obrigatorio">
+					(<span class="form-campo-obrigatorio">**</span>) #{msg.ao_menos_um_campo_deve_ser_preenchido}
+				</p>
+				<br />
+				<div class="form-barra-botoes-consultar">
+					<input type="submit" jsfc="h:commandButton" id="btnConsultar" value="#{msg.consultar}" title="#{msg.hint_botao_consulta}" class="form-button-p03"
+							onclick="habilitaBotaoImprimir();utilobjeto.getObjeto('formFiltroAndamento:paginaVoltar').value = '1';" 
+							action="#{saapAdmtAdmPresidenciaAction.consultar}" actionListener="#{saapAdmtAdmPresidenciaAction.limparPaginacao}"/>
+
+					<input type="submit" jsfc="h:commandButton" id="btnLimpar" value="#{msg.limpar}" title="#{msg.hint_botao_limpar}" class="form-button-p03" 
+						   action="#{saapAdmtAdmPresidenciaAction.limpar}" immediate="true" onclick="desabilitaBotaoImprimir();"/>
+				</div>
+
+				<div class="table-grid-rolagem">
+					<rich:dataTable id="saapAdmtAdmPresidencias" var="saapAdmtAdmPresidencia" rows="25" cellspacing="1"
+	                    binding="#{saapAdmtAdmPresidenciaAction.visao.dataTable}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col1,align-center,col3,col4" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{saapAdmtAdmPresidenciaAction.visao.lista}"
+	                    rendered="#{not empty saapAdmtAdmPresidenciaAction.visao.lista}">
+
+						<f:facet name="caption">
+							<h:column>
+								#{msg.andamentos_cadastrados}
+							</h:column>
+						</f:facet>
+
+						<h:column id="coldescAdmtAdm">
+							<f:facet name="header">
+								#{msg.andamento}
+							</f:facet>
+							#{saapAdmtAdmPresidencia.descAdmtAdm}
+						</h:column>
+
+						<h:column id="coltsEntradaAdmt">
+							<f:facet name="header">
+								#{msg.data_de_entrada}
+							</f:facet>
+							<h:outputText value="#{saapAdmtAdmPresidencia.tsEntradaAdmt}">
+							 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+							</h:outputText>
+						</h:column>
+
+						<h:column id="colindTipoDoc">
+							<f:facet name="header">
+								#{msg.tipo_de_documento}
+							</f:facet>
+							<h:outputText id="outputTextOficio" value="Ofício" rendered="#{saapAdmtAdmPresidencia.saapDocAdmPresidencia.indTipoDoc == '6'}" />
+							<h:outputText id="outputTextAviso" value="Aviso" rendered="#{saapAdmtAdmPresidencia.saapDocAdmPresidencia.indTipoDoc == '1'}" />
+							<h:outputText id="outputTextCarta" value="Carta" rendered="#{saapAdmtAdmPresidencia.saapDocAdmPresidencia.indTipoDoc == '2'}" />
+							<h:outputText id="outputTextConvite" value="Convite" rendered="#{saapAdmtAdmPresidencia.saapDocAdmPresidencia.indTipoDoc == '3'}" />
+							<h:outputText id="outputTextEmail" value="E-mail" rendered="#{saapAdmtAdmPresidencia.saapDocAdmPresidencia.indTipoDoc == '4'}" />
+							<h:outputText id="outputTextMemorando" value="Memorando" rendered="#{saapAdmtAdmPresidencia.saapDocAdmPresidencia.indTipoDoc == '5'}" />
+							<h:outputText id="outputTextProcesso" value="Processo" rendered="#{saapAdmtAdmPresidencia.saapDocAdmPresidencia.indTipoDoc == '7'}" />
+						</h:column>
+
+						<h:column id="colNumeroDocumentoDescricao">
+							<f:facet name="header">
+								#{msg.n_do_documento_descricao}
+							</f:facet>
+							<h:commandLink id="lnkDetalhar" actionListener="#{saapAdmtAdmPresidenciaAction.carregarDetalhe}" action="${saapAdmtAdmPresidenciaAction.detalhar}" immediate="true" title="#{msg.hint_botao_detalhar}" >
+								<f:attribute name="visao.docSelecionado" value="#{saapAdmtAdmPresidencia.saapDocAdmPresidencia}"/>
+								<f:attribute name="visao.andamentoSelecionadoConsulta" value="#{saapAdmtAdmPresidencia}"/>
+								<f:attribute name="caminhoRetorno" value="saapAdmtAdmPresidenciaAction.consultar"/>
+								<h:outputText value="#{saapAdmtAdmPresidencia.saapDocAdmPresidencia.descDoc}" />
+							</h:commandLink>
+						</h:column>
+
+					</rich:dataTable>
+				</div>
+
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapAdmtAdmPresidencias" fastControls="hide" id="datascroller" renderIfSinglePage="false" limitToList="true"
+								actionListener="#{saapAdmtAdmPresidenciaAction.consultar}" page="#{saapAdmtAdmPresidenciaAction.visao.pagina}" reRender="saapAdmtAdmPresidencias,datascroller">
+
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+
+				<t:div styleClass="form-barra-botoes" id="divBtnImprimir" rendered="#{not empty saapAdmtAdmPresidenciaAction.visao.lista}">
+					<input type="submit" jsfc="h:commandButton" value="#{msg.imprimir}" id="btnImprimir" title="#{msg.gera_relatorio_conforme_conteudo_apresentado_em_tela}"
+						   action="#{saapAdmtAdmPresidenciaAction.imprimir}" disabled="#{ saapAdmtAdmPresidenciaAction.visao.disabledBtnImprimir }" class="#{ saapAdmtAdmPresidenciaAction.visao.classBtnImprimir }"/>
+				</t:div>
+
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.consultaTO}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.lista}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.paginaVoltar}"/>
+			</form>
+			<script>
+				var form = utilobjeto.getObjeto("formFiltroAndamento");
+
+				function iniciar() {
+					if ("#{sessionScope["relatorio"]}" == "") {
+						utilformulario.focoNoPrimeiroObjeto(form);
+					}
+				}
+				function habilitaBotaoImprimir() {
+					try {
+						var btn = utilobjeto.getObjeto("formFiltroAndamento:btnImprimir");
+						utilobjeto.getObjeto("formFiltroAndamento:classBtnImprimir").value = "form-button-p03";
+						utilobjeto.getObjeto("formFiltroAndamento:disabledBtnImprimir").value = "false";
+					}catch(e) {}
+				}
+				function desabilitaBotaoImprimir() {
+					try {
+						var btn = utilobjeto.getObjeto("formFiltroAndamento:btnImprimir");
+						utilobjeto.getObjeto("formFiltroAndamento:classBtnImprimir").value = "form-button-p03-disabled";
+						utilobjeto.getObjeto("formFiltroAndamento:disabledBtnImprimir").value = "true";
+						btn.className = "form-button-p03-disabled";
+						btn.disabled = true;
+					}catch(e) {}
+				}
+				//se existir relatório, abra uma pop-up para exibição do mesmo.
+				if ("#{sessionScope["relatorio"]}" != "") {
+					var utiljanela = new UtilJanela();
+					utiljanela.abrirPopUp("#{request.contextPath}/br.jus.stj.alp01.jsf.servlet.ServletRelatorio.rel", 750, 500, "resizable=yes", "relatorio");
+				}
+			</script>
+		</ui:define>
+
+	</ui:composition>
+
+</html>

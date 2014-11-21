@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<p:dataTable var="aviso" value="#{bean.lazyAvisoDoUsuarioDataModel}" lazy="true" paginator="true"
+	rows="15" paginatorPosition="bottom" paginatorAlwaysVisible="true"
+	emptyMessage="Nenhum registro encontrado.">
+	<f:facet name="header">
+					Lista de avisos
+	</f:facet>
+	<p:column headerText="Data da inclusão" id="column_dataInclusao_aviso" width="10%"
+		styleClass="#{avisoDecorator.getNotificationStyleClass(aviso)}">
+		<h:outputText value="#{aviso.dataInclusao}">
+			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+		</h:outputText>
+	</p:column>
+	<p:column headerText="Descrição" id="column_descricao_aviso"
+		width="40%"
+		styleClass="#{avisoDecorator.getNotificationStyleClass(aviso)}">
+		<h:outputText value="#{aviso.descricao}" />
+	</p:column>
+	<p:column headerText="Endereçado" width="10%"
+		styleClass="#{avisoDecorator.getNotificationStyleClass(aviso)}">
+		<h:outputText value="#{aviso.obterListaDestinatariosFormatado()}" />
+	</p:column>
+	<p:column headerText="Situação" id="column_situacao_aviso" width="10%"
+		styleClass="#{avisoDecorator.getNotificationStyleClass(aviso)}">
+		<h:outputText
+			value="#{msg[consultaAvisoController.obterSituacaoAviso(aviso.situacao).codLabel]}" />
+	</p:column>
+	<p:column width="8%" style="text-align:center !important;">
+		<f:facet name="header">
+			<h:outputText value="Visualização"/>
+		</f:facet>
+		<div class="pure-g">
+			<div class="pure-u-1" style="padding-left:38%;">
+				<h:commandLink ajax="false" style="text-align:center !important;" action="#{consultaAvisoController.detalharAviso(aviso)}">
+					<span class="ui-icon ui-icon-circle-zoomin"></span>
+				</h:commandLink>
+			</div>
+		</div>
+	</p:column>
+</p:dataTable>
+<b><h:outputText value="Total de avisos pendentes: #{consultaAvisoController.totalAvisosPendenteUsuario}" /></b>
+<h:panelGrid columns="2">
+	<p:column>
+		<div style="width: 15px; height: 15px; background: #000000"></div>
+	</p:column>
+	<p:column>
+		<h:outputText value="Avisos endereçados para mais de um destinatário." />
+	</p:column>
+	<p:column>
+		<div style="width: 15px; height: 15px; background: #FF8000"></div>
+	</p:column>
+	<p:column>
+		<h:outputText value="Avisos endereçado apenas para mim." />
+	</p:column>
+</h:panelGrid>
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xml:lang="pt-br" lang="pt-br">
+	<ui:composition template="${msg.layout}/layout.xhtml">
+		<ui:define name="corpo">
+		<form jsfc="h:form" id="formPrincipal">
+			<div style="display:none" id="divBtnListarPendencias">
+				<h:commandButton 
+					id="btnListarPendencias"
+					styleClass="form-button-p01" 
+					action="#{listarPendenciasAction.iniciar}"/>
+			</div>
+		</form>
+		<script type="text/javascript">
+			function executaLinkListarPendencias() {
+				var lnk = utilobjeto.getObjeto("formPrincipal:btnListarPendencias");
+				var lnkTemp = lnk.onclick;;
+				lnk.onclick = function() {};
+				lnk.click();
+				lnk.onclick = lnkTemp;
+			}
+			function iniciar() {
+				executaLinkListarPendencias();
+			}
+		</script>
+		</ui:define>
+	</ui:composition>
+</html>

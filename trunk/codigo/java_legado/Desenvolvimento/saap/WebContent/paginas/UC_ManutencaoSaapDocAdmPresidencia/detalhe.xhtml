@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ 
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	lang="pt-br" template="#{msg.layout}/layout.xhtml">
+	
+		<ui:define name="titulo">
+			#{msg.tela_detalhe_documento}
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236333" />
+
+		<ui:define name="corpo">
+			<div id="conteudo-acessibilidade">
+			<h:form id="detalhe">
+				<a4j:jsFunction name="atribuiSeqDocAdm" action="#{consultarHistoricoDocumentoAction.consultarHistoricoDocumento}" limitToList="true" ajaxSingle="true" reRender="mensagens,formHistoricoDocumento" ignoreDupResponses="true"  >
+						<a4j:actionparam name="seqDocAdm" assignTo="#{consultarHistoricoDocumentoAction.visao.seqDocAdm}" />
+				</a4j:jsFunction>
+				
+				<a4j:jsFunction name="a4jCarregarAnteriorDetalhe"
+							action="#{saapDocAdmPresidenciaAction.carregarDocAnterior}"
+							immediate="true"
+							reRender="detalhe"
+							ajaxSingle="true" />	
+							
+				<a4j:jsFunction name="a4jCarregarProximoDetalhe"
+							action="#{saapDocAdmPresidenciaAction.carregarDocProximo}"
+							immediate="true"
+							reRender="detalhe"
+							ajaxSingle="true" />											
+
+				<h4>Dados do documento</h4>
+
+				<table class="form-table">
+							<tbody>
+								<tr>
+									<td width="25%" class="form-label-primario">
+											N. do registro<br />
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.id }</span>
+									</td>
+									<td width="25%" class="form-label-primario">
+										<label class="form-label-primario">
+											Data de entrada<br />
+											<span class="form-label-secundario">
+											<h:outputText value="#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.tsEntradaDoc }" >
+								 			<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+											</span>
+
+										</label>
+									</td>
+									<td width="25%">
+										<label class="form-label-primario">
+											Gestão<br />
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeMinistroPresidente }</span>
+										</label>
+									</td>
+									<td>
+									
+									<a4j:commandButton value="«" title="#{msg.hint_navegacao_anterior}" 
+									  styleClass="form-button-p02" id="btnAnteriorDetalhe" immediate="true" 
+									  rendered="#{saapDocAdmPresidenciaAction.visao.apresentaAnteriorDetalhe}"
+									  onclick="a4jCarregarAnteriorDetalhe();">
+									</a4j:commandButton>
+									<a4j:commandButton value="»" title="#{msg.hint_navegacao_proximo}" 
+										styleClass="form-button-p02"
+										id="btnProximoDetalhe" immediate="true" 
+										rendered="#{saapDocAdmPresidenciaAction.visao.apresentaProximoDetalhe}"
+										onclick="a4jCarregarProximoDetalhe();">
+									</a4j:commandButton>									
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<label class="form-label-primario">
+											Tipo de documento: <br/>
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.indTipoDocFormatado }</span>
+										</label>
+									</td>
+									<td>
+										<label class="form-label-primario">
+											Arquivado na pasta:<br/>
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeLocalFisicoDoc }</span>
+										</label>
+									</td>
+									<td width="20%">
+										<label class="form-label-primario">
+											Situação:<br/>
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.indSituacaoDocFormatado }</span>
+										</label>
+									</td>								
+									<td width="20%">
+										<label class="form-label-primario">
+											Alterado por:<br/>
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeUsuarioAlteracao }</span>
+										</label>	
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4">
+										<label class="form-label-primario">
+											N. do documento / Descrição:<br/>
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.descDoc }</span>
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4">
+										<label class="form-label-primario">
+											Assunto / Evento:<br/>
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.txtAssuntoDoc }</span>
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4">
+										<label class="form-label-primario">
+											Observações:<br/>
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.txtObsDoc }</span>
+										</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						
+
+	<h:outputText rendered="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.documentoBasico.documentoConvite}"> 	
+				
+						<fieldset id="fieldConvite" >
+							<h4>Dados do convite</h4>
+							<table class="form-table">
+								<tbody>
+									<tr>
+										<td width="200" colspan="2">
+											<label class="form-label-primario">
+												Quem convidou:<br />
+												<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeRespConvite }</span>
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td width="150">
+						
+											<label class="form-label-primario">
+												Data do evento:<br/>
+												<span class="form-label-secundario">
+												<h:outputText value="#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.dataConvite }" >
+												</h:outputText>
+												</span>
+											</label>
+										</td>
+										<td width="300">
+											<label class="form-label-primario">
+												Hora do evento:<br/>
+												<span class="form-label-secundario">
+												<h:outputText value="#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.dtHrEventoConvite }" >
+									 			<f:convertDateTime pattern="HH:mm" locale="pt,BR" timeZone="America/Sao_Paulo" />
+												</h:outputText>
+												</span>
+											</label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>
+						
+	</h:outputText>
+				
+
+				
+					<h:panelGroup rendered="#{not empty saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.arquivosDocumento}">	
+						<h4>Arquivos anexos</h4>
+		                <rich:dataTable value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.arquivosDocumento}" 
+		                binding="#{saapDocAdmPresidenciaAction.visao.dataTable2}"
+		                id="dataTableArquivos"
+		                var="item"
+		                rendered="#{not empty saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.arquivosDocumento}">
+		                <h:column >
+	                       <h:commandLink id="lnkAbrirArquivo" action="#{saapDocAdmPresidenciaAction.downloadArquivoPDF}" >
+								<h:outputText value="#{item.nomeArqDoc}" style="font-size:0.8em" title="Clique para abrir o arquivo" />        
+                           </h:commandLink>
+		                </h:column>
+		                
+		                </rich:dataTable>
+
+                    </h:panelGroup>    
+                        <br/>
+                         <br/>
+
+				<h4>Andamentos</h4>
+				
+				<div class="table-grid-rolagem">
+				<rich:dataTable id="saapDocAdmPresidencias" var="andamentos" rows="25" cellspacing="1"
+	                    binding="#{saapDocAdmPresidenciaAction.visao.dataTableAndamentos}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col,col2" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.listaAndamentos}"
+	                    rendered="#{not empty saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.listaAndamentos}">
+	                    	
+						<f:facet name="caption">
+							<h:column>
+								Andamentos
+							</h:column>
+						</f:facet>
+						
+						<h:column id="colid"  >
+							<f:facet name="header">
+								Andamento
+							</f:facet>
+							<h:outputText value="#{andamentos.saapAdmtAdmPresidencia.descAdmtAdm}" styleClass="situacao-inativo" />
+						</h:column>
+						
+						<h:column id="colid2"  >
+							<f:facet name="header">
+								Data
+							</f:facet>
+							<h:outputText value="#{andamentos.saapAdmtAdmPresidencia.tsEntradaAdmt}" >
+								 	<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</h:column>
+						
+						<h:column id="colid3"  >
+							<f:facet name="header">
+								Responsável
+							</f:facet>
+							<h:outputText value="#{andamentos.responsavel}" styleClass="situacao-inativo" />
+						</h:column>
+				</rich:dataTable>
+				</div>
+					
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapDocAdmPresidencias" fastControls="hide" id="datascroller" 
+						renderIfSinglePage="false" oncomplete="configurarEstadoBotoes('listagem', false)" 
+						actionListener="#{saapDocAdmPresidenciaAction.consultarDetalharDocumento}" page="#{saapDocAdmPresidenciaAction.visao.paginaDetalhe}"
+						reRender="saapDocAdmPresidencias,datascroller">
+					
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+
+				<div class="form-barra-botoes">
+					<h:commandButton value="#{msg.alterar}" title="#{msg.hint_botao_alterar}" styleClass="form-button-p03" id="btnAlterar"
+						   action="#{saapDocAdmPresidenciaAction.iniciarEditar}" rendered="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.documentoBasico.inativo==false}" immediate="true"/>
+
+					<h:commandButton value="#{msg.alterar}" title="#{msg.hint_botao_alterar}" styleClass="form-button-p03-disabled" disabled="true"
+						   action="#{saapDocAdmPresidenciaAction.iniciarEditar}" rendered="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.documentoBasico.inativo==true}" immediate="true"/>
+
+					<input type="button" value="#{msg.historico}" title="#{msg.apresenta_lista_do_historico_de_acoes_aplicadas_ao_registro}"
+						id="btnHistorico" 
+						class="form-button-p03" onclick="atribuiSeqDocAdm('#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.id}');"/>
+
+					<h:commandButton value="#{msg.andamentos}" title="#{msg.hint_botao_andamentos}" styleClass="form-button-m02" 
+						 actionListener="#{saapAdmtAdmPresidenciaAction.carregarDetalhe}"  
+						 action="${saapAdmtAdmPresidenciaAction.detalhar}" immediate="true">
+						<f:attribute name="visao.docSelecionado" value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.documentoBasico}"/>
+						<f:attribute name="visao.andamentoSelecionadoConsulta" value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.andamentoDocumento}"/>
+						<f:attribute name="caminhoRetorno" value="saapDocAdmPresidenciaAction.detalhar"/>
+					</h:commandButton>					
+					
+					<h:commandButton id="btnImprimir" value="#{msg.imprimir}" title="#{msg.gera_relatorio_conforme_conteudo_apresentado_em_tela}" styleClass="form-button-p03"
+						   action="#{saapDocAdmPresidenciaAction.imprimirDocumentoDetalhe}" immediate="true"  />
+						   
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p03"
+							immediate="true" action="#{saapDocAdmPresidenciaAction.voltarInicio}" />
+
+				</div>
+
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consulta}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultaClone}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.entidade.id}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaDetalhe}"/>		
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestao}"/>		
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestoes}" />		
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.lista}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.idDocumento}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultarDocumentosTO}"/>
+
+			</h:form>
+			</div>
+
+			<!-- Modal Panel histórico do documento  -->
+			<ui:include src="/paginas/UC_ConsultarHistoricoDocumento/inicial.xhtml" />
+
+		<script>
+
+			var btnAnterior= utilobjeto.getObjeto("detalhe:btnAnteriorDetalhe");
+			var btnProximo= utilobjeto.getObjeto("detalhe:btnProximoDetalhe");
+			var btnAlterar= utilobjeto.getObjeto("detalhe:btnAlterar");
+			var listaArquivo = utilobjeto.getObjeto("detalhe:dataTableArquivos:0:lnkAbrirArquivo");
+						
+			//se existir relatório, abra uma pop-up para exibição do mesmo.
+			if ("#{sessionScope["relatorio"]}" != "") {
+				var utiljanela = new UtilJanela();
+				utiljanela.abrirPopUp("#{request.contextPath}/br.jus.stj.alp01.jsf.servlet.ServletRelatorio.rel", 750, 500, "resizable=yes", "relatorio");
+			}
+
+			function posicionaFocoPrimeiroCampo() {
+				if (btnAnterior != null) {
+					btnAnterior.focus();	
+				}else if (btnProximo != null) {
+					btnProximo.focus();		
+				}else if (listaArquivo != null) {
+					listaArquivo.focus();		
+				}else if (btnAlterar != null) {
+					btnAlterar.focus();	
+				}else {
+					utilobjeto.getObjeto("detalhe:btnHistorico").focus();
+				}		
+			}				
+
+			posicionaFocoPrimeiroCampo();			
+
+		</script>
+
+		</ui:define>
+
+</ui:composition>

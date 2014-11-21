@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+
+	<ui:define name="content">
+		<script type="text/javascript" src="includeNotification.js" />
+		<h:form id="formIncluirAviso">
+
+			<h:outputText value="Detalhe Documento" styleClass="title" />
+			<p:separator style="height: 1px; " />
+			<h:panelGrid columns="3" width="100%">
+
+				<p:column>
+					<div class="pure-u-5-24">
+						<p:outputLabel value="Tipo de Documento:" for="selectDocumentType"
+							style="text-align:left;width:100px;" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-5-24">
+						<p:outputLabel value="Número do documento na origem:"
+							for="inputDocumentNumber" style="text-align:left;width:200px;" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-5-24">
+						<p:outputLabel value="Identificador do Documento no STJ:"
+							for="inputIdentityDocument" style="text-align:left;width:200px;" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-5-24" style="display: flex"></div>
+
+					<br />
+					<div class="pure-g">
+						<div class="pure-u-5-24">
+							<p:outputLabel id="selectDocumentType"
+								value="#{detalhaDocumentoController.documentoDetalhar.tipo.nome}"
+								style="text-align:left;width:200px;">
+							</p:outputLabel>
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-5-24">
+							<p:outputLabel id="inputDocumentNumber" required="true"
+								value="#{detalhaDocumentoController.documentoDetalhar.numero}" style="text-align:left;width:200px;" />
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-5-24">
+							<p:outputLabel id="inputIdentityDocument"
+								value="#{detalhaDocumentoController.documentoDetalhar.identificadorComMascara}"
+								style="text-align:left;width:200px;" />
+						</div>
+					</div>
+				</p:column>
+			</h:panelGrid>
+			<p:separator style="height: 1px; " />
+			<h:panelGrid columns="2" width="100%">
+				<p:column>
+					<div class="pure-g">
+						<div class="pure-u-5-24">
+							<p:outputLabel for="outputDataOrigem"
+								value="Data do Documento na Origem:" style="text-align: left; " />
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-5-24">
+							<p:outputLabel for="outputDataCadastro"
+								value="Data de recebimento:" style="text-align: left; " />
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-5-24">
+							<p:outputLabel id="outputSituacao" value="Situação"
+								style="text-align: left; " />
+						</div>
+					</div>
+					<br />
+					<div class="pure-g">
+
+						<div class="pure-u-5-24">
+							<p:outputLabel id="outputDataOrigem" mask="true"
+								pattern="dd/MM/yyyy" value="#{detalhaDocumentoController.documentoDetalhar.dataOrigemDocumento}"
+								style="text-align: left; " />
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-5-24">
+							<p:outputLabel id="outputDataCadastro" mask="true"
+								pattern="dd/MM/yyyy" value="#{detalhaDocumentoController.documentoDetalhar.dataInclusao}"
+								style="text-align: left; " />
+						</div>
+
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-5-24">
+							<p:outputLabel id="outSimSituacao"
+								rendered="#{detalhaDocumentoController.documentoDetalhar.situacaoDocumentoEvento.toString().equals('S')}"
+								value="Ativo" style="text-align: left; " />
+							<p:outputLabel id="outNaoSituacao"
+								rendered="#{documento.situacaoDocumentoEvento.toString().equals('N')}"
+								value="Inativo" style="text-align: left; " />
+						</div>
+					</div>
+
+
+				</p:column>
+			</h:panelGrid>
+			<p:separator style="height: 1px; " />
+			<h:panelGrid columns="1" width="100%">
+				<p:column>
+
+					<div class="pure-g">
+						<div class="pure-u-5-24">
+							<p:outputLabel id="assunto" value="Assunto"
+								style="text-align:left;width:200px;">
+							</p:outputLabel>
+						</div>
+					</div>
+					<br />
+					<div class="pure-g">
+						<div class="pure-u-5-24">
+							<p:outputLabel id="outputAssunto"
+								value="#{detalhaDocumentoController.documentoDetalhar.assuntoDocumento}"
+								style="text-align:left;width:100px;">
+							</p:outputLabel>
+						</div>
+					</div>
+				</p:column>
+			</h:panelGrid>
+			<p:separator style="height: 1px; " />
+			<div class="pure-g">
+				<div class="pure-u-1" style="text-align:right;">
+					<p:commandButton ajax="false" action="#{detalhaDocumentoController.comandoVoltar()}" value="Voltar"/>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

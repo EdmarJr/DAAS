@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<p:panel header="Evento" id="panelEvento"
+	style="border: #C4C4C4 solid 1px !important;" toggleable="true">
+	<p:columnGroup rendered="#{documento.relacionadoAEvento}">
+	<h:panelGrid columns="1" width="50%">
+		<p:column>
+			<p:outputLabel value="Nome:" for="inputNomeEvento"
+				style="text-align:left;" />
+			<p:inputText id="inputNomeEvento" 
+				value="#{documento.evento.nomeEvento}"
+				required="true" requiredMessage="Campo obrigatório" >
+				<p:growl id="messagesNome" showDetail="true" />
+			</p:inputText>	
+		</p:column>
+	</h:panelGrid>
+	<div class="pure-g">
+		<div class="pure-u-1" style="margin-top: 10px;">
+			<p:outputLabel style="text-align: left;" value="Período" />
+		</div>
+		<div class="pure-u-1-8">
+				<p:outputLabel for="calendarFrom" style="margin-bottom: 8px" value="De:" />
+		</div>
+		<div class="pure-u-1-8">
+				<p:outputLabel for="calendarTo" style="margin-bottom: 8px" value="Até:" />
+		</div>
+		<div class="pure-u-18-24"></div>
+		<div class="pure-u-1-8">
+			<p:calendar id="calendarFrom" mask="true" pattern="dd/MM/yyyy"
+				required="true" requiredMessage="Campo obrigatório"
+				value="#{documento.evento.dataInicioEvento}">
+				<p:growl id="messagesFrom" showDetail="true" />
+			</p:calendar>
+		</div>
+		<div class="pure-u-1-8">
+				<p:calendar id="calendarTo" mask="true" pattern="dd/MM/yyyy"
+					required="true" requiredMessage="Campo obrigatório"
+					value="#{documento.evento.dataTerminoEvento}">
+					<p:growl id="messagesTo" showDetail="true" />
+				</p:calendar>
+		</div>
+	</div>
+	<div class="pure-g">
+		<div class="pure-u-1" style="margin-top: 10px;">
+			<p:outputLabel style="text-align: left;" value="Hora" />
+		</div>
+		<div class="pure-u-1-8">
+			<p:outputLabel for="calendarFromHora" style="margin-bottom: 8px" value="De:" />
+		</div>
+		<div class="pure-u-1-8">
+			<p:outputLabel for="calendarToHora" style="margin-bottom: 8px" value="Até:"/>
+		</div>
+		<div class="pure-u-18-24"></div>
+		<div class="pure-u-1-8">
+			<p:calendar id="calendarFromHora" mask="true" pattern="HH:mm a" timeOnly="true"
+				value="#{documento.evento.horaInicio}">
+			</p:calendar>
+			
+		</div>
+		<div class="pure-u-1-8">
+			<p:calendar id="calendarToHora" mask="true" pattern="HH:mm a" timeOnly="true"  
+				value="#{documento.evento.horaTermino}"/>
+		</div>
+	</div>
+	<h:panelGrid columns="1" cellpadding="5" width="100%">
+		<p:column>
+			<p:outputLabel value="Observação:" for="inputObservation"
+				style="text-align:left;" />
+			<p:inputTextarea id="inputObservation"
+				value="#{documento.evento.observacaoEvento}" />
+		</p:column>
+	</h:panelGrid>
+	
+</p:columnGroup>
+
+</p:panel>
+
+</html>

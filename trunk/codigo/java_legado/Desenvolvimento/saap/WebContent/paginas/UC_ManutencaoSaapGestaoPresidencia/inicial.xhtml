@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	lang="pt-br" template="#{msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			#{msg.tela_consulta_gestao}
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236371" />		
+
+		<ui:define name="corpo">
+			<div id="conteudo-acessibilidade">
+			<h:form id="listagem">
+
+				<h4>#{msg.dados_da_consulta}</h4>
+
+				<table class="form-table">
+						<tr>
+							<td width="35%">
+								<span class="form-campo-obrigatorio">**</span>
+								<label class="form-label-primario" for="compsaapGestaoPresidenciadtInicialVigGestao">#{msg.saapGestaoPresidencia_dtInicialVigGestao}</label><br />
+								<rich:calendar id="compsaapGestaoPresidenciadtInicialVigGestao" inputClass="form-text"
+									datePattern="dd/MM/yyyy" locale="pt-br" style="width:200px"
+									inputStyle="width:70px;" 
+									oninputkeydown="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeypress="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeyup="utilformatador.formatarDataDoCampo(event, this)"
+									required="false" label="${ msg.saapGestaoPresidencia_dtInicialVigGestao }" 
+									enableManualInput="true" 
+									title="#{msg['exibir.calendario']}"
+									converterMessage="#{ msg.saapGestaoPresidencia_dtInicialVigGestao }: #{mensagem['MA007']}"
+									value="#{ saapGestaoPresidenciaAction.visao.consulta.dtInicialVigGestao }"
+									buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif">
+									<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<a4j:support event="oncollapse" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<f:validator validatorId="ValidadorDeData"/>
+								</rich:calendar>
+							</td>
+							<td align="left">
+								<span class="form-campo-obrigatorio">**</span>
+								<label class="form-label-primario" for="compsaapGestaoPresidenciadtFinalVigGestao">#{msg.saapGestaoPresidencia_dtFinalVigGestao}</label><br />
+								<rich:calendar id="compsaapGestaoPresidenciadtFinalVigGestao" inputClass="form-text"
+									datePattern="dd/MM/yyyy" locale="pt-br" style="width:200px"
+									inputStyle="width:70px;" 
+									oninputkeydown="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeypress="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeyup="utilformatador.formatarDataDoCampo(event, this)"
+									required="false" label="${ msg.saapGestaoPresidencia_dtFinalVigGestao }" 
+									enableManualInput="true" 
+									title="#{msg['exibir.calendario']}"
+									converterMessage="#{ msg.saapGestaoPresidencia_dtFinalVigGestao }: #{mensagem['MA007']}"
+									value="#{ saapGestaoPresidenciaAction.visao.consulta.dtFinalVigGestao }"
+									buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif">
+									<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<a4j:support event="oncollapse" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<f:validator validatorId="ValidadorDeData"/>
+								</rich:calendar>
+							</td>
+
+						</tr>
+						<tr>
+							<td  colspan="2">
+								<span class="form-campo-obrigatorio">**</span>
+								<label class="form-label-primario" for="compsaapGestaoPresidencianomeMinistroPresidente">#{msg.saapGestaoPresidencia_nomeMinistroPresidente}</label><br />
+								<h:inputText styleClass="form-text" value="#{ saapGestaoPresidenciaAction.visao.consulta.nomeMinistroPresidente }" label="${ msg.saapGestaoPresidencia_nomeMinistroPresidente }" size="80" maxlength="50" required="false" id="compsaapGestaoPresidencianomeMinistroPresidente" onblur="trim(this);" />
+							</td>
+						</tr>
+				</table>		
+				<p class="form-legenda-campo-obrigatorio">
+					(<span class="form-campo-obrigatorio">**</span>) #{msg.ao_menos_um_campo_deve_ser_preenchido}
+				</p>
+				<br />
+				<div class="form-barra-botoes-consultar">
+					<h:commandButton value="#{msg.consultar}" title="#{msg.hint_botao_consulta}" styleClass="form-button-p03"
+							action="#{saapGestaoPresidenciaAction.consultar}" actionListener="#{saapGestaoPresidenciaAction.limparPaginacao}" />
+
+					<h:commandButton value="#{msg.limpar}" title="#{msg.hint_botao_limpar}" styleClass="form-button-p03" 
+						   action="#{saapGestaoPresidenciaAction.iniciar}" immediate="true" />
+
+					<h:commandButton value="#{msg.novo}" title="#{msg.hint_botao_novo}" styleClass="form-button-p03"
+							action="#{saapGestaoPresidenciaAction.iniciarIncluir}" immediate="true" />
+				</div>
+
+				<h:outputText rendered="#{not empty saapGestaoPresidenciaAction.visao.lista}">
+				<div class="table-grid-rolagem">
+					<rich:dataTable id="saapGestaoPresidencias" var="saapGestaoPresidencia" rows="25" cellspacing="1"
+	                    binding="#{saapGestaoPresidenciaAction.visao.dataTable}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col1,col2,align-center" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{saapGestaoPresidenciaAction.visao.lista}">
+
+						<f:facet name="caption">
+							<h:column>
+								#{msg.gestoes}
+							</h:column>
+						</f:facet>
+
+						<rich:column id="colCodigo" width="20">
+							<cc:checkbox id="checkbox" name="visao-entidades[]-id" styleClass="form-check-radio-grid"
+								value="#{saapGestaoPresidenciaAction.visao.idSelecionado}" onclick="configurarBotoes(this)" title="#{msg.hint_checkbox_lista}">
+								<f:selectItem itemValue="#{saapGestaoPresidencia.id}" itemLabel="" />
+							</cc:checkbox>
+						</rich:column>
+
+						<h:column id="colnomeMinistroPresidente">
+							<f:facet name="header">
+								#{msg.saapGestaoPresidencia_nomeMinistro}
+							</f:facet>
+							<h:commandLink id="lnkDetalhar" action="${saapGestaoPresidenciaAction.detalhar}" immediate="true">
+								<f:param name="visao.entidade.id" value="#{saapGestaoPresidencia.id}" />
+								<h:outputText value="#{saapGestaoPresidencia.nomeMinistroPresidente}" title="#{msg.hint_botao_detalhar}"/>  
+							</h:commandLink>
+						</h:column>		
+
+						<h:column id="coldtVigGestao">
+							<f:facet name="header">
+								#{msg.saapGestaoPresidencia_dtVigGestao}
+							</f:facet>
+								<h:outputText value="#{saapGestaoPresidencia.dtInicialVigGestao}" >
+								 	<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+								<h:outputText rendered="#{saapGestaoPresidencia.dtFinalVigGestaoPreenchido}">
+									#{msg.a_com_espacos}
+								</h:outputText>
+							 	<h:outputText value="#{saapGestaoPresidencia.dtFinalVigGestao}" >
+								 	<f:convertDateTime pattern="dd/MM/yyyy" /> 
+								</h:outputText>	
+						</h:column>	 
+
+					</rich:dataTable>
+				</div>
+
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapGestaoPresidencias" fastControls="hide" id="datascroller" renderIfSinglePage="false" oncomplete="configurarEstadoBotoes('listagem', false)" 
+							actionListener="#{saapGestaoPresidenciaAction.consultar}" page="#{saapGestaoPresidenciaAction.visao.pagina}">
+
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+
+				<div class="form-barra-botoes">
+					<h:commandButton id="btnAlterar" value="#{msg.alterar}" title="#{msg.hint_botao_alterar}" styleClass="form-button-p02-disabled"
+							action="#{saapGestaoPresidenciaAction.iniciarEditar}" immediate="true" disabled="true" />
+				</div>
+
+				<t:saveState value="#{saapGestaoPresidenciaAction.visao.consultaExecutada}"/>
+				<t:saveState value="#{saapGestaoPresidenciaAction.visao.consulta}"/>
+				<t:saveState value="#{saapGestaoPresidenciaAction.visao.lista}"/>
+				<t:saveState value="#{saapGestaoPresidenciaAction.visao.pagina}"/>
+				</h:outputText>
+			</h:form>
+			<script>
+				function iniciar() {
+					var form = utilobjeto.getObjeto("listagem");
+					utilformulario.focoNoPrimeiroObjeto(form);
+				}
+			</script>
+			</div>
+		</ui:define>
+</ui:composition>

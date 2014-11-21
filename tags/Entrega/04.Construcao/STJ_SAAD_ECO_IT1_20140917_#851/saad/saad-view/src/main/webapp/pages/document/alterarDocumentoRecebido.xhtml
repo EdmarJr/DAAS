@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		<style>
+label {
+	white-space: nowrap;
+}
+</style>
+	<h:form id="documentAddForm">
+	<p:panel id="processar1">
+	<div>
+		<h:outputText value="Alteração de Documento Recebido"
+			styleClass="title" />
+		<br /> <br />
+		<ui:include src="includes/radioInternoExterno.xhtml">
+			<ui:param name="documentController" value="#{alteracaoDocumentoRecebidoController}" />
+			<ui:param name="documento" value="#{alteracaoDocumentoRecebidoController.document}" />
+		</ui:include>
+	</div>
+	<br />
+	<h:panelGroup id="remetentes">
+	<div>
+		<ui:include src="includes/remetenteDestinatarioInterno.xhtml">
+		<ui:param name="documentController" value="#{alteracaoDocumentoRecebidoController}" />
+			<ui:param name="documento" value="#{alteracaoDocumentoRecebidoController.document}" />
+		</ui:include>
+	</div>
+	<div>
+		<ui:include src="includes/remetenteDestinatarioExterno.xhtml">
+		<ui:param name="documentController" value="#{alteracaoDocumentoRecebidoController}" />
+			<ui:param name="documento" value="#{alteracaoDocumentoRecebidoController.document}" />
+			<ui:param name="alterarDocumento" value="#{true}" />
+		</ui:include>
+	</div>		
+	<br />
+	<br />
+	</h:panelGroup>
+	<div>
+		<ui:include src="includes/incluirDocumento.xhtml">
+		<ui:param name="documentController" value="#{alteracaoDocumentoRecebidoController}" />
+			<ui:param name="documento" value="#{alteracaoDocumentoRecebidoController.document}" />
+		</ui:include>
+	</div>
+	<div>
+		<ui:include src="includes/processo.xhtml">
+		<ui:param name="documentController" value="#{alteracaoDocumentoRecebidoController}" />
+			<ui:param name="documento" value="#{alteracaoDocumentoRecebidoController.document}" />
+		</ui:include>
+	</div>
+	</p:panel>
+	<div>
+		<ui:include src="includes/tarefa.xhtml">
+			<ui:param name="documento" value="#{alteracaoDocumentoRecebidoController.document}" />
+			<ui:param name="transferenciaAlteracaoTarefa" value="true" />
+			<ui:param name="documentController" value="#{alteracaoDocumentoRecebidoController}" />
+			<ui:param name="alterarTarefa" value="false" />
+		</ui:include>
+	</div>
+	<p:panel id="processar2">
+	<div>
+		<ui:include src="includes/moduloEvento.xhtml">
+		<ui:param name="documentController" value="#{alteracaoDocumentoRecebidoController}" />
+			<ui:param name="documento" value="#{alteracaoDocumentoRecebidoController.document}" />
+		</ui:include>
+	</div>
+	<div>
+		<ui:include src="includes/anexarArquivo.xhtml">
+		<ui:param name="documentController" value="#{alteracaoDocumentoRecebidoController}" />
+			<ui:param name="documento" value="#{alteracaoDocumentoRecebidoController.document}" />
+		</ui:include>
+	</div>
+
+	<div style="width: 100%; margin-top: 1%;">
+		<span style="width: 50%; padding-left: 80%;"> <p:commandButton ajax="false"  process="processar1, processar2" type="button"
+				id="botaoSalvar" icon="ui-icon-check" value="Confirmar"
+				actionListener="#{alteracaoDocumentoRecebidoController.comandoSalvar()}">
+				<p:ajax event="click"  listener="#{alteracaoDocumentoRecebidoController.comandoSalvar()}" process="processar1, processar2" update="processar1, processar2"/>
+			</p:commandButton>
+		</span> <span style="width: 50%;"> <p:commandButton
+				id="botaoVoltar" immediate="true" action="#{alteracaoDocumentoRecebidoController.cancelar()}" styleClass="ui-confirmdialog-yes"
+				ajax="false" icon="ui-icon-check" value="Voltar">
+			</p:commandButton>
+		</span>
+	</div>
+	</p:panel>
+</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes" xml:lang="pt-br" lang="pt-br"> 
+
+	<div id="divDocSimilar" style="font-size:1.2em;font-family:verdana;padding:10px" class="x-hidden">	
+		<h:form id="formDocumentoSimilar">
+
+			<a4j:jsFunction name="a4jCarregarProximoSimilar"
+							action="#{saapDocAdmPresidenciaAction.carregarProximoSimilar}"
+							immediate="true"
+							reRender="formDocumentoSimilar"
+							ajaxSingle="true" />
+							
+			<a4j:jsFunction name="a4jCarregarAnteriorSimilar"
+							action="#{saapDocAdmPresidenciaAction.carregarAnteriorSimilar}"
+							immediate="true"
+							reRender="formDocumentoSimilar"
+							ajaxSingle="true" />
+							
+			<a4j:jsFunction name="a4jIncluir"
+							action="#{saapDocAdmPresidenciaAction.incluir}"
+							immediate="true"
+							reRender="formDocumentoSimilar, mensagens, compsaapDocAdmPresidencialocalFisico,
+							compsaapDocAdmPresidenciadescDoc, compsaapDocAdmPresidenciaAssunto, 
+							compsaapDocAdmPresidenciaObs, compsaapDocAdmPresidenciaDescAndamento,
+							compsaapDocAdmPresidenciaRespConvite, compsaapDocAdmPresidenciaHoraInicio,
+							dataInicialConvite, selectTipoDocumento"							
+							ajaxSingle="true" />
+		
+			<a4j:outputPanel id="panelDocSimilar" rendered="#{saapDocAdmPresidenciaAction.visao.exibirPop}">
+				<div id="area-mensagens">
+					<ul class="msg-alerta">
+						<li>
+							<span class="msg-alerta" style="font-size:13px">
+								<br/>
+								Foram encontrados documentos similares ao que está sendo incluído.
+							</span>
+						</li>
+					</ul>
+				</div>
+				<div class="table-grid-rolagem">
+					<h4>Dados do documento similar</h4>
+					<table class="table-grid-detalhar">
+						<tbody>
+							<tr>
+								<td width="25%">
+									<label class="form-label-primario">
+										N. do registro<br />
+										<h:outputText id="popId" style="font-weight:bold;color:#4881ab;text-decoration:underline;cursor:hand" value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.id}" onclick="setInscricao('#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.id}')" styleClass="#{saapDocAdmPresidencia.cssLinkAtivoInativo}" title="#{msg.hint_botao_detalhar}"/>        
+										<input type="hidden" id="selecionado" name="selecionado" value="0" />
+								</label>
+								</td>
+								<td width="25%">
+									<label class="form-label-primario">
+										Data de entrada<br />
+										<h:outputText value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.tsEntradaDoc}" styleClass="form-label-secundario" id="popDataEntrada" />
+									</label>
+								</td>
+								<td width="25%">
+									<label class="form-label-primario">
+										Gestão<br />
+										<h:outputText value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeMinistroPresidente}" styleClass="form-label-secundario" id="popNomeMinistro" />
+									</label>
+								</td>
+								<td>
+									<a4j:commandButton value="«" title="Apresenta o registro anterior." 
+									  styleClass="form-button-p02" id="btnAnteriorSimilar" immediate="true" 
+									  rendered="#{saapDocAdmPresidenciaAction.visao.apresentaAnteriorSimilar}"
+									  onclick="a4jCarregarAnteriorSimilar();">
+									</a4j:commandButton>								
+									<a4j:commandButton value="»" title="Apresenta o próximo registro." 
+										styleClass="form-button-p02"
+										id="btnProximoSimilar" immediate="true" 
+										rendered="#{saapDocAdmPresidenciaAction.visao.apresentaProximoSimilar}"
+										onclick="a4jCarregarProximoSimilar();">
+									</a4j:commandButton>								
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label class="form-label-primario">
+										Tipo de documento: <br/>
+										<h:outputText value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.indTipoDocFormatado}" styleClass="form-label-secundario" id="popTipoDocumento" />
+									</label>
+								</td>
+								<td>
+									<label class="form-label-primario">
+										Arquivado na pasta:<br/>
+										<h:outputText value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeLocalFisicoDoc}" styleClass="form-label-secundario" id="popLocalFisico" />
+									</label>
+								</td>
+								<td width="20%">
+									<label class="form-label-primario">
+										Situação:<br/>
+										<h:outputText value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.indSituacaoDocFormatado}" styleClass="form-label-secundario" id="popSituacao" />
+									</label>
+								</td>								
+								<td width="20%">
+									<label class="form-label-primario">
+										Alterado por:<br/>
+										<h:outputText value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeUsuarioAlteracao}" styleClass="form-label-secundario" id="popUsuario" />
+									</label>	
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4">
+									<label class="form-label-primario">
+										N. do documento / Descrição:<br/>
+										<h:outputText value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.descDoc}" styleClass="form-label-secundario" id="popDescricao2" />
+									</label>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					
+					<div class="form-barra-botoes">
+						<table width="100%" >
+						<tr>
+							<td class="form-label-primario" style="font-size:0.8em; font-family:verdana" align="right">Deseja confirmar a inclusão do documento?</td>
+						</tr>
+						<tr><td height="10"></td></tr>
+						<tr>
+							<td align="right">
+								<a4j:commandButton value="Sim" title="Retorna à tela de inclusão do documento e conclui a operação." 
+									styleClass="form-button-p02"
+									immediate="true" 
+									reRender="inclusao"
+									onclick="javascript:solicitarInclusao();">
+								</a4j:commandButton>								
+								<a4j:commandButton value="Não" title="Retorna à tela de inclusão do documento e aguarda a edição das informações" 
+									styleClass="form-button-p02"
+									immediate="true" 
+									onclick="javascript:fecharPopup();">
+								</a4j:commandButton>								
+							</td>
+						</tr>
+						</table>
+					</div>					
+				</div>
+				
+				<script type="text/javascript">
+					//<![CDATA[  
+					
+					function fecharPopup() {
+						fecharModal('divDocSimilar');
+					}
+					abrirModal('divDocSimilar', {title:'',width: 800, height: 560, listeners : {'hide' : {fn: fecharPopup}}},'lupa');
+					// ]]>
+
+					function solicitarInclusao(){
+						fecharPopup();
+						a4jIncluir();
+					}
+
+					function setInscricao(i){ 
+		                utilobjeto.getObjeto("inclusao:hiddenSelecionadoPop").value = i;
+		                utilobjeto.getObjeto("inclusao:btnDetalhar").click();
+		                return true;
+		        	} 			
+
+					function posicionaFocoPrimeiroCampo() {
+						document.getElementById('formDocumentoSimilar:popId').focus();
+					}
+		        			
+
+				</script>				
+				
+				<script>posicionaFocoPrimeiroCampo();</script>
+				
+		
+			</a4j:outputPanel>
+		</h:form>
+	</div>
+</ui:composition>

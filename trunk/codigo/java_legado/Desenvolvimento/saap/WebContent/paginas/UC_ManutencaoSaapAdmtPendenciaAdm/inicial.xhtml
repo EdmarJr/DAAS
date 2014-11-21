@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xml:lang="pt-br" lang="pt-br">
+
+	<ui:composition template="${msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			Consulta de andamento da pendência
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236362" />
+
+		<ui:define name="corpo">
+			<form jsfc="h:form" id="formFiltroAndamentoPendencia">
+			
+				<h:inputHidden id="classBtnImprimir" value="#{saapAdmtPendenciaAdmAction.visao.classBtnImprimir}" />
+				<h:inputHidden id="disabledBtnImprimir" value="#{saapAdmtPendenciaAdmAction.visao.disabledBtnImprimir}" />
+				<h4>Dados da consulta</h4>
+				
+				<table class="form-table">
+					<tr>
+						<td>
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario">
+								Endereçado a<br />
+								<input jsfc="h:inputText" class="form-text" type="text" value="#{saapAdmtPendenciaAdmAction.visao.consultaTO.saapPendenciaAdmPresidencia.descEnderecoPendencia}"
+									onchange="desabilitaBotaoImprimir();" 
+									size="91" maxlength="100" id="inputDescEndPend"/>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario">
+								Assunto da pendência<br />
+								<input jsfc="h:inputText" class="form-text" type="text" value="#{saapAdmtPendenciaAdmAction.visao.consultaTO.saapPendenciaAdmPresidencia.txtAssuntoPendencia}"
+									onchange="desabilitaBotaoImprimir();" 
+									size="91" maxlength="500" id="inputTxtAssuntoPend"/>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario">
+								Acompanhamento<br />
+								<input jsfc="h:inputText" class="form-text" type="text" value="#{saapAdmtPendenciaAdmAction.visao.consultaTO.aaUsuario.nomeNicknameUsuario}"
+									onchange="desabilitaBotaoImprimir();"  
+									size="91" maxlength="15" id="inputTxtObsAcomp"/>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario">
+								Andamento<br/>
+								<input jsfc="h:inputText" class="form-text" type="text" value="#{saapAdmtPendenciaAdmAction.visao.consultaTO.saapAdmtAdmPresidencia.descAdmtAdm}"
+									onchange="desabilitaBotaoImprimir();"  
+									size="91" maxlength="100" id="inputDescAndamento"/>
+							</label>
+						</td>
+					</tr>
+				</table>				
+
+				<h4>Período de entrada</h4>
+				<table class="form-table">
+					<tr>
+						<td width="25%">
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario" for="form-text-data">#{msg['data.inicio']}</label>
+								<br />
+								<rich:calendar id="inputDataInicio" inputClass="form-text"
+									datePattern="dd/MM/yyyy" locale="pt-br" style="width:200px"
+									inputStyle="width:70px;" 
+									oninputkeydown="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeypress="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeyup="utilformatador.formatarDataDoCampo(event, this)"
+									required="false" label="#{msg['data.inicio']}" 
+									enableManualInput="true" onchanged="desabilitaBotaoImprimir();" 
+									oninputchange="desabilitaBotaoImprimir();"
+									title="#{msg['exibir.calendario']}"
+									converterMessage="#{msg['data.inicio']}: #{mensagem['MA007']}"
+									value="#{saapAdmtPendenciaAdmAction.visao.consultaTO.dataInicio}"
+									buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif">
+									<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<f:validator validatorId="ValidadorDeData"/>
+								</rich:calendar>
+						</td>
+						<td>
+							<span class="form-campo-obrigatorio">**</span>
+							<label class="form-label-primario" for="form-text-data">#{msg['data.fim']}</label>
+								<br />
+		         				<rich:calendar id="inputDataFim" inputClass="form-text"
+									datePattern="dd/MM/yyyy" locale="pt-br" style="width:200px"
+									inputStyle="width:70px;" 
+									oninputkeydown="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeypress="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeyup="utilformatador.formatarDataDoCampo(event, this)"
+									required="false" label="#{msg['data.fim']}"
+									enableManualInput="true" onchanged="desabilitaBotaoImprimir();" 
+									oninputchange="desabilitaBotaoImprimir();"
+									title="#{msg['exibir.calendario']}"
+									converterMessage="#{msg['data.fim']}: #{mensagem['MA007']}"
+									value="#{saapAdmtPendenciaAdmAction.visao.consultaTO.dataFim}"
+									buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif">
+									<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<f:validator validatorId="ValidadorDeData"/>
+								</rich:calendar>
+						</td>
+					</tr>
+				</table>
+				<p class="form-legenda-campo-obrigatorio">
+					(<span class="form-campo-obrigatorio">**</span>) Ao menos um campo deve ser preenchido
+				</p>
+				<br />
+				<div class="form-barra-botoes-consultar">
+					<input type="submit" jsfc="h:commandButton" value="#{msg.consultar}" title="#{msg.hint_botao_consulta}" class="form-button-p03"
+							onclick="habilitaBotaoImprimir();"
+							action="#{saapAdmtPendenciaAdmAction.consultar}" actionListener="#{saapAdmtPendenciaAdmAction.limparPaginacao}" />
+
+					<input type="submit" jsfc="h:commandButton" value="#{msg.limpar}" title="#{msg.hint_botao_limpar}" class="form-button-p03"
+						  onclick="desabilitaBotaoImprimir();" 
+						   action="#{saapAdmtPendenciaAdmAction.limpar}" immediate="true" />
+				</div>
+
+				<div class="table-grid-rolagem">
+					<rich:dataTable id="saapAdmtPendenciasAdm" var="saapAdmtPendenciaAdm" rows="25" cellspacing="1"
+	                    binding="#{saapAdmtPendenciaAdmAction.visao.dataTable}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col1,align-center,col3,col4" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{saapAdmtPendenciaAdmAction.visao.lista}"
+	                    rendered="#{not empty saapAdmtPendenciaAdmAction.visao.lista}">
+
+						<f:facet name="caption">
+							<h:column>
+								Andamentos cadastrados
+							</h:column>
+						</f:facet>
+
+						<h:column id="coldescAdmtAdm">
+							<f:facet name="header">
+								Andamento
+							</f:facet>
+							#{saapAdmtPendenciaAdm.descAdmtAdm}
+						</h:column>
+
+						<h:column id="coltsEntradaAdmt">
+							<f:facet name="header">
+								Data de entrada
+							</f:facet>
+							<h:outputText value="#{saapAdmtPendenciaAdm.tsEntradaAdmt}">
+							 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+							</h:outputText>
+						</h:column>
+
+						<h:column id="colNumeroDocumentoDescricao">
+							<f:facet name="header">
+								Assunto
+							</f:facet>
+							<h:commandLink id="lnkDetalhar" actionListener="#{saapAdmtPendenciaAdmAction.carregarDetalhe}" action="${saapAdmtPendenciaAdmAction.detalhar}" immediate="true" title="Clique para detalhar o registro." >
+								<f:attribute name="visao.pendenciaSelecionada" value="#{saapAdmtPendenciaAdm.saapPendenciaAdmPresidencia}"/>
+								<f:attribute name="caminhoRetorno" value="saapAdmtPendenciaAdmAction.consultar"/>
+								<h:outputText value="#{saapAdmtPendenciaAdm.saapPendenciaAdmPresidencia.txtAssuntoPendencia}" />        
+							</h:commandLink>
+						</h:column>
+
+					</rich:dataTable>
+				</div>
+
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapAdmtPendenciasAdm" fastControls="hide" id="datascroller" renderIfSinglePage="false" limitToList="true"
+								actionListener="#{saapAdmtPendenciaAdmAction.consultar}" page="#{saapAdmtPendenciaAdmAction.visao.pagina}" reRender="saapAdmtPendenciasAdm,datascroller">
+
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+
+				<t:div styleClass="form-barra-botoes" id="divBtnImprimir" rendered="#{not empty saapAdmtPendenciaAdmAction.visao.lista}">
+					<input type="submit" jsfc="h:commandButton" value="#{msg.imprimir}" id="btnImprimir" title="Gera relatório conforme conteúdo apresentado em tela."
+						   action="#{saapAdmtPendenciaAdmAction.imprimir}" disabled="#{saapAdmtPendenciaAdmAction.visao.disabledBtnImprimir}" class="#{saapAdmtPendenciaAdmAction.visao.classBtnImprimir}"/>
+				</t:div>
+								
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.consultaTO}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.lista}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.pagina}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.paginaVoltar}"/>
+			</form>
+			<script>
+				var form = utilobjeto.getObjeto("formFiltroAndamentoPendencia");
+
+				function iniciar() {
+					if ("#{sessionScope["relatorio"]}" == "") {
+						utilformulario.focoNoPrimeiroObjeto(form);
+					}
+				}
+				function habilitaBotaoImprimir() {
+					try {
+						var btn = utilobjeto.getObjeto("formFiltroAndamentoPendencia:btnImprimir");
+						utilobjeto.getObjeto("formFiltroAndamentoPendencia:classBtnImprimir").value = "form-button-p03";
+						utilobjeto.getObjeto("formFiltroAndamentoPendencia:disabledBtnImprimir").value = "false";
+					}catch(e) {}
+				}
+				function desabilitaBotaoImprimir() {
+					try {
+						var btn = utilobjeto.getObjeto("formFiltroAndamentoPendencia:btnImprimir");
+						utilobjeto.getObjeto("formFiltroAndamentoPendencia:classBtnImprimir").value = "form-button-p03-disabled";
+						utilobjeto.getObjeto("formFiltroAndamentoPendencia:disabledBtnImprimir").value = "true";
+						btn.className = "form-button-p03-disabled";
+						btn.disabled = true;
+					}catch(e) {}
+				}
+				//se existir relatório, abra uma pop-up para exibição do mesmo.
+				if ("#{sessionScope["relatorio"]}" != "") {
+					var utiljanela = new UtilJanela();
+					utiljanela.abrirPopUp("#{request.contextPath}/br.jus.stj.alp01.jsf.servlet.ServletRelatorio.rel", 750, 500, "resizable=yes", "relatorio");
+				}
+			</script>
+		</ui:define>
+
+	</ui:composition>
+
+</html>

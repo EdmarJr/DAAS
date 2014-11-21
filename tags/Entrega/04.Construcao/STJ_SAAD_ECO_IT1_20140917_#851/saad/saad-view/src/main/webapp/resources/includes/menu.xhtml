@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	  $(".ui-panelmenu-content").css("display","block");
+	  $(".ui-panelmenu-header").addClass("ui-state-active");
+	  $(".ui-submenu-content").css("display","block");
+	});
+</script>
+
+<h:form id="menuForm">
+	<div id="menu">
+		<p:panelMenu id="defaultMenu" style="width: 200px;">
+			<p:submenu id="defaultSubmenu" label="Menu">
+				<p:menuitem id="homeMenuItem" value="#{label['menu.home']}"
+					ajax="false" icon="ui-icon-home"
+					url="/pages/notification/minhasNotificacoes.xhtml" />
+
+				<p:submenu id="notificationSubmenuIncluirAviso"
+					label="#{label['menu.notification']}" icon="ui-icon-document">
+					<p:menuitem id="includeNotificationMenuItemIncluirAviso"
+						value="#{label['menu.notification.include']}" ajax="false"
+						icon="ui-icon-disk" url="/pages/aviso/incluirAviso.xhtml" />
+
+					<p:submenu id="consultNotificationMenuItem"
+						label="#{label['menu.notification.consult']}"
+						icon="ui-icon-document">
+						<p:menuitem id="notificationNotificationMenuItem"
+							value="#{label['menu.notification.notification']}" ajax="false"
+							icon="ui-icon-document-b" url="/pages/aviso/consultarAviso.xhtml" />
+					</p:submenu>
+				</p:submenu>
+
+				<p:submenu id="documentSubmenu" label="#{label['menu.document']}"
+					icon="ui-icon-document">
+					<p:submenu id="documentAddMenuItem"
+						label="#{label['menu.document.add']}" icon="ui-icon-disk">
+												<p:menuitem id="addDocumentReceived"
+													value="#{msg['label.received.document']}" ajax="false"
+													icon="ui-icon-document-b" action="/pages/document/incluirDocumentoRecebido.xhtml" />
+
+						<p:menuitem id="addDocumentIssued"
+							value="#{msg['label.issued.document']}" ajax="false"
+							icon="ui-icon-document-b"
+							action="/pages/document/incluirDocumentoExp.xhtml" />
+					</p:submenu>
+					<p:submenu id="documentoAndamentoSubMenuAndamento"
+						label="#{label['menu.document.search']}"
+						icon="ui-icon-document">
+						
+						<p:menuitem id="addDocumentIssuedMenuItemConsultar"
+							value="#{label['menu.notification.course']}" ajax="false"
+							icon="ui-icon-document-b"
+							action="/pages/document/andamento/consultarAndamento.xhtml" />
+ 						
+						<p:menuitem id="addDocumentIssuedMenuConsultar"
+							value="#{label['menu.document']}" ajax="false"
+							icon="ui-icon-document-b"
+							action="/pages/document/stepSearch.xhtml" />
+				
+						<p:menuitem id="consultaDocumentoComAnexo"
+							value="#{label['menu.management.document.visualizar.anexo']}" ajax="false"
+							icon="ui-icon-document-b"
+							action="/pages/document/consultaDocumentoAnexo.xhtml" />
+
+					</p:submenu>
+
+					<!-- 					<p:submenu id="documentSearchSubmenu" -->
+					<!-- 						label="#{label['menu.document.search']}" icon="ui-icon-search"> -->
+					<!-- 						<p:menuitem id="documentReceivedSearchMenuItem" -->
+					<!-- 							value="#{msg['label.document']}" ajax="false" -->
+					<!-- 							icon="ui-icon-document-b" -->
+					<!-- 							action="#{menuController.searchDocument()}" /> -->
+
+					<!-- 						<p:menuitem id="stepSearchMenuItem" -->
+					<!-- 							value="#{label['menu.document.search.step']}" ajax="false" -->
+					<!-- 							icon="ui-icon-shuffle" -->
+					<!-- 							action="#{menuController.stepSearchDocument()}" /> -->
+					<!-- 					</p:submenu> -->
+				</p:submenu>
+
+				<!-- 				<p:submenu id="managementSubmenu" -->
+				<!-- 					label="#{label['menu.management']}" icon="ui-icon-arrow-4-diag"> -->
+				<!-- 					<p:submenu id="auditSubmenu" -->
+				<!-- 						label="#{label['menu.management.audit']}" icon="ui-icon-unlocked"> -->
+				<!-- 						<p:menuitem id="auditDocumentMenuItem" -->
+				<!-- 							value="#{label['menu.management.audit.document']}" ajax="false" -->
+				<!-- 							icon="ui-icon-note" action="#{menuController.auditDocument()}" /> -->
+				<!-- 					</p:submenu> -->
+
+				<!-- 					<p:menuitem id="documentTypeSearchMenuItem" -->
+				<!-- 						value="#{label['menu.management.document.type']}" ajax="false" -->
+				<!-- 						icon="ui-icon-document" -->
+				<!-- 						action="#{menuController.searchDocumentType()}" /> -->
+
+				<!-- 					<p:menuitem id="localSystemPreferenceMenuItem" -->
+				<!-- 						value="#{label['menu.management.local.system.preference']}" -->
+				<!-- 						ajax="false" icon="ui-icon-gear" -->
+				<!-- 						action="#{menuController.localSystemPreferences()}" /> -->
+				<!-- 				</p:submenu> -->
+				<p:menuitem id="includeSairMenu"
+					value="Sair" ajax="false"
+					icon="ui-icon-disk" url="/logout.xhtml" />
+			</p:submenu>
+		</p:panelMenu>
+	</div>
+</h:form>
+</html>

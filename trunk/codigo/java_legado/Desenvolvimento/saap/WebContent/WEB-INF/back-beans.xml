@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE faces-config PUBLIC
+        "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+
+	<managed-bean>
+		<managed-bean-name>ConsultarHistoricoDocumentoVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ConsultarHistoricoDocumentoVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>ConsultarHistoricoPendenciaVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ConsultarHistoricoPendenciaVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>ConsultarHistoricoAndamentosVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ConsultarHistoricoAndamentosVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>ConsultarHistoricoAndamentoPendenciaVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ConsultarHistoricoAndamentoPendenciaVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>ManutencaoSaapAcompPendenciaAdmVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ManutencaoSaapAcompPendenciaAdmVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>ManutencaoAndamentosVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ManutencaoAndamentosVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>ManutencaoAndamentosPendenciaVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ManutencaoAndamentosPendenciaVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>ListarPendenciasVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ListarPendenciasVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>ManutencaoDocumentoVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ManutencaoDocumentoVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>	
+
+	<managed-bean>
+		<managed-bean-name>ManutencaoPendenciaVisao</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.visao.ManutencaoPendenciaVisao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>	
+
+</faces-config>

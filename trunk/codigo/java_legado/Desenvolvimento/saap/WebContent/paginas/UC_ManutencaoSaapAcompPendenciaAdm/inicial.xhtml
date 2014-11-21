@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xml:lang="pt-br" lang="pt-br">
+
+	<ui:composition template="${msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			#{msg.tela_detalhe_acompanhamento_pendencia}
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236351" />
+
+		<ui:define name="corpo">
+		   <div id="conteudo-acessibilidade">
+			<h:form id="formAcompanhamento">
+
+				<script>
+
+					function alterarUsuarioCombo(){
+						var id = document.getElementById('formAcompanhamento:idUsuarioSelecionado').value;
+						alterarUsuarioA4j(id);
+					}	
+
+					function posicionaFocoPrimeiroCampo() {
+						document.getElementById('formAcompanhamento:idUsuarioSelecionado').focus();
+					}
+
+				</script>
+
+				 <a4j:jsFunction 
+						limitToList="true" ajaxSingle="true" ignoreDupResponses="true"				 
+						action="#{saapAcompPendenciaAdmAction.alterarUsuario}" 
+						reRender="panelPrincipal, mensagens"
+						name="alterarUsuarioA4j">
+					<a4j:actionparam name="idUsuario"
+						assignTo="#{saapAcompPendenciaAdmAction.visao.usuarioSelecionado.id}" />
+				</a4j:jsFunction>	
+
+				<h:panelGroup id="panelPrincipal">
+					<table class="form-table">
+							<tr>
+								<td width="50%">
+									<label class="form-label-primario" for="compsaapAcompPendenciaAdmseqUsuario">Acompanhamento</label><br />
+									<h:selectOneMenu value="#{saapAcompPendenciaAdmAction.visao.usuarioSelecionado.id}" styleClass="form-text" 
+										label="#{msg.subclasse}" style="width: 200px;" onchange="javascript:alterarUsuarioCombo();"
+										 immediate="true" required="false" id="idUsuarioSelecionado">
+										<f:selectItems value="#{saapAcompPendenciaAdmAction.visao.listaUsuario}"  />
+									</h:selectOneMenu>									
+								</td>
+							</tr>
+							<tr>
+								<td width="50%">
+									<label class="form-label-primario" for="compsaapAcompPendenciaAdmtxtAssunto">Assunto</label><br />
+									<h:inputTextarea class="form-text" type="text" 
+										value="#{saapAcompPendenciaAdmAction.visao.saapAcompPendenciaAdm.saapPendenciaAdmPresidencia.txtAssuntoPendencia}"  
+										size="60" maxlength="500" style="width:500px;" readonly="true" rows="3"
+										required="false" id="compsaapAcompPendenciaAdmtxtAssunto" />
+								</td>
+							</tr>
+							<tr>
+								<td width="50%">
+									<label class="form-label-primario" for="compsaapAcompPendenciaAdmtxtObsAcompPendencia">Observação</label><br />
+									<h:inputTextarea class="form-text" type="text" value="#{saapAcompPendenciaAdmAction.visao.saapAcompPendenciaAdm.txtObsAcompPendencia}"  
+										size="60" maxlength="500" style="width:500px" rows="3"
+										onkeypress="return new UtilFormatador().funcaoContarCaracteres(this, event, 500)"   
+										required="false" id="compsaapAcompPendenciaAdmtxtObsAcompPendencia" />
+								</td>
+							</tr>
+					</table>
+
+					<div class="form-barra-botoes-consultar">
+
+						<h:commandButton value="#{msg.salvar}" title="#{msg.hint_botao_salvar}" styleClass="form-button-p03"
+								rendered="#{saapAcompPendenciaAdmAction.visao.apresentarSalvar}"
+								action="#{saapAcompPendenciaAdmAction.salvarAcompanhamento}"/>
+
+						<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p03"
+								action="#{listarPendenciasAction.consultar}" rendered="#{saapAcompPendenciaAdmAction.visao.caminhoRetorno == 'listarPendenciasAction.consultar'}"/>
+
+						<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p03"
+								action="${saapAdmtPendenciaAdmAction.detalhar}" rendered="#{saapAcompPendenciaAdmAction.visao.caminhoRetorno == 'saapAdmtPendenciaAdmAction.detalhar'}"/>
+
+						<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p03"
+								action="#{saapPendenciaAdmPresidenciaAction.detalhar}" rendered="#{saapAcompPendenciaAdmAction.visao.caminhoRetorno == 'saapPendenciaAdmPresidenciaAction.detalhar'}"/>
+
+						<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p03"
+								action="#{saapPendenciaAdmPresidenciaAction.iniciarEditar}" rendered="#{saapAcompPendenciaAdmAction.visao.caminhoRetorno == 'saapPendenciaAdmPresidenciaAction.editar'}"/>
+
+					</div>
+
+				</h:panelGroup>
+
+				<t:saveState value="#{saapAcompPendenciaAdmAction.visao.apresentarSalvar}"/>
+				<t:saveState value="#{saapAcompPendenciaAdmAction.visao.seqPendenciaAdm}"/>
+				<t:saveState value="#{saapAcompPendenciaAdmAction.visao.listaUsuario}"/>
+				<t:saveState value="#{saapAcompPendenciaAdmAction.visao.saapAcompPendenciaAdm}"/>
+				<t:saveState value="#{saapAcompPendenciaAdmAction.visao.usuarioLogado}"/>
+				<t:saveState value="#{saapAcompPendenciaAdmAction.visao.caminhoRetorno}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.consultaTO}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.pendenciaSelecionada}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.paginaDetalhe}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.caminhoRetorno}"/>
+				<!-- UC Manter Pendência   -->
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.consultarPendenciasTO}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.paginaDetalhe}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.paginaEdicao}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.lista}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.caminhoRetornoInicial}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.entidade}"/>
+				<!-- UC Listar Pendência   -->
+				<t:saveState value="#{listarPendenciasAction.visao.pagina}"/>
+				
+
+				<script>posicionaFocoPrimeiroCampo();</script>
+
+			</h:form>
+		  </div>	
+		</ui:define>
+
+	</ui:composition>
+
+</html>

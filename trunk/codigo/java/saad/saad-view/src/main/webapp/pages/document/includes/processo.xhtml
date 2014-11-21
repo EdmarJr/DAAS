@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<p:panel header="Processos" id="processo"
+		style="border: #C4C4C4 solid 1px !important;margin-top: 1%;"
+		toggleable="true">
+		<div style="width: 100%; display: flex; margin-top: 1%">
+			<span style="min-width: 50%; display: flex;"> <p:selectBooleanCheckbox disabled="#{!documentController.alterar}"
+					id="relativoProcessoJudicialCheck" /> <p:outputLabel
+					value="Relativo a processo judicial"
+					for="relativoProcessoJudicialCheck" />
+			</span> <span style="min-width: 50%; display: flex;"> <p:selectBooleanCheckbox disabled="#{!documentController.alterar}"
+					id="relativoProcessoAdministrativoCheck" /> <p:outputLabel
+					value="Relativo a processo administrativo"
+					for="relativoProcessoAdministrativoCheck" />
+			</span>
+		</div>
+
+		<div style="width: 100%; display: flex; margin-top: 1%;">
+
+			<span style="width: 50%; display: flex;"> <span
+				style="width: 30%; padding-left: 8%;"> <p:outputLabel
+						value="Nº do Registro" for="inputRegistryNumber" />
+			</span> <span style="width: 70%;"> <p:selectManyCheckbox disabled="#{!documentController.alterar}" id="basic"
+						value="#{documentController.relacionamentoProcessosSelecionados}">
+						<f:selectItems itemLabel="#{msg[relacionamento.codLabel]}"
+							var="relacionamento" itemValue="#{relacionamento}" />
+					</p:selectManyCheckbox> <p:inputText disabled="#{!documentController.alterar}" id="inputRegistryNumber"
+						value="#{documento.numeroRegistro}" validator="#{processoValidator.validate}" maxlength="30" size="30" />
+			</span>
+			</span> <span style="width: 50%; display: flex;"> <span
+				style="width: 30%; padding-left: 20%;"> <p:outputLabel
+						value="Nº" for="inputProcessNumber" />
+			</span> <span style="width: 70%;"> <p:inputText disabled="#{!documentController.alterar}" 
+						id="inputProcessNumber"
+						value="#{documento.numeroProcessoAdministrativo}" maxlength="30" size="30" />
+			</span>
+			</span>
+		</div>
+		<div style="width: 100%; display: flex; margin-top: 3%;">
+			<span> <p:commandButton process="processo" disabled="#{!documentController.alterar}" 
+					value="#{msg['botao.consultar.andamento']}" ajax="true"
+					actionListener="#{documentController.consultaProcessoJudOuAdmin()}"  />
+
+			</span>
+			<!-- <span> <p:commandButton
+											value="#{msg['botao.visualizar.processo']}" type="button" />
+									</span> -->
+
+		</div>
+		
+		<div>
+			
+		</div>
+	</p:panel>
+	
+</html>

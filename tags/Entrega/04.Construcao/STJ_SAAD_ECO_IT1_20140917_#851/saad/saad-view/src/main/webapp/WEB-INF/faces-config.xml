@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+
+	<application>
+<!-- 		<navigation-handler>br.jus.stj.saad.view.handler.SAADNavigationHandler</navigation-handler> -->
+<!-- 		<view-handler>br.jus.stj.saad.view.handler.SAADViewHandler</view-handler> -->
+<!-- 		<resource-handler>br.jus.stj.saad.view.handler.SAADResourceHandler</resource-handler> -->
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>msg-apresentacao</base-name>
+			<var>msg</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>label.labelProperty</base-name>
+			<var>label</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>message.messageProperty</base-name>
+			<var>message</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>versao</base-name>
+			<var>versao</var>
+		</resource-bundle>
+	</application>
+
+<!-- 	<factory> -->
+<!-- 		<exception-handler-factory>br.jus.stj.commons.exception.handler.STJExceptionHandlerFactory</exception-handler-factory> -->
+<!-- 	</factory> -->
+
+	<converter>
+		<converter-id>ConversorStatus</converter-id>
+		<converter-class>br.jus.stj.commons.view.converter.StatusConverter</converter-class>
+	</converter>
+	
+	<converter>
+		<converter-for-class>br.jus.stj.commons.entity.interfaces.EntidadeComId</converter-for-class>
+		<converter-class>br.jus.stj.commons.view.converter.GenericConverter</converter-class>
+	</converter>
+
+	<converter>
+		<converter-id>dateConverter</converter-id>
+		<converter-class>br.jus.stj.commons.view.converter.DateConverter</converter-class>
+	</converter>
+
+	<converter>
+		<converter-for-class>java.util.Date</converter-for-class>
+		<converter-class>br.jus.stj.commons.view.converter.DateConverter</converter-class>
+	</converter>
+
+	<converter>
+		<converter-id>sexoConverter</converter-id>
+		<converter-class>br.jus.stj.commons.view.converter.SexoConverter</converter-class>
+	</converter>
+
+	<converter>
+		<converter-for-class>br.jus.stj.commons.view.enums.SexoMasculinoFemininoEnum</converter-for-class>
+		<converter-class>br.jus.stj.commons.view.converter.SexoConverter</converter-class>
+	</converter>
+
+	<converter>
+		<converter-id>removePontuacaoConverter</converter-id>
+		<converter-class>br.jus.stj.commons.view.converter.RemovePontuacaoConverter</converter-class>
+	</converter>
+
+	<component>
+		<component-type>InputFile</component-type>
+		<component-class>br.jus.stj.commons.view.components.inputfile.InputFile</component-class>
+	</component>
+	
+	<component>
+		<component-type>org.primefaces.component.FileUpload</component-type>
+		<component-class>br.jus.stj.saad.view.fixes.NonTransientFileUpload</component-class>
+	</component>
+
+	<component>
+		<component-type>UploadPreviewImage</component-type>
+		<component-class>br.jus.stj.commons.view.components.uploadimage.UploadPreviewImage</component-class>
+	</component>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-action>#{menuController.addDocumentType()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/documentType/add.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.searchDocumentType()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/documentType/search.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.addDocument()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/document/add.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.searchDocument()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/document/search.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.stepSearchDocument()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/document/stepSearch.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.transferDocument()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/document/transfer.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.localSystemPreferences()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/localSystemPreferences/preferences.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.auditDocument()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/audit/document/search.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.home()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/index.xhtml</to-view-id>
+		</navigation-case>
+<!-- 		 Aviso - INÍCIO -->
+		<navigation-case>
+			<from-action>#{menuController.includeNotification()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/notification/includeNotification.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.listNotification()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/notification/minhasNotificacoes.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.consultNotification()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/notification/consultNotification.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{menuController.consultNotificationCourse()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/notification/consultNotificationCourse.xhtml</to-view-id>
+		</navigation-case>
+<!-- 	    Aviso - FIM -->
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{loginController.confirmar()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/notification/minhasNotificacoes.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/index.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{homeController.go()}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/come.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>visualizarDocumentoRecebido</from-outcome>
+			<to-view-id>/pages/document/visualizarDocumentoRecebido.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

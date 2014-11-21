@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+			
+<h:panelGroup id="painelEnderecamentoDocumento">
+	<h:panelGroup id="painelDadosDestinatarioRemetente">
+		<h:panelGroup rendered="#{!controllerPrincipal.documento.isDocumentoExpedido()}">
+			<p:panel header="Remetente" id="painelRemetenteRecebido" styleClass="saad-border-solid" toggleable="true">		
+				<ui:include src="includes/radioInternoExterno.xhtml">
+					<ui:param name="controller" value="#{controllerPrincipal}" />
+					<ui:param name="painelGestor" value="formIncluirDocumentoRecebido" />
+					<ui:param name="tipoEnderecamento" value="#{controllerPrincipal.enderecamentoRemetente}"/>
+				</ui:include>
+				<ui:include src="includes/enderecamentoInterno.xhtml">
+					<ui:param name="controller" value="#{controllerPrincipal}" />
+					<ui:param name="controllerRemetente" value="#{controllerPrincipal.enderecamentoInternoRemetenteUtil}" />
+					<ui:param name="tipoEnderecamento" value="#{controllerPrincipal.enderecamentoRemetente}"/>
+					<ui:param name="painelPai" value="painelRemetenteRecebido"/>
+					<ui:param name="titulo" value="Remetente"/>
+				</ui:include>
+				<ui:include src="includes/enderecamentoExterno.xhtml">
+					<ui:param name="controller" value="#{controllerPrincipal}" />
+					<ui:param name="controllerRemetente" value="#{controllerPrincipal.enderecamentoExternoRemetenteUtil}" />
+					<ui:param name="tipoEnderecamento" value="#{controllerPrincipal.enderecamentoRemetente}"/>
+					<ui:param name="painelPai" value="painelRemetenteRecebido"/>
+					<ui:param name="titulo" value="Remetente"/>
+				</ui:include>
+			</p:panel>
+			<p:panel header="Destinatario" id="painelDestinatarioRecebido" styleClass="saad-border-solid" toggleable="true">
+				<ui:include src="includes/enderecamentoInterno.xhtml">
+					<ui:param name="controller" value="#{controllerPrincipal}" />
+					<ui:param name="controllerRemetente" value="#{controllerPrincipal.enderecamentoInternoDestinatarioUtil}" />
+					<ui:param name="tipoEnderecamento" value="#{controllerPrincipal.enderecamentoDestinatario}"/>
+					<ui:param name="painelPai" value="painelDestinatarioRecebido"/>
+					<ui:param name="titulo" value="Destinatário"/>
+				</ui:include>
+			</p:panel>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{controllerPrincipal.documento.isDocumentoExpedido()}" >
+			<p:panel header="Remetente" id="painelRemetenteExpedido" styleClass="saad-border-solid" toggleable="true">		
+				<ui:include src="includes/enderecamentoInterno.xhtml">
+					<ui:param name="controller" value="#{controllerPrincipal}" />
+					<ui:param name="controllerRemetente" value="#{controllerPrincipal.enderecamentoInternoRemetenteUtil}" />
+					<ui:param name="tipoEnderecamento" value="#{controllerPrincipal.enderecamentoRemetente}"/>
+					<ui:param name="painelPai" value="painelRemetenteExpedido"/>
+					<ui:param name="titulo" value="Remetente"/>
+					
+				</ui:include>
+			</p:panel>
+			<p:panel header="Destinatario" id="painelDestinatarioExpedido" styleClass="saad-border-solid" toggleable="true">
+				<ui:include src="includes/radioInternoExterno.xhtml">
+					<ui:param name="controller" value="#{controllerPrincipal}" />
+					<ui:param name="painelGestor" value="formIncluirDocumentoExpedido" />
+					<ui:param name="tipoEnderecamento" value="#{controllerPrincipal.enderecamentoDestinatario}"/>
+				</ui:include>
+				<ui:include src="includes/enderecamentoInterno.xhtml">
+					<ui:param name="controller" value="#{controllerPrincipal}" />
+					<ui:param name="controllerRemetente" value="#{controllerPrincipal.enderecamentoInternoDestinatarioUtil}" />
+					<ui:param name="tipoEnderecamento" value="#{controllerPrincipal.enderecamentoDestinatario}"/>
+					<ui:param name="painelPai" value="painelDestinatarioExpedido"/>
+					<ui:param name="titulo" value="Destinatário"/>
+				</ui:include>
+				<ui:include src="includes/enderecamentoExterno.xhtml">
+					<ui:param name="controller" value="#{controllerPrincipal}" />
+					<ui:param name="controllerRemetente" value="#{controllerPrincipal.enderecamentoExternoDestinatarioUtil}" />
+					<ui:param name="tipoEnderecamento" value="#{controllerPrincipal.enderecamentoDestinatario}"/>
+					<ui:param name="painelPai" value="painelDestinatarioExpedido"/>
+					<ui:param name="titulo" value="Destinatário"/>
+				</ui:include>			
+			</p:panel>
+		</h:panelGroup>
+	</h:panelGroup>
+	<br/>
+	<h:panelGroup id="dadosDocumento">
+		<div class="pure-g">
+			<div class="pure-u-1-1">
+				<ui:include src="includes/dadosDocumento.xhtml">
+					<ui:param name="controller"
+						value="#{controllerPrincipal}" />
+				</ui:include>
+			</div>
+		</div>
+	</h:panelGroup>
+	<br/>
+	<div class="pure-g">
+		<div class="pure-u-1-1">
+			<ui:include src="includes/processo.xhtml">
+				<ui:param name="controller"
+					value="#{controllerPrincipal}" />
+			</ui:include>
+		</div>
+	</div>
+	<br/>
+	<div class="pure-g">
+		<div class="pure-u-1-1">
+			<ui:include src="includes/tarefa.xhtml">
+				<ui:param name="transferenciaAlteracaoTarefa" value="false" />
+				<ui:param name="alterarTarefa" value="true" />
+				<ui:param name="controller"	value="#{controllerPrincipal}" />
+				<ui:param name="controllerSecundario"	value="#{controllerPrincipal.tarefaController}" />				
+			</ui:include>
+		</div>
+	</div>
+	<br/>
+	<div class="pure-g">
+		<div class="pure-u-1-1">
+			<ui:include src="includes/moduloEvento.xhtml">
+				<ui:param name="controller"	value="#{controllerPrincipal}" />
+			</ui:include>
+		</div>
+	</div>
+	<div class="pure-g">
+		<div class="pure-u-1-1">
+			<ui:include src="includes/anexarArquivo.xhtml">
+				<ui:param name="controller"	value="#{controllerPrincipal}" />
+				<ui:param name="controllerSecundario" value="#{controllerPrincipal.arquivoController}" />
+			</ui:include>
+		</div>
+	</div>
+</h:panelGroup>
+<br/>
+<div style="float:right;">
+	<p:commandButton actionListener="#{controllerPrincipal.salvar()}" value="Confirmar" rendered="#{controllerPrincipal.alterar}" 
+		process="@this painelDadosDestinatarioRemetente dadosDocumento" icon="ui-icon-check" id="botaoSalvar" update="@form"/>
+	<p:commandButton actionListener="#{inclusaoDocumentoRecebidoController.limparTela()}" value="Limpar" rendered="#{controllerPrincipal.alterar and controllerPrincipal.documento.id == null}" 
+		id="botaoCancelar" immediate="true" styleClass="ui-confirmdialog-yes" ajax="false" update="@form" icon="ui-icon-check"/>
+	<p:commandButton rendered="#{controllerPrincipal.alterar}" value="Voltar" type="button" onclick="history.go(-1);" ajax="false" />
+	
+	<p:commandButton action="#{controllerPrincipal.alterarDocumento()}" value="Alterar" rendered="#{!controllerPrincipal.alterar}" 
+		process="@this" icon="ui-icon-check" id="botaoAlterar" ajax="false"  />
+	<p:commandButton action="#{controllerPrincipal.voltarParaConsultarDocumento()}" value="Voltar" rendered="#{!controllerPrincipal.alterar}" process="@this" ajax="false" />
+</div>
+</html>

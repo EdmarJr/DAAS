@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<h:form id="formIncluirDocumento" prependId="false">
+			<p:breadCrumb>
+			    <p:menuitem value="Início" />
+			    <p:menuitem value="Documento" />
+			    <p:menuitem value="Incluir" />
+			    <p:menuitem value="Inclusão de Documento #{msg[incluirDocumentoExpedidoController.documento.classificacaoDocumentoAmigavel()]}" />
+			</p:breadCrumb>
+			<h:outputText value="Inclusão de Documento #{msg[incluirDocumentoExpedidoController.documento.classificacaoDocumentoAmigavel()]}"
+				styleClass="title" />
+			<br /> <br />
+			<h:outputText value="Dados do Documento" styleClass="sub-title" />
+			<br/><br/>
+			
+			<h:panelGroup>
+				<ui:include src="incluirDocumento.xhtml">
+					<ui:param name="controllerPrincipal" value="#{incluirDocumentoExpedidoController}" />
+				</ui:include>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

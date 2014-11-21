@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE faces-config PUBLIC
+        "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+        
+<faces-config>
+
+	<managed-bean>
+		<managed-bean-name>consultarHistoricoDocumentoAction</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.controle.ConsultarHistoricoDocumentoAction</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>consultarHistoricoPendenciaAction</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.controle.ConsultarHistoricoPendenciaAction</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>consultarHistoricoAndamentosAction</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.controle.ConsultarHistoricoAndamentosAction</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>	
+
+ 	<managed-bean>
+		<managed-bean-name>consultarHistoricoAndamentoPendenciaAction</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.controle.ConsultarHistoricoAndamentoPendenciaAction</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+ 	<managed-bean>
+		<managed-bean-name>listarPendenciasAction</managed-bean-name>
+		<managed-bean-class>br.jus.stj.saap.apresentacao.controle.ListarPendenciasAction</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+</faces-config>

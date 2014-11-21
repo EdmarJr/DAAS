@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		
+		<h:form id="formConsultarDocumento">
+						
+			<p:panel id="panelPai" style="width:1010px">		
+				<p:breadCrumb>
+					<p:menuitem value="Início" url="/pages/notification/minhasNotificacoes.xhtml" />
+					<p:menuitem value="Documento" url="#" />
+					<p:menuitem value="Consultar" url="#" />
+					<p:menuitem value="Consulta de Andamentos" url="#" />
+				</p:breadCrumb>
+				
+				<h:outputText value="Consulta de Andamentos" styleClass="title" />
+				<br/>
+				<h:outputText value="Dados da Consulta" styleClass="sub-title" />
+				<p:separator style="height:1px;" />
+				
+				<div class="pure-g">
+					<div class="pure-u-1-4">
+						<h:outputText value="Tipo de Documento" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:outputText value="Situação do Documento" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:outputText value="Classificação" styleClass="lbl" />
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-1-4">
+						<p:selectOneMenu value="#{consultarAndamentoController.filtroConsultarDocumentoVO.documento.tipo}">
+							<f:selectItem />
+							<f:selectItems value="#{consultarAndamentoController.listTipoDocumento}" var="t" itemValue="#{t}" itemLabel="#{t.nome}"/>
+							<p:ajax event="change" update="@this panelPai"/>
+						</p:selectOneMenu>
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<p:selectOneMenu value="#{consultarAndamentoController.filtroConsultarDocumentoVO.documento.situacao}">
+							<f:selectItem itemLabel="" itemValue="0"/>
+							<f:selectItems value="#{consultarAndamentoController.listSituacaoDocumentoEnum}" var="t" itemValue="#{t.valor}" itemLabel="#{msg[t.codLabel]}"/>
+						</p:selectOneMenu>
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<p:selectOneMenu value="#{consultarAndamentoController.filtroConsultarDocumentoVO.documento.tipoClassificacaoDocumento}">
+							<f:selectItem itemLabel="" itemValue="0"/>
+							<f:selectItems value="#{consultarAndamentoController.listClassificacaoEnum}" var="t" itemValue="#{t.valor}" itemLabel="#{msg[t.codLabel]}"/>
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-1-4">
+						<h:outputText value="Origem" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:outputText value="Nº do Documento" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:outputText value="Identificador" styleClass="lbl" />
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-1-4">
+						<p:selectOneMenu value="#{consultarAndamentoController.filtroConsultarDocumentoVO.documento.tipoOrigem}">
+							<f:selectItem itemLabel="" itemValue="0"/>
+							<f:selectItems value="#{consultarAndamentoController.listTipoOrigemDocumentoEnum}" var="t" itemValue="#{t.valor}" itemLabel="#{msg[t.codLabel]}"/>
+							<p:ajax event="change" update="@this panelPai"/>
+						</p:selectOneMenu>
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:inputText value="#{consultarAndamentoController.filtroConsultarDocumentoVO.documento.numeroDocumentoOrigem}" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<p:inputMask value="#{consultarAndamentoController.identificadorDocumento}" mask="a**-999999/9999"/>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-1-1">
+						<div class="pure-g">
+							<div class="pure-u-1-4">
+								<h:outputText value="Assunto:" styleClass="lbl" />
+							</div>
+						</div>
+						<div class="pure-g">
+							<div class="pure-u-20-24">
+								<h:inputTextarea value="#{consultarAndamentoController.filtroConsultarDocumentoVO.documento.assuntoDocumento}" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-1-1">
+						<div class="pure-g">
+							<div class="pure-u-1-4">
+								<h:outputText value="Andamento:" styleClass="lbl" />
+							</div>
+						</div>
+						<div class="pure-g">
+							<div class="pure-u-20-24">
+								<h:inputTextarea value="#{consultarAndamentoController.filtroConsultarDocumentoVO.descricaoAndamento}" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-20-24">
+						<h:panelGroup rendered="#{consultarAndamentoController.origemInterna}">
+							<h:outputText value="Dados remetente Interno" styleClass="lbl" />
+							<p:panel styleClass="saad-titulo-painel">
+								<div class="pure-g">
+									<div class="pure-u-1-1">
+										<div class="pure-g">
+											<div class="pure-u-1-4">
+												<h:outputText value="Local" styleClass="lbl" />
+											</div>
+											<div class="pure-u-1-24"></div>
+											<div class="pure-u-1-4">
+												<h:outputText value="Remetente" styleClass="lbl" />
+											</div>
+										</div>
+										<div class="pure-g">
+											<div class="pure-u-1-4">
+												<p:selectOneMenu id="locaisDestinatarioInterno"
+													value="#{consultarAndamentoController.filtroConsultarDocumentoVO.local}">
+													<f:selectItem itemValue="#{null}" itemLabel="Selecione" />
+													<f:selectItems
+														value="#{consultarAndamentoController.listaLocais}"
+														var="local" itemLabel="#{local.nome}" itemValue="#{local}" />
+														<f:ajax event="change"
+														listener="#{consultarAndamentoController.atualizarRemetenteInterno}"
+														render="@this inputRemetenteInterno" />
+												</p:selectOneMenu>
+											</div>
+											<div class="pure-u-1-24"></div>
+											<div class="pure-u-1-4">
+												<p:selectOneMenu id="inputRemetenteInterno"
+													value="#{consultarAndamentoController.filtroConsultarDocumentoVO.usuario}">
+													<f:selectItem itemValue="" itemLabel="" />
+													<f:selectItems
+														value="#{consultarAndamentoController.listaUsuarios}" var="usuario"
+														itemLabel="#{usuario.nome}" itemValue="#{usuario}" />
+												</p:selectOneMenu>
+											</div>
+										</div>
+									</div>
+								</div>
+							</p:panel>
+						</h:panelGroup>
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-20-24">
+						<h:panelGroup rendered="#{consultarAndamentoController.origemExterna}">
+							<h:outputText value="Dados remetente Externo" styleClass="lbl" />
+							<p:panel styleClass="saad-titulo-painel">
+								<div class="pure-g">
+									<div class="pure-u-1-1">
+										<div class="pure-g">
+											<div class="pure-u-1-2">
+												<h:outputText value="Nome Órgão" styleClass="lbl" />
+											</div>
+										</div>
+										<div class="pure-g">
+											<div class="pure-u-13-24">
+												<p:autoComplete id="autoCompleteOrgao" scrollHeight="150" minQueryLength="3" queryDelay="3" itemLabel="#{orgao.nome}" itemValue="#{orgao}" var="orgao" size="150" maxlength="150"
+													value="#{consultarAndamentoController.filtroConsultarDocumentoVO.orgao}" completeMethod="#{consultarAndamentoController.autoCompleteOrgao}" emptyMessage="Nenhum resultado encontrado.">
+										        </p:autoComplete>
+											</div>
+										</div>
+									</div>
+								</div>
+							</p:panel>
+						</h:panelGroup>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-20-24">
+						<h:outputText value="Data de Origem" styleClass="lbl" />
+						<p:panel styleClass="saad-titulo-painel">
+							
+							<div class="pure-g">
+								<div class="pure-u-1-4">
+									<h:outputText value="De:" styleClass="lbl" />
+								</div>
+								<div class="pure-u-1-24"></div>
+								<div class="pure-u-1-4">
+									<h:outputText value="Até" styleClass="lbl" />
+								</div>
+							</div>
+							<div class="pure-g">
+								<div class="pure-u-1-4">
+									<p:calendar id="dataOrigemInicial" value="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataOrigemInicial}" maxdate="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataOrigemFinal}">
+										<p:ajax event="dateSelect" update="@this dataOrigemFinal"/>
+									</p:calendar>
+								</div>
+								<div class="pure-u-1-24"></div>
+								<div class="pure-u-1-4">
+									<p:calendar id="dataOrigemFinal" value="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataOrigemFinal}" mindate="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataOrigemInicial}" maxdate="#{consultarAndamentoController.dataAtual}">
+										<p:ajax event="dateSelect" update="@this dataOrigemInicial"/>
+									</p:calendar>
+								</div>
+							</div>
+						</p:panel>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-20-24">
+						<h:outputText value="Data de Recebimento" styleClass="lbl" />
+						<p:panel styleClass="saad-titulo-painel">
+							<div class="pure-g">
+								<div class="pure-u-1-4">
+									<h:outputText value="De:" styleClass="lbl" />
+								</div>
+								<div class="pure-u-1-24"></div>
+								<div class="pure-u-1-4">
+									<h:outputText value="Até" styleClass="lbl" />
+								</div>
+							</div>
+							<div class="pure-g">
+								<div class="pure-u-1-4">
+									<p:calendar id="dataRecebimentoInicial" value="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataRecebimentoInicial}" maxdate="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataRecebimentoFinal}">
+										<p:ajax event="dateSelect" update="@this dataRecebimentoFinal"/>
+									</p:calendar>
+								</div>
+								<div class="pure-u-1-24"></div>
+								<div class="pure-u-1-4">
+									<p:calendar id="dataRecebimentoFinal" value="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataRecebimentoFinal}" mindate="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataRecebimentoInicial}" maxdate="#{consultarAndamentoController.dataAtual}">
+										<p:ajax event="dateSelect" update="@this dataRecebimentoInicial"/>
+									</p:calendar>
+								</div>
+							</div>
+						</p:panel>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-20-24">
+						<h:panelGroup rendered="#{consultarAndamentoController.tipoDocumentoConvite}">
+							<h:outputText value="Periodo do Evento" styleClass="lbl" />
+							<p:panel styleClass="saad-titulo-painel">
+								<div class="pure-g">
+									<div class="pure-u-1-4">
+										<h:outputText value="De:" styleClass="lbl" />
+									</div>
+									<div class="pure-u-1-24"></div>
+									<div class="pure-u-1-4">
+										<h:outputText value="Até" styleClass="lbl" />
+									</div>
+								</div>
+								<div class="pure-g">
+									<div class="pure-u-1-4">
+										<p:calendar id="dataEventoInicial" value="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataEventoInicial}" maxdate="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataEventoFinal}">
+											<p:ajax event="dateSelect" update="@this dataEventoFinal"/>
+										</p:calendar>
+									</div>
+									<div class="pure-u-1-24"></div>
+									<div class="pure-u-1-4">
+										<p:calendar id="dataEventoFinal" value="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataEventoFinal}" mindate="#{consultarAndamentoController.filtroConsultarDocumentoVO.dataEventoInicial}">
+											<p:ajax event="dateSelect" update="@this dataEventoInicial"/>
+										</p:calendar>
+									</div>
+								</div>
+							</p:panel>
+						</h:panelGroup>
+					</div>
+				</div>
+				<br/>
+				<p:panel styleClass="saad-text-aling-left">
+					<p:commandButton ajax="true" action="#{consultarAndamentoController.consultar()}" value="Consultar" 
+						update="panelPai"/>
+					<p:commandButton value="Limpar" actionListener="#{consultarAvisoController.limparTela()}"  
+						immediate="true" update="@form"/>
+					<p:commandButton type="button" value="Voltar" onclick="history.go(-1);" ajax="false" />
+					
+				</p:panel>
+				<br/>				
+				<p:dataTable id="documentDataTable" var="documento" emptyMessage="Nenhum registro encontrado" rendered="#{consultarAndamentoController.consultado}"
+					rowIndexVar="documentIndex"
+					rowKey="#{documento.id}" paginator="true"
+                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    value="#{consultarAndamentoController.listDocumentoResultado}"
+					rows="15" paginatorPosition="bottom">
+					<f:facet name="header">
+						<h:outputText value="Registro(s)" />
+					</f:facet>
+					<p:column headerText="Identificador" sortBy="#{documento.identificadorComMascara}">
+						<p:commandLink value="#{documento.identificadorComMascara}" update=":formConsultarDocumento:panelPai"
+						actionListener="#{consultaAlteraAndamentoController.manterAndamentoDocumento(documento)}" oncomplete="PF('dlgAndamento').show();"/>
+					</p:column>					
+					<p:column headerText="Situação" sortBy="#{msg[documento.situacaoAmigavel]}">
+						<h:outputText value="#{msg[documento.situacaoAmigavel]}" />
+					</p:column>
+				</p:dataTable>
+				
+				<p:dialog header="Cadastro/Exclusão de andamentos"
+					widgetVar="dlgAndamento"
+					id="idDlgAndamento" height="400" width="850">
+					<h:outputText value="Documento: #{consultaAlteraAndamentoController.documentoAlterar.identificadorComMascara}" styleClass="title" />
+					<br/>
+					<p:separator style="height:1px;" />
+					<div class="pure-g">
+	
+						<div class="pure-u-1" style="margin-bottom: 20px;">
+							<h:outputText value="Descrição do Andamento" />
+						</div>
+						<div class="pure-u-4-5" style="margin-bottom: 20px;">
+							<p:inputTextarea
+								value="#{consultaAlteraAndamentoController.descNovoAndamentoDoc}"
+								autoResize="false" rows="5" cols="50" />
+						</div>
+						<div class="pure-u-1" style="margin-bottom: 20px;">
+							<p:commandButton
+								actionListener="#{consultaAlteraAndamentoController.adicionarAndamentoDocumento()}"
+								update="panelConsultaAndamento" value="Adicionar"/>
+						</div>
+						<div class="pure-u-1">
+							<p:panel header="Lista de Andamentos" id="panelConsultaAndamento"
+								style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+								toggleable="false">
+								<p:dataTable var="andamento"
+									value="#{consultaAlteraAndamentoController.andamentosDocumentoConsulta}"
+									paginator="true" rows="15" selectionMode="multiple" paginatorPosition="bottom" emptyMessage="Nenhum registro encontrado."
+									selection="#{consultaAlteraAndamentoController.andamentosDocumentoAlterarRemover}"
+									rowKey="#{andamento.id}" id="idTableAndamento">
+									<p:column headerText="Data de Inclusão" id="column_dt_inclusao"
+										width="10%">
+										<h:outputText value="#{andamento.andamentoDocumento}">
+											<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Responsável" id="column_responsavel"
+										width="10%">
+										<h:outputText value="#{andamento.usuario.nome}" />
+									</p:column>
+									<p:column headerText="Andamento" width="10%">
+										<h:outputText value="#{andamento.descricaoAndamentoDocumento}" />
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+						</div>
+					<div class="pure-u-1">
+						<p:commandButton style="float:right; margin:15px 15px;" value="Excluir" update="panelConsultaAndamento" actionListener="#{consultaAlteraAndamentoController.removerAndamentosSelecionados()}"/>
+						<p:commandButton style="float:right; margin:15px 15px;" value="Alterar" actionListener="#{consultaAlteraAndamentoController.iniciarAlteracaoAndamento()}" update="idDlgAlteraAndamento"/>
+					</div>
+					</div>
+				</p:dialog>
+				<p:dialog header="Cadastro/Exclusão de andamentos"
+					widgetVar="dlgAlteraAndamento" id="idDlgAlteraAndamento"
+					height="200" width="425">
+					<div class="pure-g">
+						<div class="pure-u-1" style="margin-bottom: 20px;">
+							<h:outputText value="Descrição do Andamento" />
+						</div>
+						<div class="pure-u-4-5" style="margin-bottom: 20px;">
+							<p:inputTextarea
+								value="#{consultaAlteraAndamentoController.andamentoDocumentoAlterar.descricaoAndamentoDocumento}"
+								autoResize="false" rows="5" cols="50" />
+						</div>
+						<div class="pure-u-1" style="margin-bottom: 20px;">
+							<p:commandButton update="@form" 
+								actionListener="#{consultaAlteraAndamentoController.finalizarAlteracaoAndamento()}"
+								value="Finalizar Alteracao" 
+								onclick="PF('dlgAlteraAndamento').hide();" />
+						</div>
+					</div>
+				</p:dialog>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

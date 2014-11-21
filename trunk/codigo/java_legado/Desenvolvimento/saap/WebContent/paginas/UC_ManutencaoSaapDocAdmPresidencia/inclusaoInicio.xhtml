@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ 
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xmlns:comps="http://meuscomponentes"
+	lang="pt-br" template="#{msg.layout}/layout.xhtml">
+	
+		<ui:define name="titulo">
+			#{msg.tela_inclusao_documento}
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236327" />
+		
+		<ui:define name="corpo">
+			<div id="conteudo-acessibilidade">
+			<h:form id="inclusao">
+			
+				<h:inputHidden value="#{saapDocAdmPresidenciaAction.visao.flagHaSimilaridades }" id="hiddenHaSimilaridades" />
+				<h:inputHidden value="#{saapDocAdmPresidenciaAction.visao.exibirPop }" id="hiddenHaSimilaridadesPop" />
+				<h:inputHidden value="#{saapDocAdmPresidenciaAction.visao.selecionado }" id="hiddenSelecionadoPop" />
+				<h:inputHidden value="#{saapDocAdmPresidenciaAction.visao.limpaUpload}" id="hiddenLimpaUpload" />
+
+				<h4>Dados do documento</h4>
+
+						<table class="form-table">
+							<tr>
+								<td width="40%">
+									<label class="form-label-primario" for="form-select">
+										<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+										Tipo de documento<br />
+										<h:selectOneMenu value="#{saapDocAdmPresidenciaAction.visao.consulta.indTipoDoc}" styleClass="form-text" 
+											label="#{msg.subclasse}" style="width: 180px;"  id="selectTipoDocumento" onchange="showHideConvite(this.value);">
+												<f:selectItem itemValue="1" itemLabel="Aviso"/>
+												<f:selectItem itemValue="2" itemLabel="Carta"/>
+												<f:selectItem itemValue="3" itemLabel="Convite"/>
+												<f:selectItem itemValue="4" itemLabel="E-mail"/>
+												<f:selectItem itemValue="5" itemLabel="Memorando"/>
+												<f:selectItem itemValue="6" itemLabel="Ofício"/>												
+												<f:selectItem itemValue="7" itemLabel="Processo"/>
+										</h:selectOneMenu>
+									</label>
+								</td>
+								<td width="30%">
+									<label class="form-label-primario" for="form-select">
+										Data de entrada<br />
+									</label>
+									<label class="form-label-secundario" for="form-select">
+										<h:outputText value="#{saapDocAdmPresidenciaAction.visao.consulta.tsEntradaDoc}" >
+								 			<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</label>
+								</td>
+								<td>
+									<label class="form-label-primario" for="form-select">
+										Gestão<br />
+									</label>
+									<label class="form-label-secundario" for="form-select">
+										<h:outputText value="#{saapDocAdmPresidenciaAction.visao.nomeMinistroGestao}"/>
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label class="form-label-primario">
+										Arquivado na pasta<br />
+										<h:inputText styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.consulta.nomeLocalFisicoDoc }" label="Arquivado na Pasta" size="61" maxlength="20" required="false" id="compsaapDocAdmPresidencialocalFisico" onblur="trim(this);" />
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label class="form-label-primario">
+										<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+										Número do documento / Descrição<br />
+										<h:inputText styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.consulta.descDoc }" label="Número do documento / descrição" size="61" maxlength="100" required="false" id="compsaapDocAdmPresidenciadescDoc" onblur="trim(this);" />
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label class="form-label-primario">
+										<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+										Assunto / Evento<br />
+									
+										<h:inputTextarea styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.consulta.txtAssuntoDoc }" label="Assunto / Evento" size="61" maxlength="500" cols="80"  rows="3" required="false" id="compsaapDocAdmPresidenciaAssunto" onkeypress="return new UtilFormatador().funcaoContarCaracteres(this, event, 500)" onkeyup="return new UtilFormatador().funcaoContarCaracteres(this, event, 500)" />
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label class="form-label-primario">
+										Observações<br />
+										<h:inputTextarea styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.consulta.txtObsDoc}" label="${ msg.saapDocAdmPresidencia_descDoc }" size="61" cols="80" rows="3" maxlength="500" required="false" id="compsaapDocAdmPresidenciaObs" onkeypress="return new UtilFormatador().funcaoContarCaracteres(this, event, 500)" onkeyup="return new UtilFormatador().funcaoContarCaracteres(this, event, 500)" />
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label class="form-label-primario">
+										<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+										Descrição do andamento<br />
+										<h:inputText styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.descricaoAndamento}" label="Descrição do andamento" size="61" rows="3" maxlength="100" required="false" id="compsaapDocAdmPresidenciaDescAndamento" onblur="trim(this);" />
+									</label>
+								</td>
+							</tr>
+						</table>
+						
+						
+						<div id="divConvite" style="display: visible">
+							<h4>Dados do convite</h4>
+							<table class="form-table">
+								<tr>
+									<td>
+										<label class="form-label-primario">
+											<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+											Quem convidou:<br/>
+										<h:inputText styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.consulta.nomeRespConvite}" label="${ msg.saapDocAdmPresidencia_respConvite }" size="61" maxlength="50" required="false" id="compsaapDocAdmPresidenciaRespConvite" onblur="trim(this);" />
+										</label>
+									</td>
+								</tr>
+							</table>
+							<table class="form-table">
+								<tr>
+									<td width="30%">
+										<label class="form-label-primario">
+											<cc:label value="#{msg.saapDocAdmPresidencia_dtEventoConvite}:" for="dataInicialConvite" obrigatorio="true" />
+											<rich:calendar id="dataInicialConvite" inputClass="form-text"
+												datePattern="dd/MM/yyyy" locale="pt-br" style="width:200px"
+												inputStyle="width:70px;" 
+												oninputkeydown="utilformatador.formatarDataDoCampo(event, this)" 
+												oninputkeypress="utilformatador.formatarDataDoCampo(event, this)" 
+												oninputkeyup="utilformatador.formatarDataDoCampo(event, this)"
+												required="false" label="${msg.saapDocAdmPresidencia_dtEventoConvite}" 
+												enableManualInput="true" 
+												title="#{msg['exibir.calendario']}"
+												converterMessage="#{msg.saapDocAdmPresidencia_dtEventoConvite}: #{mensagem['MA007']}"
+												value="#{saapDocAdmPresidenciaAction.visao.dataInicialConvite}"
+												buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif">
+												<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+												<f:validator validatorId="ValidadorDeData"/>
+											</rich:calendar>											
+										</label>
+									</td>
+									<td>
+										<label class="form-label-primario">
+											<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+											Hora do evento:<br/>
+										<h:inputText  styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.horaInicialConvite }" label="${ msg.saapDocAdmPresidencia_descDoc }" size="10" maxlength="5" required="false" name="compsaapDocAdmPresidenciaHoraInicio" id="compsaapDocAdmPresidenciaHoraInicio" onblur="trim(this);" onkeydown="return new UtilFormatador().formatarHoraDoCampo(event, this)" onkeypress="return new UtilFormatador().formatarHoraDoCampo(event, this)" onkeyup="new UtilFormatador().formatarHoraDoCampo(event, this)" />
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										
+									</td>
+									<td>
+										
+									</td>
+								</tr>
+							</table>
+						</div>
+					
+						<h4>Arquivos anexos (Somente arquivos PDF serão submetidos)</h4>
+						
+						<a4j:outputPanel id="idArquivos">
+							<comps:facelet-fileupload managedbean="#{saapDocAdmPresidenciaAction}"/>
+						</a4j:outputPanel>
+
+				<p class="form-legenda-campo-obrigatorio">
+					(<span class="form-campo-obrigatorio">*</span>) Campos de preenchimento obrigatório
+				</p>
+				<div class="form-barra-botoes">
+					<a4j:commandButton value="#{msg.confirmar}" title="Grava os dados do registro." styleClass="form-button-p03"
+							action="#{saapDocAdmPresidenciaAction.verificarSimilaridade}" focus="selectTipoDocumento"
+							reRender="formDocumentoSimilar, mensagens, compsaapDocAdmPresidencialocalFisico,
+							compsaapDocAdmPresidenciadescDoc, compsaapDocAdmPresidenciaAssunto, 
+							compsaapDocAdmPresidenciaObs, compsaapDocAdmPresidenciaDescAndamento,
+							compsaapDocAdmPresidenciaRespConvite, compsaapDocAdmPresidenciaHoraInicio,
+							dataInicialConvite, selectTipoDocumento, hiddenLimpaUpload "
+							oncomplete="showHideConvite(cmbTipoDocumento.value);limparUpload();"  />
+							
+					<a4j:commandButton value="#{msg.limpar}" title="Limpa os dados da tela." styleClass="form-button-p03"
+						action="#{saapDocAdmPresidenciaAction.limparFormulario}" 
+							reRender="formDocumentoSimilar, mensagens, compsaapDocAdmPresidencialocalFisico,
+							compsaapDocAdmPresidenciadescDoc, compsaapDocAdmPresidenciaAssunto, 
+							compsaapDocAdmPresidenciaObs, compsaapDocAdmPresidenciaDescAndamento,
+							compsaapDocAdmPresidenciaRespConvite, compsaapDocAdmPresidenciaHoraInicio,
+							dataInicialConvite, selectTipoDocumento, idArquivos"	
+							oncomplete="showHideConvite(cmbTipoDocumento.value)"/>
+							
+					<input jsfc="h:commandButton" value="#{msg.voltar}" title="Retorna à tela anterior." class="form-button-p03"
+						   action="#{saapDocAdmPresidenciaAction.iniciar}" immediate="true"/>
+				</div>
+				
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consulta}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultaClone}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.lista}"/>	
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultaExecutada}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaDetalhe}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.anexos}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.arquivos}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.nomeMinistroGestao}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.descricaoAndamento}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.dataInicialConvite}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.horaInicialConvite}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.voltarPara}"/>
+				
+				<h:commandButton value="incluir" id="btnIncluir" name="btnIncluir"  style="display: none" action="#{saapDocAdmPresidenciaAction.incluir}"  />
+				<h:commandButton value="detalhar" id="btnDetalhar" name="btnDetalhar"  style="display: none" action="#{saapDocAdmPresidenciaAction.detalhar}"  />
+				
+			</h:form>
+			</div>
+			
+				
+		<script>
+
+			var cmbTipoDocumento= utilobjeto.getObjeto("inclusao:selectTipoDocumento");
+			var flagHaSimilaridades=utilobjeto.getObjeto("inclusao:hiddenHaSimilaridades");
+			var nomeRespConvite = utilobjeto.getObjeto("inclusao:compsaapDocAdmPresidenciaRespConvite");
+			var compsaapDocAdmPresidenciaHoraInicio = utilobjeto.getObjeto("inclusao:compsaapDocAdmPresidenciaHoraInicio");
+			
+			function showHideConvite(valor) {
+				var divConvites = document.getElementById('divConvite');
+				valor = utilobjeto.getObjeto("inclusao:selectTipoDocumento").value;
+				if (valor == 3) {
+					divConvites.style.display = 'block';
+				} else {
+					nomeRespConvite.value='';
+					compsaapDocAdmPresidenciaHoraInicio.value='';
+					divConvites.style.display = 'none';
+				}
+			}
+
+			function limparUpload() {
+				var fileupload = document.getElementById('inclusao:arquivosAnexos').component;
+				var cleanupload = document.getElementById('inclusao:hiddenLimpaUpload').value;
+				if (cleanupload == "Sim") {
+					RichFileUpload_ajaxAcaoRemoverTodos();
+					fileupload.uploadedCount = 0;
+				}
+			}
+
+			function iniciar() {
+				showHideConvite(cmbTipoDocumento.value);
+				posicionaFocoPrimeiroCampo();
+			}
+
+			function posicionaFocoPrimeiroCampo() {
+				document.getElementById('inclusao:selectTipoDocumento').focus();
+			}			
+
+		</script>
+		
+			<!-- Modal Panel de Documentos Similares  -->
+			<ui:include src="/paginas/UC_ManutencaoSaapDocAdmPresidencia/similar.xhtml" />
+			
+			
+		</ui:define>
+		
+</ui:composition>

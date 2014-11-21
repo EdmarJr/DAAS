@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:cc="http://politec.com.br/componentes"
+	lang="pt-br" template="#{request.scheme}://#{request.serverName}:#{request.serverPort}/layout/layout.xhtml">
+
+	<ui:define name="head">
+		
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-browser.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-objeto.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-numero.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-string.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-data.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-evento.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-formulario.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-combo.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-validador.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-formatador.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-janela.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-validador-formulario.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-elemento.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-mapa.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/util-tabela-dinamica.js"></script>
+		<script language="javascript" type="text/javascript" src="#{request.contextPath}/js/rich-fileupload.js"></script>
+
+		<script type="text/javascript" src="#{request.contextPath}/js/util-janela.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/mascaras.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/js/funcoes.js"></script>
+		<script type="text/javascript" src="/js/mascaras.js"></script>
+		<script language="javascript">
+			var utilobjeto 		= new UtilObjeto();
+			var utilnumero 		= new UtilNumero();
+			var utilstring 		= new UtilString();
+			var utildata 		= new UtilData();
+			var utilevento 		= new UtilEvento();
+			var utilformulario 	= new UtilFormulario();
+			var utilcombo 		= new UtilCombo();
+			var utilvalidador 	= new UtilValidador();
+			var utilformatador 	= new UtilFormatador();
+			var utilbrowser 	= new UtilBrowser();
+			var utiljanela 		= new UtilJanela();	
+			var utilelemento	= new UtilElemento();
+		</script>
+	</ui:define>
+
+	<ui:define name="menulocal">
+		<ui:include src="menu_local.xhtml" />
+	</ui:define>
+
+</ui:composition>

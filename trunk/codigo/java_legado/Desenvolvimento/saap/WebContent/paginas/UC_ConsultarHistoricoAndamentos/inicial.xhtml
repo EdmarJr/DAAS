@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes" xml:lang="pt-br" lang="pt-br"> 
+
+	<div id="divHistAn" style="font-size:1.2em;font-family:verdana;padding:10px" class="x-hidden">	
+		<h:form id="formHistoricoAndamentos">
+			<a4j:outputPanel id="panelHistoricoAndamentos" rendered="#{not empty consultarHistoricoAndamentosAction.visao.listaHistorico}">
+				<div class="table-grid-rolagem">
+					<h4>Dados do documento</h4>
+					<table class="table-grid-detalhar">
+						<tbody>
+							<tr>
+								<td width="25%">
+									<label class="form-label-primario">
+										N. do registro<br />
+										<span class="form-label-secundario">
+											<h:outputText value="#{consultarHistoricoAndamentosAction.visao.documentoDetalhadoTO.documentoBasico.id}"/>
+										</span>
+									</label>
+								</td>
+								<td>
+									<label class="form-label-primario">
+										Data de entrada<br />
+										<span class="form-label-secundario">
+											<h:outputText value="#{consultarHistoricoAndamentosAction.visao.documentoDetalhadoTO.documentoBasico.tsEntradaDoc}">
+												<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+											</h:outputText>
+										</span>
+									</label>
+								</td>
+								
+								<td colspan="2">
+									<label class="form-label-primario">
+										Gestão<br />
+										<span class="form-label-secundario">
+											<h:outputText value="#{consultarHistoricoAndamentosAction.visao.documentoDetalhadoTO.gestaoDocumento.nomeMinistroPresidente}"/>
+										</span>
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label class="form-label-primario">
+										Tipo de documento<br />
+										<span class="form-label-secundario">
+											<h:outputText value="#{consultarHistoricoAndamentosAction.visao.documentoDetalhadoTO.documentoBasico.indTipoDocFormatado}"/>
+										</span>
+									</label>
+								</td>
+								
+								<td >
+									<label class="form-label-primario">
+										Arquivado na pasta<br />
+										<span class="form-label-secundario">
+											<h:outputText value="#{consultarHistoricoAndamentosAction.visao.documentoDetalhadoTO.documentoBasico.nomeLocalFisicoDoc}"/>
+										</span>
+									</label>
+								</td>
+								
+								<td width="20%">
+									<label class="form-label-primario">
+										Situação<br />
+										<span class="form-label-secundario">
+											<h:outputText value="#{consultarHistoricoAndamentosAction.visao.documentoDetalhadoTO.documentoBasico.indSituacaoDocFormatado}"/>
+										</span>
+									</label>
+								</td>
+								
+								<td  width="20%">
+									<label class="form-label-primario">
+										Alterado por<br />
+										<span class="form-label-secundario">
+											<h:outputText value="#{consultarHistoricoAndamentosAction.visao.documentoDetalhadoTO.nomeUsuarioAlteracao}"/>
+										</span>
+									</label>
+								</td>									
+																
+							</tr>
+							<tr>
+								<td colspan="4">
+									<label class="form-label-primario">
+										N. do documento / Descrição<br />
+										<span class="form-label-secundario">
+											<h:outputText value="#{consultarHistoricoAndamentosAction.visao.documentoDetalhadoTO.documentoBasico.descDoc}"/>
+										</span>
+									</label>
+								</td>								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="table-grid-rolagem">
+					<rich:dataTable id="saapHistAdmtAdms" var="saapHistAdmtAdmTO" rows="5" cellspacing="1"
+	                    binding="#{consultarHistoricoAndamentosAction.visao.dataTable}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col1,col2,align-center,col4,col5" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{consultarHistoricoAndamentosAction.visao.listaHistorico}"
+	                    rendered="#{not empty consultarHistoricoAndamentosAction.visao.listaHistorico}">
+
+						<f:facet name="caption">
+							<h:column>
+								Histórico dos andamentos
+							</h:column>
+						</f:facet>
+
+						<h:column id="colid">
+							<f:facet name="header">
+								Seq.
+							</f:facet>
+							#{saapHistAdmtAdmTO.saapHistAdmtAdm.id}
+						</h:column>
+
+						<h:column id="coldescAdmtAtual">
+							<f:facet name="header">
+								Descrição
+							</f:facet>
+							#{saapHistAdmtAdmTO.saapHistAdmtAdm.descAdmtAtual}
+						</h:column>
+
+						<h:column id="coltsHistAdmt">
+							<f:facet name="header">
+								Data
+							</f:facet>
+							<h:outputText value="#{saapHistAdmtAdmTO.saapHistAdmtAdm.tsHistAdmt}">
+							 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+							</h:outputText>
+						</h:column>
+
+						<h:column id="colnomeAcaoHistAdmt">
+							<f:facet name="header">
+								Ação
+							</f:facet>
+							#{saapHistAdmtAdmTO.saapHistAdmtAdm.nomeAcaoHistAdmt}
+						</h:column>
+
+						<h:column id="colseqUsuario">
+							<f:facet name="header">
+								Responsável
+							</f:facet>
+							#{saapHistAdmtAdmTO.nomeUsuario}
+						</h:column>
+					</rich:dataTable>
+				</div>
+
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapHistAdmtAdms" fastControls="hide" id="datascroller" renderIfSinglePage="false" limitToList="true"
+							actionListener="#{consultarHistoricoAndamentosAction.consultar}" page="#{consultarHistoricoAndamentosAction.visao.pagina}" reRender="saapHistAdmtAdms,datascroller">
+
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+				<div class="form-barra-botoes">
+					<input type="button" id="btnFechar" class="form-button-p03" value="Fechar" title="Finaliza a apresentação da tela" onclick="fecharPopup();"/>
+				</div>
+
+				<t:saveState id="listaHistorico" value="#{consultarHistoricoAndamentosAction.visao.listaHistorico}"/>
+				<t:saveState value="#{consultarHistoricoAndamentosAction.visao.pagina}"/>
+				<t:saveState value="#{consultarHistoricoAndamentosAction.visao.seqDocAndamento}"/>
+				<script type="text/javascript">
+					//<![CDATA[  
+					function fecharPopup() {
+						limpaListaHistoricoA4j();
+						fecharModal('divHistAn');
+					}
+					abrirModal('divHistAn', {title:'',width: 800, height: 560, listeners : {'hide' : {fn: fecharPopup}}},'lupa');
+					// ]]>
+				</script>
+				<a4j:jsFunction name="limpaListaHistoricoA4j" action="#{consultarHistoricoAndamentosAction.limpaListaHistorico}" limitToList="true" ajaxSingle="true" reRender="formHistoricoAndamentos, listaHistorico" ignoreDupResponses="true"  />
+
+			</a4j:outputPanel>
+		</h:form>
+	</div>
+</ui:composition>

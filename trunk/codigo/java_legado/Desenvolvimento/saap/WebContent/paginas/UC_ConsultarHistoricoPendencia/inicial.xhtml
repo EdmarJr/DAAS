@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes" xml:lang="pt-br" lang="pt-br"> 
+
+	<div id="divHistPend" style="font-size:1.2em;font-family:verdana;padding:10px" class="x-hidden">	
+		<h:form id="formHistoricoPendencia">
+			<a4j:outputPanel id="panelHistoricoPendencia" rendered="#{not empty consultarHistoricoPendenciaAction.visao.listaHistorico}">
+
+				<div class="table-grid-rolagem">
+					<rich:dataTable id="saapHistPenAdms" var="saapHistPenAdm" rows="5" cellspacing="1"
+	                    binding="#{consultarHistoricoPendenciaAction.visao.dataTable}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="align-center,col2,col3" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{consultarHistoricoPendenciaAction.visao.listaHistorico}"
+	                    rendered="#{not empty consultarHistoricoPendenciaAction.visao.listaHistorico}">
+
+						<f:facet name="caption">
+							<h:column>
+								Histórico da pendência
+							</h:column>
+						</f:facet>
+
+						<h:column id="coltsHistPen">
+							<f:facet name="header">
+								Data
+							</f:facet>
+							<h:outputText value="#{saapHistPenAdm.saapHistPendenciaAdm.tsHistPendencia}">
+							 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+							</h:outputText>
+						</h:column>
+
+						<h:column id="colnomeAcaoHistPen">
+							<f:facet name="header">
+								Ação
+							</f:facet>
+							#{saapHistPenAdm.saapHistPendenciaAdm.nomeAcaoHistPendencia}
+						</h:column>
+
+						<h:column id="colseqUsuario">
+							<f:facet name="header">
+								Responsável
+							</f:facet>
+							#{saapHistPenAdm.nomeUsuario}
+						</h:column>
+					</rich:dataTable>
+				</div>
+
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapHistPenAdms" fastControls="hide" id="datascroller" renderIfSinglePage="false" limitToList="true"
+							actionListener="#{consultarHistoricoPendenciaAction.consultar}" page="#{consultarHistoricoPendenciaAction.visao.pagina}"
+							reRender="saapHistPenAdms,datascroller">
+
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+				<div class="form-barra-botoes">
+					<input type="button" class="form-button-p03" value="Fechar" title="Finaliza a apresentação da tela" onclick="fecharPopup();"/>
+				</div>
+
+				<t:saveState value="#{consultarHistoricoPendenciaAction.visao.listaHistorico}"/>
+				<t:saveState value="#{consultarHistoricoPendenciaAction.visao.pagina}"/>
+				<t:saveState value="#{consultarHistoricoPendenciaAction.visao.seqPendenciaAdm}"/>
+
+				<script type="text/javascript">
+					//<![CDATA[  
+					function fecharPopup() {
+						limpaListaHistoricoA4j();
+						fecharModal('divHistPend');
+					}
+					abrirModal('divHistPend', {title:'',width: 640, height: 480, listeners : {'hide' : {fn: fecharPopup}}},'lupa');
+					// ]]>
+				</script>
+				<a4j:jsFunction name="limpaListaHistoricoA4j" action="#{consultarHistoricoPendenciaAction.limpaListaHistorico}" limitToList="true" ajaxSingle="true" reRender="formHistoricoPendencia" ignoreDupResponses="true"  />
+			</a4j:outputPanel>
+		</h:form>
+	</div>
+</ui:composition>

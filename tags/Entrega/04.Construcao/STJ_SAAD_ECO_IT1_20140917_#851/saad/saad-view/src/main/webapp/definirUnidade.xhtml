@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>SAAD - Sistema de Acompanhamento Administrativo de
+		Documentos</title>
+
+	<!-- 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> -->
+
+	<h:outputStylesheet library="css" name="app.css" />
+	<h:outputStylesheet library="css" name="screen.css" />
+	<h:outputStylesheet library="templates/bootstrap/css"
+		name="bootstrap.css" />
+	<h:outputStylesheet library="templates/bootstrap/css"
+		name="bootstrapCtis.css" />
+
+	<h:outputStylesheet library="css/pure-release-0.5.0" name="pure.css" />
+
+</h:head>
+
+
+<div class="pure-g">
+	<div class="pure-u-1-1">
+		<img src="#{resource['images/header.png']}" />
+		<h:form >
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<div class="pure-g">
+				<div class="pure-u-1-3"></div>
+				<div class="pure-u-3-8">
+					<p:panel id="panelLogin" header="#{label['header']}">
+						<div class="pure-g">
+							<div class="pure-u-1-5"></div>
+							<div class="pure-u-1-1">
+								<p:selectOneMenu required="true"
+									value="#{localUsuarioController.loginBean.unidadeUsuario}">
+									<f:selectItems
+										value="#{localUsuarioController.loginBean.usuarioLogado.locaisUsuarios}"
+										var="unidade" itemLabel="#{unidade.local.nome}"
+										itemValue="#{unidade.local}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<br />
+
+						<br />
+						<div class="pure-g">
+							<div class="pure-u-1-1" style="text-align: right;">
+								<p:commandButton actionListener="#{localUsuarioController.comandoEntrar()}" ajax="true" value="Local de Trabalho"/>
+							</div>
+							
+							<div class="pure-u-1-4"></div>
+						</div>
+					</p:panel>
+				</div>
+				<div class="pure-u-1-4"></div>
+			</div>
+		</h:form>
+	</div>
+</div>
+</html>

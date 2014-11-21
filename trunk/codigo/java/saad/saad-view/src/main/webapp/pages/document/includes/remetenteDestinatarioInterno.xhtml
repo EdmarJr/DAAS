@@ -1,0 +1,55 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+<c:set property="documento" value="#{documento}" target="#{remetenteInternoController}"/>
+	
+<p:panel header="Remetente Interno" id="remetenteInterno"
+	rendered="#{remetenteInternoController.isDocumentInternal()}"
+	style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+	toggleable="true">
+	
+	
+	<div class="pure-g">
+		<div class="pure-u-1-3">
+			<p:outputLabel for="locaisDestinatarioInterno" value="Local:" styleClass="lbl" />
+		</div>
+		<div class="pure-u-1-3">
+			<p:outputLabel for="inputRemetenteInterno" value="Servidor: " styleClass="lbl" />
+		</div>
+	</div>
+	<div class="pure-g">
+		<div class="pure-u-7-24">
+			<p:selectOneMenu id="locaisDestinatarioInterno"  required="true" disabled="#{!documentController.alterar}"
+				value="#{remetenteInternoController.local}">
+				<f:selectItem itemValue="#{null}" itemLabel="Selecione" />
+				<f:selectItems
+					value="#{remetenteInternoController.listaLocais}"
+					var="r" itemLabel="#{r.nome}" itemValue="#{r}" />
+					<f:ajax event="change"
+					listener="#{remetenteInternoController.atualizarRemetenteInterno}"
+					render="@this inputRemetenteInterno" />
+			</p:selectOneMenu>
+		</div>
+		<div class="pure-u-1-24"></div>
+		<div class="pure-u-7-24">
+			<p:selectOneMenu id="inputRemetenteInterno" required="true" disabled="#{!documentController.alterar}"
+				value="#{remetenteInternoController.remetente}">
+				<f:selectItem itemValue="" itemLabel="" />
+				<f:selectItems
+					value="#{remetenteInternoController.listaRemetente}" var="r"
+					itemLabel="#{r.nome}" itemValue="#{r}" />
+				<f:ajax event="change"
+					render="@this" />
+			</p:selectOneMenu>
+		</div>
+	</div>
+	<br />
+</p:panel>
+</html>

@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		
+		<h:form id="formConsultarDocumento">
+						
+			<p:panel id="panelPai" style="width:1010px">		
+				<p:breadCrumb>
+					<p:menuitem value="Início" url="/pages/notification/minhasNotificacoes.xhtml" />
+					<p:menuitem value="Documento" url="#" />
+					<p:menuitem value="Consultar" url="#" />
+					<p:menuitem value="Documento" url="#" />
+				</p:breadCrumb>
+				
+				<h:outputText value="Consulta de Documentos" styleClass="title" />
+				<br/>
+				<h:outputText value="Dados do Documento" styleClass="sub-title" />
+				<p:separator style="height:1px;" />
+				
+				<div class="pure-g">
+					<div class="pure-u-1-4">
+						<h:outputText value="Tipo de Documento" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:outputText value="Situação do Documento" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:outputText value="Classificação" styleClass="lbl" />
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-1-4">
+						<p:selectOneMenu value="#{consultarDocumentoController.filtroConsultarDocumentoVO.documento.tipo}">
+							<f:selectItem />
+							<f:selectItems value="#{consultarDocumentoController.listTipoDocumento}" var="t" itemValue="#{t}" itemLabel="#{t.nome}"/>
+							<p:ajax event="change" update="@this panelPai"/>
+						</p:selectOneMenu>
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<p:selectOneMenu value="#{consultarDocumentoController.filtroConsultarDocumentoVO.documento.situacao}">
+							<f:selectItem itemLabel="" itemValue="0"/>
+							<f:selectItems value="#{consultarDocumentoController.listSituacaoDocumentoEnum}" var="t" itemValue="#{t.valor}" itemLabel="#{msg[t.codLabel]}"/>
+							<p:ajax event="change" update="@this panelPai"/>
+						</p:selectOneMenu>
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<p:selectOneMenu value="#{consultarDocumentoController.filtroConsultarDocumentoVO.documento.tipoClassificacaoDocumento}">
+							<f:selectItem itemLabel="" itemValue="0"/>
+							<f:selectItems value="#{consultarDocumentoController.listClassificacaoEnum}" var="t" itemValue="#{t.valor}" itemLabel="#{msg[t.codLabel]}"/>
+							<p:ajax event="change" update="@this panelPai"/>
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-1-4">
+						<h:outputText value="Origem" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:outputText value="Nº do Documento" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:outputText value="Identificador" styleClass="lbl" />
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-1-4">
+						<p:selectOneMenu value="#{consultarDocumentoController.filtroConsultarDocumentoVO.documento.tipoOrigem}">
+							<f:selectItem itemLabel="" itemValue="0"/>
+							<f:selectItems value="#{consultarDocumentoController.listTipoOrigemDocumentoEnum}" var="t" itemValue="#{t.valor}" itemLabel="#{msg[t.codLabel]}"/>
+							<p:ajax event="change" update="@this panelPai"/>
+						</p:selectOneMenu>
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<h:inputText value="#{consultarDocumentoController.filtroConsultarDocumentoVO.documento.numeroDocumentoOrigem}" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-4">
+						<p:inputMask value="#{consultarDocumentoController.identificadorDocumento}" mask="a**-999999/9999"/>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-1-1">
+						<div class="pure-g">
+							<div class="pure-u-1-4">
+								<h:outputText value="Assunto:" styleClass="lbl" />
+							</div>
+						</div>
+						<div class="pure-g">
+							<div class="pure-u-20-24">
+								<h:inputTextarea value="#{consultarDocumentoController.filtroConsultarDocumentoVO.documento.assuntoDocumento}" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-20-24">
+						<h:panelGroup rendered="#{consultarDocumentoController.requisitosEnderecamentoPreenchidos(consultarDocumentoController.classificacaoDocumentoRecebido)}">
+							<br/>
+							<h:outputText value="Remetente" styleClass="lbl" />
+							<p:panel id="painelRemetenteRecebido" styleClass="saad-border-solid" toggleable="true">		
+								<ui:include src="includes/enderecamentoInterno.xhtml">
+									<ui:param name="controller" value="#{consultarDocumentoController}" />
+									<ui:param name="controllerRemetente" value="#{consultarDocumentoController.enderecamentoInternoRemetenteUtil}" />
+									<ui:param name="tipoEnderecamento" value="#{consultarDocumentoController.enderecamentoRemetente}"/>
+									<ui:param name="painelPai" value="painelRemetenteRecebido"/>
+									<ui:param name="titulo" value="Remetente"/>
+								</ui:include>
+								<ui:include src="includes/enderecamentoExterno.xhtml">
+									<ui:param name="controller" value="#{consultarDocumentoController}" />
+									<ui:param name="controllerRemetente" value="#{consultarDocumentoController.enderecamentoExternoRemetenteUtil}" />
+									<ui:param name="tipoEnderecamento" value="#{consultarDocumentoController.enderecamentoRemetente}"/>
+									<ui:param name="painelPai" value="painelRemetenteRecebido"/>
+									<ui:param name="titulo" value="Remetente"/>
+								</ui:include>
+							</p:panel>
+							<br/>
+							<h:outputText value="Destinatário" styleClass="lbl" />
+							<p:panel id="painelDestinatarioRecebido" styleClass="saad-border-solid" toggleable="true">
+								<ui:include src="includes/enderecamentoInterno.xhtml">
+									<ui:param name="controller" value="#{consultarDocumentoController}" />
+									<ui:param name="controllerRemetente" value="#{consultarDocumentoController.enderecamentoInternoDestinatarioUtil}" />
+									<ui:param name="tipoEnderecamento" value="#{consultarDocumentoController.enderecamentoDestinatario}"/>
+									<ui:param name="painelPai" value="painelDestinatarioRecebido"/>
+									<ui:param name="titulo" value="Destinatário"/>
+								</ui:include>
+							</p:panel>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{consultarDocumentoController.requisitosEnderecamentoPreenchidos(consultarDocumentoController.classificacaoDocumentoExpedido)}" >
+							<br/>
+							<h:outputText value="Remetente" styleClass="lbl" />
+							<p:panel id="painelRemetenteExpedido" styleClass="saad-border-solid" toggleable="true">		
+								<ui:include src="includes/enderecamentoInterno.xhtml">
+									<ui:param name="controller" value="#{consultarDocumentoController}" />
+									<ui:param name="controllerRemetente" value="#{consultarDocumentoController.enderecamentoInternoRemetenteUtil}" />
+									<ui:param name="tipoEnderecamento" value="#{consultarDocumentoController.enderecamentoRemetente}"/>
+									<ui:param name="painelPai" value="painelRemetenteExpedido"/>
+									<ui:param name="titulo" value="Remetente"/>
+								</ui:include>
+							</p:panel>
+							<br/>
+							<h:outputText value="Destinatário" styleClass="lbl" />
+							<p:panel id="painelDestinatarioExpedido" styleClass="saad-border-solid" toggleable="true">
+								<ui:include src="includes/enderecamentoInterno.xhtml">
+									<ui:param name="controller" value="#{consultarDocumentoController}" />
+									<ui:param name="controllerRemetente" value="#{consultarDocumentoController.enderecamentoInternoDestinatarioUtil}" />
+									<ui:param name="tipoEnderecamento" value="#{consultarDocumentoController.enderecamentoDestinatario}"/>
+									<ui:param name="painelPai" value="painelDestinatarioExpedido"/>
+									<ui:param name="titulo" value="Destinatário"/>
+								</ui:include>
+								<ui:include src="includes/enderecamentoExterno.xhtml">
+									<ui:param name="controller" value="#{consultarDocumentoController}" />
+									<ui:param name="controllerRemetente" value="#{consultarDocumentoController.enderecamentoExternoDestinatarioUtil}" />
+									<ui:param name="tipoEnderecamento" value="#{consultarDocumentoController.enderecamentoDestinatario}"/>
+									<ui:param name="painelPai" value="painelDestinatarioExpedido"/>
+									<ui:param name="titulo" value="Destinatário"/>
+								</ui:include>			
+							</p:panel>
+						</h:panelGroup>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-20-24">
+						<h:outputText value="Data de Origem" styleClass="lbl" />
+						<p:panel styleClass="saad-titulo-painel">
+							<div class="pure-g">
+								<div class="pure-u-1-4">
+									<h:outputText value="De:" styleClass="lbl" />
+								</div>
+								<div class="pure-u-1-24"></div>
+								<div class="pure-u-1-4">
+									<h:outputText value="Até" styleClass="lbl" />
+								</div>
+							</div>
+							<div class="pure-g">
+								<div class="pure-u-1-4">
+									<p:calendar id="dataOrigemInicial" value="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataOrigemInicial}" maxdate="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataOrigemFinal}">
+										<p:ajax event="dateSelect" update="@this dataOrigemFinal"/>
+									</p:calendar>
+								</div>
+								<div class="pure-u-1-24"></div>
+								<div class="pure-u-1-4">
+									<p:calendar id="dataOrigemFinal" value="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataOrigemFinal}" mindate="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataOrigemInicial}" maxdate="#{consultarDocumentoController.dataAtual}">
+										<p:ajax event="dateSelect" update="@this dataOrigemInicial"/>
+									</p:calendar>
+								</div>
+							</div>
+						</p:panel>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-20-24">
+						<h:outputText value="Data de Recebimento" styleClass="lbl" />
+						<p:panel styleClass="saad-titulo-painel">
+							<div class="pure-g">
+								<div class="pure-u-1-4">
+									<h:outputText value="De:" styleClass="lbl" />
+								</div>
+								<div class="pure-u-1-24"></div>
+								<div class="pure-u-1-4">
+									<h:outputText value="Até" styleClass="lbl" />
+								</div>
+							</div>
+							<div class="pure-g">
+								<div class="pure-u-1-4">
+									<p:calendar id="dataRecebimentoInicial" value="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataRecebimentoInicial}" maxdate="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataRecebimentoFinal}">
+										<p:ajax event="dateSelect" update="@this dataRecebimentoFinal"/>
+									</p:calendar>
+								</div>
+								<div class="pure-u-1-24"></div>
+								<div class="pure-u-1-4">
+									<p:calendar id="dataRecebimentoFinal" value="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataRecebimentoFinal}" mindate="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataRecebimentoInicial}" maxdate="#{consultarDocumentoController.dataAtual}">
+										<p:ajax event="dateSelect" update="@this dataRecebimentoInicial"/>
+									</p:calendar>
+								</div>
+							</div>
+						</p:panel>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-20-24">
+						<h:panelGroup rendered="#{consultarDocumentoController.tipoDocumentoConvite}">
+							<h:outputText value="Periodo do Evento" styleClass="lbl" />
+							<p:panel styleClass="saad-titulo-painel">
+								<div class="pure-g">
+									<div class="pure-u-1-4">
+										<h:outputText value="De:" styleClass="lbl" />
+									</div>
+									<div class="pure-u-1-24"></div>
+									<div class="pure-u-1-4">
+										<h:outputText value="Até" styleClass="lbl" />
+									</div>
+								</div>
+								<div class="pure-g">
+									<div class="pure-u-1-4">
+										<p:calendar id="dataEventoInicial" value="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataEventoInicial}" maxdate="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataEventoFinal}">
+											<p:ajax event="dateSelect" update="@this dataEventoFinal"/>
+										</p:calendar>
+									</div>
+									<div class="pure-u-1-24"></div>
+									<div class="pure-u-1-4">
+										<p:calendar id="dataEventoFinal" value="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataEventoFinal}" mindate="#{consultarDocumentoController.filtroConsultarDocumentoVO.dataEventoInicial}">
+											<p:ajax event="dateSelect" update="@this dataEventoInicial"/>
+										</p:calendar>
+									</div>
+								</div>
+							</p:panel>
+						</h:panelGroup>
+					</div>
+				</div>
+				<br/>
+				<p:panel styleClass="saad-text-aling-left">
+					<p:commandButton ajax="true" action="#{consultarDocumentoController.consultar()}" value="Consultar" 
+						update="panelPai"/>
+					<p:commandButton value="Limpar" actionListener="#{consultarAvisoController.limparTela()}"  
+						immediate="true" update="@form"/>
+					<p:commandButton type="button" value="Voltar" onclick="history.go(-1);" ajax="false" />
+					
+				</p:panel>
+				<br/>				
+				<p:dataTable id="documentDataTable" var="documento" emptyMessage="Nenhum registro encontrado" rendered="#{consultarDocumentoController.consultado}"
+						rowIndexVar="documentIndex" selectionMode="single"
+						selection="#{consultarDocumentoController.documentoSelecionado}"
+						rowKey="#{documento.id}" paginator="true"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        value="#{consultarDocumentoController.listDocumentoResultado}"
+						rows="15" paginatorPosition="bottom">
+
+						<p:ajax event="rowSelect"
+							listener="#{consultaAndamentoDocumentoController.onRowSelectNavigate}"
+							immediate="true" update="@this" />
+						<f:facet name="header">
+							<h:outputText value="Registro(s)" />
+						</f:facet>
+
+						<p:column headerText="Nº do Registro" sortBy="#{documento.numeroRegistro}">
+							<h:outputText value="#{documento.numeroRegistro}" />
+						</p:column>
+
+						<p:column headerText="Data da Entrada" sortBy="#{documento.dataInclusao}">
+							<h:outputText value="#{documento.dataInclusao}">
+								<f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Remetente" sortBy="#{documento.enderecamentoRemetente.nomeEnderecado}">
+							<h:outputText value="#{documento.enderecamentoRemetente.nomeEnderecado}" />
+						</p:column>
+						
+						<p:column headerText="Destinatário" sortBy="#{documento.enderecamentoDestinatario.nomeEnderecado}">
+							<h:outputText value="#{documento.enderecamentoDestinatario.nomeEnderecado}" />
+						</p:column>
+
+						<p:column headerText="Identificador" sortBy="#{documento.identificadorComMascara}">
+							<h:outputText value="#{documento.identificadorComMascara}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Acompanhamento" />
+							</f:facet>
+							<div class="pure-u-1" style="padding-left:38%;">
+								<h:commandLink ajax="false" style="text-align:center !important;" process="@this" action="#{consultarDocumentoController.comandoVisualizar(documento)}">
+									<span class="ui-icon ui-icon-circle-zoomin"></span>
+								</h:commandLink>
+							</div>
+						</p:column>
+					</p:dataTable>
+					<p:panel styleClass="saad-text-aling-left"
+						rendered="#{consultarDocumentoController.consultado}">
+						<p:commandButton value="#{msg['botao.alterar']}" ajax="false"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-pencil"
+							action="#{consultarDocumentoController.comandoAlterar()}" />
+						<p:commandButton icon="ui-icon-trash" ajax="true"
+							value="#{msg['botao.excluir']}" update="@form"
+							action="#{consultarDocumentoController.validarRegistroExclusao()}">
+						</p:commandButton>
+						<p:commandButton ajax="false" value="Imprimir"
+							icon="ui-icon-document" immediate="true">
+							<p:dataExporter pageOnly="true" type="pdf" target="documentDataTable"
+								fileName="Documentos " encoding="ISO-8859-1" />
+						</p:commandButton>
+					</p:panel>
+					<p:dialog id="confirmDialogDel" widgetVar="confirmDialogDelVar"
+						header="#{msg['label.confirmar.exclusao']}" resizable="false" width="280px" height="80px" >
+							<h:panelGrid columns="1" width="100%" style="text-align: center;">
+								<p:column>
+									<h:outputText
+										value="Confirma a exclusão do Documento para esta unidade?" />
+									<br />
+								</p:column>
+								<p:column >
+									<br />
+									<br />
+									<p:commandButton value="#{label['button.yes']}"
+										icon="ui-icon-check"  update="@form"
+										actionListener="#{consultarDocumentoController.comandoExcluir()}" onclick="PF('confirmDialogDelVar').hide();">
+									</p:commandButton>
+									<p:commandButton value="#{label['button.no']}" type="button"
+										icon="ui-icon-close" onclick="PF('confirmDialogDelVar').hide();" />
+								</p:column>
+							</h:panelGrid>
+					</p:dialog>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

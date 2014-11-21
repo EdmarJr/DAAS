@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<p:dataTable var="aviso" value="#{bean.lazyAvisoDaUnidadeDataModel}" lazy="true" paginator="true"
+	rows="15" paginatorPosition="bottom" paginatorAlwaysVisible="true" emptyMessage="Nenhum registro encontrado.">
+	<f:facet name="header">
+					Lista de avisos
+	</f:facet>
+	<p:column headerText="Data de Inclusão" id="column_dataInclusao_aviso" width="10%">
+		<h:outputText
+			
+			value="#{aviso.dataInclusao}">
+			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+		</h:outputText>
+	</p:column>
+	<p:column headerText="Descrição" id="column_descricao_aviso"
+		width="45%">
+		<h:outputText value="#{aviso.descricao}"
+			 />
+	</p:column>
+	<p:column headerText="Situação" id="column_situacao_aviso" width="10%">
+		<h:outputText
+			
+			value="#{msg[consultaAvisoController.obterSituacaoAviso(aviso.situacao).codLabel]}" />
+	</p:column>
+	<p:column width="8%">
+		<f:facet name="header">
+			<h:outputText value="Visualização" />
+		</f:facet>
+		<div class="pure-g">
+			<div class="pure-u-1" style="padding-left:38%;">
+		<p:commandLink ajax="false"
+			action="#{consultaAvisoController.detalharAviso(aviso)}">
+				<span class="ui-icon ui-icon-circle-zoomin"></span>
+			</p:commandLink>
+			</div>
+		</div>
+	</p:column>
+</p:dataTable>
+<h:outputText value="Total de avisos pendentes: #{consultaAvisoController.totalAvisosPendenteUnidade}" />
+</html>

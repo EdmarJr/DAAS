@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+
+		<h:form id="documentDetailForm">
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:panel id="documentDetailPanel">
+				<f:facet name="header">
+					<h:outputText style="font-size:14px;" value="Documento" />
+					<h:outputText style="font-size:14px;" value=" >> " />
+					<h:outputText style="font-size:14px;" value="Detalhe" />
+				</f:facet>
+
+				<p:panel header="Dados" collapsed="false">
+					<h:panelGrid cellpadding="5">
+						<p:column>
+							<p:selectOneRadio id="selectOriginDocumentType"
+								value="#{documentController.document.enderecamento.tipoEnderecamento}">
+								<f:selectItems var="documentEntryType"
+									value="#{documentController.documentEntryType}"
+									itemLabel="#{documentEntryType}"
+									itemValue="#{documentEntryType}" />
+							</p:selectOneRadio>
+						</p:column>
+					</h:panelGrid>
+
+					<h:panelGrid cellpadding="5" columns="3">
+						<p:column>
+							<p:outputLabel value="Tipo de Documento:"
+								for="selectDocumentType" style="text-align:left;width:100px;" />
+							<p:selectOneMenu id="selectDocumentType"
+								value="#{documentController.document.tipo.id}"
+								style="text-align:left;width:100px;">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItems var="documentType"
+									value="#{documentController.documentTypeList}"
+									itemLabel="#{documentType.nome}" itemValue="#{documentType.id}" />
+							</p:selectOneMenu>
+						</p:column>
+
+						<p:column>
+							<p:spacer width="150px" height="0px" />
+						</p:column>
+
+						<p:column>
+							<h:panelGrid columns="4">
+								<p:outputLabel for="outputDataEntrada" value="Data de entrada:"
+									style="text-align:right;width:100px;" />
+								<h:outputText id="outputDataEntrada" value="10/10/2014" />
+								<p:outputLabel for="outputGestao" value="Gestão:"
+									style="text-align:right;width:100px;" />
+								<h:outputText id="outputGestao" value="Gestor Teste" />
+							</h:panelGrid>
+						</p:column>
+
+					</h:panelGrid>
+
+					<h:panelGrid cellpadding="5" columns="2">
+
+						<p:column>
+							<p:selectBooleanCheckbox id="relativoProcessoCheck" />
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Relativo a processo"
+								for="relativoProcessoCheck" style="text-align:left;width:100px;" />
+						</p:column>
+					</h:panelGrid>
+
+					<h:panelGrid cellpadding="5">
+						<p:column>
+							<p:outputLabel value="Nº do Registro" for="inputProcessNumber"
+								style="text-align:left;width:100px;" />
+							<p:inputText id="inputProcessNumber"
+								value="#{documentController.document.numeroRegistro}" />
+
+						</p:column>
+					</h:panelGrid>
+
+					<h:panelGrid cellpadding="5" columns="3">
+
+						<p:column>
+							<p:outputLabel value="Arquivado na pasta:"
+								for="inputPhysicalCabinet" style="text-align:left;width:200px;" />
+							<p:inputText id="inputPhysicalCabinet" value="" />
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Número do documento:"
+								for="inputDocumentNumber" style="text-align:left;width:200px;" />
+							<p:inputText id="inputDocumentNumber"
+								value="#{documentController.document.numero}" />
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Descrição do andamento:"
+								for="inputStepDescription" style="text-align:left;width:200px;" />
+							<p:inputText id="inputStepDescription" value="" />
+						</p:column>
+					</h:panelGrid>
+
+					<p:panel header="Evento"
+						style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+						toggleable="true">
+						<h:panelGrid columns="1" width="50%">
+							<p:column>
+								<p:outputLabel value="Nome:" for="inputNomeEvento"
+									style="text-align:left;" />
+								<p:inputText id="inputNomeEvento" value="" />
+							</p:column>
+						</h:panelGrid>
+						<h:panelGrid columns="3">
+							<f:facet name="header">
+								<p:outputLabel value="Período" />
+							</f:facet>
+							<p:column>
+								<p:outputLabel for="calendarFrom" value="De:" />
+								<p:calendar id="calendarFrom" mask="true" pattern="dd/MM/yyyy"
+									pages="3" />
+							</p:column>
+							<p:column>
+								<p:spacer width="50px" height="0px" />
+							</p:column>
+							<p:column>
+								<p:outputLabel for="calendarTo" value="Até:" />
+								<p:calendar id="calendarTo" mask="true" pattern="dd/MM/yyyy"
+									pages="3" />
+							</p:column>
+						</h:panelGrid>
+					</p:panel>
+
+					<h:panelGrid cellpadding="5" width="100%">
+
+						<p:column>
+							<p:outputLabel value="Assunto:" for="inputSubject"
+								style="text-align:left;" />
+							<p:inputTextarea id="inputSubject" value=""
+								style="text-align:left;" />
+						</p:column>
+					</h:panelGrid>
+
+					<p:panel header="Remetente"
+						style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+						toggleable="true">
+						<h:panelGrid cellpadding="5" columns="3">
+
+							<p:column>
+								<p:outputLabel value="Orgão do Remetente:" for="selectOrgao"
+									style="text-align:left;width:200px;" />
+								<p:selectOneMenu id="selectOrgao">
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Nome do Remetente:"
+									for="inputNameRemetente" style="text-align:left;width:200px;" />
+								<p:selectOneMenu id="inputNameRemetente" value="">
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Cargo do Remetente:"
+									for="inputCargoRemetente" style="text-align:left;width:200px;" />
+								<p:selectOneMenu id="inputCargoRemetente" value="">
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="Telefone:" for="inputTelefoneRemetente"
+									style="text-align:left;" />
+								<p:inputText id="inputTelefoneRemetente" value="" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="Logradouro:"
+									for="inputLogradouroRemetente" style="text-align:left;" />
+								<p:inputText id="inputLogradouroRemetente" value="" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="Bairro:" for="inputBairroRemetente"
+									style="text-align:left;" />
+								<p:inputText id="inputBairroRemetente" value="" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="Cidade:" for="inputCidadeRemetente"
+									style="text-align:left;" />
+								<p:inputText id="inputCidadeRemetente" value="" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="UF:" for="inputUFRemetente"
+									style="text-align:left;" />
+								<p:inputText id="inputUFRemetente" value="" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="CEP:" for="inputCEPRemetente"
+									style="text-align:left;" />
+								<p:inputText id="inputCEPRemetente" value="" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="Complemento:"
+									for="inputComplementoRemetente" style="text-align:left;" />
+								<p:inputText id="inputComplementoRemetente" value="" />
+							</p:column>
+
+						</h:panelGrid>
+					</p:panel>
+
+					<h:panelGrid columns="1" cellpadding="5" width="100%">
+
+						<p:column>
+							<p:outputLabel value="Observação:" for="inputObservation"
+								style="text-align:left;" />
+							<p:inputTextarea id="inputObservation" value="" />
+						</p:column>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<p:column>
+							<p:outputLabel for="calendarResolvTo" value="Resolver até:"
+								style="text-align:left;width:100px;" />
+							<p:calendar id="calendarResolvTo" mask="true"
+								pattern="dd/MM/yyyy" pages="3"
+								style="text-align:left;width:10px;" />
+						</p:column>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1" cellpadding="5">
+
+						<p:column>
+							<p:outputLabel for="selectStatusDocument" value="Situação:" />
+							<p:selectOneRadio id="selectStatusDocument"
+								value="#{documentController.document.situacao}">
+								<f:selectItems var="status" value="#{documentController.status}"
+									itemLabel="#{status}" itemValue="#{status}" />
+							</p:selectOneRadio>
+						</p:column>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1" cellpadding="5">
+
+						<p:column>
+							<p:outputLabel value="Responsável:" for="responsible"
+								style="text-align:left;" />
+							<p:selectOneMenu id="responsible"
+								value="#{documentController.document.enderecamento.nomeEnderecado}">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+							</p:selectOneMenu>
+						</p:column>
+					</h:panelGrid>
+
+					<p:panel header="Demanda"
+						style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+						toggleable="true">
+						<h:panelGrid cellpadding="5" width="100%">
+
+							<p:column>
+								<p:outputLabel value="Descrição:" for="descrcaoDemanda"
+									style="text-align:left;" />
+								<p:inputTextarea id="descrcaoDemanda" value="" />
+							</p:column>
+						</h:panelGrid>
+						<h:panelGrid cellpadding="5">
+							<p:column>
+								<p:outputLabel value="Situação:" for="situacaoDemanda"
+									style="text-align:left;" />
+								<p:selectOneRadio id="situacaoDemanda" value="">
+									<f:selectItem itemLabel="Pendente" itemValue="" />
+									<f:selectItem itemLabel="Resolvido" itemValue="" />
+								</p:selectOneRadio>
+							</p:column>
+						</h:panelGrid>
+					</p:panel>
+
+					<p:panel header="Arquivo(s)"
+						style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+						toggleable="true">
+
+						<p:panel header="Documento Principal"
+							style="border: #C4C4C4 solid 1px !important;margin-top: 5px;">
+
+							<p:fileUpload id="mainDocumentUploadFile"
+								value="#{documentController.uploadedFile}" auto="false"
+								label="Procurar..."
+								fileUploadListener="#{documentController.fileUploadListener}"
+								dragDropSupport="true" allowTypes="/(\.|\/)(pdf)$/"
+								invalidFileMessage="Arquivo inválido!" />
+						</p:panel>
+
+						<p:panel header="Anexo(s)"
+							style="border: #C4C4C4 solid 1px !important;margin-top: 5px;">
+
+							<p:fileUpload id="attachmentDocumentUploadFile"
+								value="#{documentController.uploadedFile}" auto="false"
+								label="Procurar..."
+								fileUploadListener="#{documentController.fileUploadListener}"
+								dragDropSupport="true" allowTypes="/(\.|\/)(pdf)$/"
+								invalidFileMessage="Arquivo inválido!" />
+						</p:panel>
+
+					</p:panel>
+
+				</p:panel>
+
+			</p:panel>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

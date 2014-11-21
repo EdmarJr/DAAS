@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ 
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:comps="http://meuscomponentes">
+
+	<rich:fileUpload
+		id="arquivosAnexos"
+		fileUploadListener="#{managedbean.upload}"		 
+		uploadData="#{managedbean.arquivos}"
+		immediateUpload="true"
+		acceptedTypes="pdf"
+		maxFilesQuantity="100"
+		addControlLabel="Procurar..."
+		clearAllControlLabel="Limpar Todos"
+		clearControlLabel="Limpar"
+		stopControlLabel="Cancelar"
+		uploadControlLabel="Adicionar"
+		cancelEntryControlLabel="Cancelar"
+		doneLabel="concluído"
+		onclear="richfileupload.remover(this.component, event);"
+		onuploadcomplete="richfileupload.redimensionar(this.component);"
+		listHeight="90px">
+		
+		<f:facet name="label">
+			<h:outputText value="{_KB}KB de {KB}KB enviado - {mm}:{ss}"/>
+		</f:facet>
+		<a4j:support event="onuploadcomplete" reRender="arquivosAnexos" />
+	</rich:fileUpload>
+	
+	<a4j:jsFunction 
+		name="RichFileUpload_ajaxAcaoRemover" 
+		action="#{managedbean.acaoRemover}" reRender="arquivosAnexos">
+		<a4j:actionparam name="arquivo" assignTo="#{managedbean.arquivo}"/>
+	</a4j:jsFunction>
+	<a4j:jsFunction 
+		name="RichFileUpload_ajaxAcaoRemoverTodos" reRender="arquivosAnexos"
+		action="#{managedbean.acaoRemoverTodos}"/>
+		
+	<t:saveState value="#{managedbean.arquivos}"/>
+</ui:composition>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+
+		<h:form id="documentSearchForm">
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:panel id="documentSearchPanel">
+				<p:breadCrumb>
+					<p:menuitem value="Início" />
+					<p:menuitem value="Consulta de Documento" />
+					<p:menuitem value="Dados da Consulta" />
+				</p:breadCrumb>
+
+				<p:panel>
+					<h:outputText value="Consulta de Documento" styleClass="title" />
+					<br />
+					<br />
+					<h:outputText value="Dados do Documento" styleClass="sub-title" />
+
+					<p:separator style="height: 1px; " />
+
+					<p:panel collapsed="false" toggleable="true">
+
+						<div>
+							<h:panelGrid columns="8">
+								<p:column style="margin-left: 10%; ">
+									<p:outputLabel value="Data de origem"
+										style="text-align: left; width: 100%; " />
+									<p:outputLabel for="outputDataOrigemDe" value="De: "
+										style="text-align: left; width: 100%; " />
+									<br />
+									<p:calendar id="outputDataOrigemDe" mask="true"
+										pattern="dd/MM/yyyy" pages="3" />
+								</p:column>
+								<p:column style="margin-left: 10%; ">
+									<br />
+									<p:outputLabel for="outputDataOrigemAte" value="Até: "
+										style="text-align: left; width: 100%; margin-top: 1.5%; " />
+									<br />
+									<p:calendar id="outputDataOrigemAte" mask="true"
+										pattern="dd/MM/yyyy" pages="3" />
+								</p:column>
+								<p:column>
+									<p:spacer width="50px" height="0px" />
+								</p:column>
+								<p:column style="margin-left: 10%; ">
+									<p:outputLabel value="Data de cadastro"
+										style="text-align: left; width: 100%; " />
+									<p:outputLabel for="outputDataCadastroDe" value="De: "
+										style="text-align: left; width: 100%; " />
+									<br />
+									<p:calendar id="outputDataCadastroDe" mask="true"
+										pattern="dd/MM/yyyy" pages="3" />
+								</p:column>
+								<p:column style="margin-left: 10%; ">
+									<br />
+									<p:outputLabel for="outputDataCadastroAte" value="Até: "
+										style="text-align: left; width: 100%; margin-top: 1.5%; " />
+									<br />
+									<p:calendar id="outputDataCadastroAte" mask="true"
+										pattern="dd/MM/yyyy" pages="3" />
+								</p:column>
+								<p:column>
+									<p:spacer width="50px" height="0px" />
+								</p:column>
+								<p:column style="margin-left: 10%; ">
+									<p:outputLabel value="Data de recebimento"
+										style="text-align: left; width: 100%; " />
+									<p:outputLabel for="outputDataRecebimentoDe" value="De: "
+										style="text-align: left; width: 100%; " />
+									<br />
+									<p:calendar id="outputDataRecebimentoDe" mask="true"
+										pattern="dd/MM/yyyy" pages="3" />
+								</p:column>
+								<p:column style="margin-left: 10%; ">
+									<br />
+									<p:outputLabel for="outputDataRecebimentoAte" value="Até: "
+										style="text-align: left; width: 100%; margin-top: 1.5%; " />
+									<br />
+									<p:calendar id="outputDataRecebimentoAte" mask="true"
+										pattern="dd/MM/yyyy" pages="3" />
+								</p:column>
+							</h:panelGrid>
+						</div>
+
+						<br />
+
+						<h:panelGrid columns="3" cellpadding="5" width="100%">
+
+							<p:column>
+								<p:outputLabel value="Classificação:" for="classificacao"
+									style="text-align: left; width: 100%; " />
+								<p:selectOneMenu id="classificacao"
+									style="text-align: left; width: 100%; ">
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+									<f:selectItem itemLabel="Expedido" itemValue="" />
+									<f:selectItem itemLabel="Recebido" itemValue="" />
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="Documento:" for="documento"
+									style="text-align: left; width: 100%; " />
+								<p:selectOneMenu id="documento"
+									style="text-align: left; width: 100%; ">
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+									<f:selectItem itemLabel="Externo" itemValue="" />
+									<f:selectItem itemLabel="Interno" itemValue="" />
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="Tipo de Documento:"
+									for="selectDocumentType" style="text-align:left;width:100%;" />
+								<p:selectOneMenu id="selectDocumentType"
+									value="#{documentController.document.tipo.id}"
+									style="text-align:left;width:100%;">
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+									<f:selectItems var="documentType"
+										value="#{documentController.documentTypeList}"
+										itemLabel="#{documentType.nome}"
+										itemValue="#{documentType.id}" />
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="Situação do Documento:" for="selectStatus"
+									style="text-align:left;width: 100%;" />
+								<p:selectOneMenu id="selectStatus"
+									value="#{documentController.document.situacao}"
+									style="text-align: left; width: 100%; ">
+									<f:selectItem itemLabel="Selecione..." itemValue="" />
+									<f:selectItems var="status"
+										value="#{documentController.status}"
+										itemLabel="#{status}" itemValue="#{status}" />
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+								<p:outputLabel for="inputNumber" value="Identificador:"
+									style="text-align:left;width: 100%;" />
+								<p:inputText id="inputNumber"
+									value="#{documentController.document.numero}" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel for="inputRegistryNumber"
+									value="Número do documento:"
+									style="text-align:left; width: 100%;" />
+								<p:inputText id="inputRegistryNumber"
+									value="#{documentController.document.numeroRegistro}" />
+							</p:column>
+						</h:panelGrid>
+						<br />
+						<p:commandButton ajax="false"
+							action="#{documentController.search()}" value="Consultar"
+							style="width: 15%; " />
+					</p:panel>
+
+					<p:separator style="height: 1px; " />
+
+					<p:dataTable id="documentDataTable" var="document"
+						rowIndexVar="documentIndex"
+						value="#{documentController.documentList}"
+						paginator="#{!documentController.documentList.isEmpty()}"
+						rows="10" lazy="true" paginatorPosition="bottom" scrollable="true"
+						scrollHeight="45%" scrollWidth="100%">
+
+						<f:facet name="header">
+							<h:outputText value="Registro(s)" />
+						</f:facet>
+
+						<p:column headerText="Nº do Registro">
+							<h:outputText value="#{document.numeroRegistro}" />
+						</p:column>
+
+<!-- 						<p:column headerText="Data da Entrada"> -->
+<!-- 							<h:outputText value="#{document.entryDate}"> -->
+<!-- 								<f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss" /> -->
+<!-- 							</h:outputText> -->
+<!-- 						</p:column> -->
+
+						<p:column headerText="Tipo do Documento">
+							<h:outputText value="#{document.tipo.nome}" />
+						</p:column>
+
+						<p:column headerText="Responsável">
+							
+						</p:column>
+
+						<p:column width="5%">
+							<h:outputLink value="detail.xhtml">
+								<f:param name="documentId" value="#{document.id}" />
+								<h:outputText value="Alterar" />
+							</h:outputLink>
+						</p:column>
+
+					</p:dataTable>
+
+					<p:separator style="height: 1px; " />
+
+					<p:panel style="text-align: right;">
+						<p:commandButton value="#{msg['botao.alterar']}"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-pencil" />
+
+						<p:commandButton styleClass="ui-confirmdialog-yes"
+							icon="ui-icon-trash" value="#{msg['botao.excluir']}"
+							update=":documentSearchForm:msgs">
+							<p:confirm icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:commandButton styleClass="ui-confirmdialog-yes"
+							icon="ui-icon-bookmark" value="#{msg['botao.andamento']}" />
+
+						<p:commandButton styleClass="ui-confirmdialog-yes"
+							icon="ui-icon-note" value="#{msg['botao.historico']}" />
+
+						<p:commandButton styleClass="ui-confirmdialog-yes"
+							icon="ui-icon-document" value="#{msg['botao.imprimir']}" />
+					</p:panel>
+
+					<p:confirmDialog id="confirmDialogDel"
+						message="Confirma a exclusão do Documento para esta unidade?"
+						header="#{msg['label.confirmar.exclusao']}" global="true"
+						severity="alert" hideEffect="explode" showEffect="fade">
+
+						<p:panel style="text-align:center;">
+							<p:commandButton value="#{label['button.yes']}"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="#{label['button.no']}"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:panel>
+					</p:confirmDialog>
+
+				</p:panel>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

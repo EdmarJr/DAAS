@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		<style>
+label {
+	white-space: nowrap;
+}
+</style>
+		<h:form id="documentAddForm" enctype="multipart/form-data">
+			<br />
+			<!-- <div>
+				<ui:include src="includes/visualizarRemetenteDestinatarioExterno.xhtml">
+					<ui:param name="documento" value="#{VisualizaDocumentoControlle.documento}" />
+				</ui:include>
+			</div>
+			
+			<div>
+				<ui:include src="includes/visualizarRemetenteDestinatarioInterno.xhtml">
+					<ui:param name="documento" value="#{VisualizaDocumentoControlle.documento}" />
+				</ui:include>
+			</div>
+			<br />
+			<br /> -->
+			<div>
+				<ui:include src="includes/visualizarDocumento.xhtml">
+					<ui:param name="documento" value="#{requestScope.documentoSelecionado}" />
+				</ui:include>
+			</div>
+			<!-- <div>
+				<ui:include src="includes/visualizarProcesso.xhtml">
+					<ui:param name="documento" value="#{VisualizaDocumentoControlle.documento}" />
+				</ui:include>
+			</div> -->
+			<!-- <div>
+				<ui:include src="includes/visualizarTarefa.xhtml">
+					<ui:param name="documento" value="#{documentController.document}" />
+				</ui:include>
+			</div> -->
+		</h:form>
+	</ui:define>
+</ui:composition>

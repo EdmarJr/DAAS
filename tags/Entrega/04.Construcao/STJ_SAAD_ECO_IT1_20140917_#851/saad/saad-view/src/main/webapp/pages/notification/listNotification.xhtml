@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+
+		<h:form id="formListNotification">
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:tabMenu activeIndex="1">
+				<p:menuitem value="Meus Avisos" outcome="minhasNotificacoes"/>
+				<p:menuitem value="Avisos da Unidade" outcome="listNotification"/>
+				<p:menuitem value="Alertas" outcome="listAlert"/>
+				<p:menuitem value="Minhas Tarefas" outcome="myTasks"/>
+			</p:tabMenu>
+
+			<p:dataTable
+					var="notification" value="#{notificationController.listAllByPage()}"
+					paginator="true" rows="15"
+					paginatorPosition="bottom" paginatorAlwaysVisible="true"
+					scrollable="true" scrollHeight="330">
+				<p:ajax event="page" listener="#{notificationController.dataTableChangeAll}" update="@(this)" />
+<!-- 				<p:ajax event="sort" listener="#{notificationController.dataTableSort}" update="@(this)" /> -->
+				<f:facet name="header">
+					Lista de avisos
+				</f:facet>
+				<p:column id="column_tipo_aviso" width="10%" styleClass="#{avisoDecorator.getNotificationStyleClass(notification)}">
+					<f:facet name="header">
+						<h:outputText value="Tipo" />
+					</f:facet>
+					<h:outputText value="#{notification.tipoDocumento}" />
+				</p:column>
+				<p:column id="column_numero_aviso" width="10%" styleClass="#{avisoDecorator.getNotificationStyleClass(notification)}">
+					<f:facet name="header">
+						<h:outputText value="Nº" />
+					</f:facet>
+					<h:outputText value="#{notification.numero}" />
+				</p:column>
+				<p:column id="column_descricao_aviso" width="40%" styleClass="#{avisoDecorator.getNotificationStyleClass(notification)}">
+					<f:facet name="header">
+						<h:outputText value="Descrição" />
+					</f:facet>
+					<h:outputText value="#{notification.descricao}" />
+				</p:column>
+				<p:column width="10%" styleClass="#{avisoDecorator.getNotificationStyleClass(notification)}">
+					<f:facet name="header">
+						<h:outputText value="Endereçado" />
+					</f:facet>
+					<h:outputText value="#{notification.nomesDestinatarios}" />
+				</p:column>
+				<p:column id="column_dataInclusao_aviso" width="10%" styleClass="#{avisoDecorator.getNotificationStyleClass(notification)}">
+					<f:facet name="header">
+						<h:outputText value="Data" />
+					</f:facet>
+					<h:outputText value="#{notification.dataInclusao}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column id="column_situacao_aviso" width="10%" styleClass="#{avisoDecorator.getNotificationStyleClass(notification)}">
+					<f:facet name="header">
+						<h:outputText value="Situação" />
+					</f:facet>
+					<h:outputText value="#{notification.situacao.nome}"/>
+				</p:column>
+				<p:column width="10%" styleClass="#{avisoDecorator.getNotificationStyleClass(notification)}">
+					<f:facet name="header">
+						<h:outputText value="Acompanhamento" />
+					</f:facet>
+					<p:commandLink ajax="false" action="#{notificationController.viewNotification(notification.id)}" value="Visualizar" />
+				</p:column>
+			</p:dataTable>
+			
+			<p:panel style="width:100%;text-align:right;">
+				<h:outputText value="Total de avisos pendentes: #{notificationController.countAll()}" />
+			</p:panel>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>

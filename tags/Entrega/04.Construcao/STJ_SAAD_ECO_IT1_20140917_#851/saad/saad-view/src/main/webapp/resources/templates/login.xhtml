@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>SAAD - Sistema de Acompanhamento Administrativo de
+		Documentos</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<h:outputStylesheet library="css" name="app.css" />
+	<h:outputStylesheet library="css" name="screen.css" />
+	<h:outputStylesheet library="templates/bootstrap/css"
+		name="bootstrap.css" />
+	<h:outputStylesheet library="templates/bootstrap/css"
+		name="bootstrapCtis.css" />
+	<h:outputStylesheet library="templates/bootstrap/css"
+		name="offcanvas.css" />
+
+	<h:outputScript target="head" library="templates/bootstrap/js"
+		name="bootstrap.js" />
+	<h:outputScript target="head" library="templates/bootstrap/js"
+		name="offcanvas.js" />
+	<h:outputScript target="head" library="templates/bootstrap/js"
+		name="locale-primefaces.js" />
+
+</h:head>
+<h:body>
+
+	<div id="login">
+		<div id="loginHeader">
+			<div>
+				<a class="navbar-brand" href="#" />
+			</div>
+		</div>
+	 	<div id="loginContent">
+			<ui:insert name="content">
+	            [Template content will be inserted here]
+	        </ui:insert>
+		</div>
+	</div>
+</h:body>
+</html>

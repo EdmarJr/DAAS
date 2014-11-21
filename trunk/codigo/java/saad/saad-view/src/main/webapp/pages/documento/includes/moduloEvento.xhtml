@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<p:panel header="Evento" styleClass="saad-border-solid" toggleable="true" rendered="#{controller.documento.relacionadoAEvento}">
+		
+		<div class="pure-g">
+			<div class="pure-u-1-2">
+				<p:outputLabel value="Nome:" for="inputNomeEvento" styleClass="labelAuto"/>
+				<p:inputText disabled="#{!controller.alterar}" id="inputNomeEvento" value="#{controller.documento.evento.nomeEvento}"
+					required="true" requiredMessage="Campo obrigatório" >
+				</p:inputText>
+			</div>				
+		</div>
+			
+		<div class="pure-g">
+			<div class="pure-u-1-1" style="margin-top: 10px;">
+				<p:outputLabel style="text-align: left;" value="Período" />
+			</div>
+			<div class="pure-u-1-8">
+				<p:outputLabel for="calendarFrom" style="margin-bottom: 8px" value="De:" />
+				<p:calendar disabled="#{!controller.alterar}" id="calendarFrom" mask="true" pattern="dd/MM/yyyy"
+					required="true" requiredMessage="Campo obrigatório"
+					value="#{controller.documento.evento.dataInicioEvento}">
+					<p:growl id="messagesFrom" showDetail="true" />
+				</p:calendar>
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-8">
+				<p:outputLabel for="calendarTo" style="margin-bottom: 8px" value="Até:" />
+				<p:calendar disabled="#{!controller.alterar}" id="calendarTo" mask="true" pattern="dd/MM/yyyy"
+					required="true" requiredMessage="Campo obrigatório"
+					value="#{controller.documento.evento.dataTerminoEvento}">
+					<p:growl id="messagesTo" showDetail="true" />
+				</p:calendar>
+			</div>
+		</div>
+		<div class="pure-g">
+			<div class="pure-u-1-1" style="margin-top: 10px;">
+				<p:outputLabel style="text-align: left;" value="Hora" />
+			</div>
+			<div class="pure-u-1-8">
+				<p:outputLabel for="calendarFromHora" style="margin-bottom: 8px" value="De:" />
+				<p:calendar disabled="#{!controller.alterar}" id="calendarFromHora" value="#{controller.documento.evento.horaInicio}" pattern="HH:mm a" timeOnly="true"/>
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-8">
+				<p:outputLabel for="calendarToHora" style="margin-bottom: 8px" value="Até:"/>
+				<p:calendar disabled="#{!controller.alterar}" id="calendarToHora" value="#{controller.documento.evento.horaTermino}" pattern="HH:mm a" timeOnly="true"/>
+			</div>
+		</div>
+		<br/>
+		<div class="pure-g">
+			<div class="pure-u-1-1" style="margin-top: 10px;">
+				<p:outputLabel value="Observação:" for="inputObservation" style="text-align:left;" />
+				<p:inputTextarea disabled="#{!controller.alterar}" id="inputObservation"
+					value="#{controller.documento.evento.observacaoEvento}" />
+			</div>
+		</div>
+	</p:panel>
+</html>

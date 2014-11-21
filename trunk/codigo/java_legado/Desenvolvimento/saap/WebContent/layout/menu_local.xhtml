@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xmlns:rich="http://richfaces.org/rich" 
+	lang="pt-br">
+	<h:form id="menuLocal">
+	<div id="moldura-menu-aplicativo"> 
+		<div id="menu-aplicativo"> 
+			<div id="controle-exibicao-menu">
+				<span>Menu</span>
+				<img id="idImgMenu" src="/img/ico-ocultar-menu.gif" alt="Exibir/ocultar menu" title="Exibir/ocultar menu" style="cursor:pointer;" 
+					 onclick="acaoMoverMenu(this, 'menu', 'moldura-corpo', '/img/ico-ocultar-menu.gif', '/img/ico-exibir-menu.gif')" onkeydown="javascript:acaoMoverMenu(this, 'menu', 'moldura-corpo', '/img/ico-ocultar-menu.gif', '/img/ico-exibir-menu.gif')" />
+			</div>
+			<ul id="menu">
+				<li>
+					<a id="link-menu-item1" href="#{request.contextPath}/paginas/index.faces" title="Tela Inicial">Home</a>
+				</li>
+				<li>
+					<a id="link-menu-item2" href="javascript:abrirItemMenu(2);" title="Manutenção de Documentos">Documento</a> 
+					<ul id="menu-item2" style="display:none;">
+						<li class="sub-item">
+							<h:commandLink action="#{saapDocAdmPresidenciaAction.iniciarIncluirInicio}">Incluir</h:commandLink>
+						</li>
+						<li class="sub-item">
+							<a id="link-submenu-item2-1" href="javascript:abrirSubitemMenu('2-1', true);" >Consultar</a>
+							<ul id="submenu-item2-1" style="display:none;">
+								<li class="sub-item">
+									<h:commandLink action="#{saapDocAdmPresidenciaAction.iniciar}">Documento</h:commandLink>
+								</li>
+								<li class="sub-item">
+									<h:commandLink action="#{saapAdmtAdmPresidenciaAction.iniciar}">Andamento</h:commandLink>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<a id="link-menu-item3" href="javascript:abrirItemMenu(3);" title="Manutenção de Pendências">Pendência</a> 
+					<ul id="menu-item3" style="display:none;">
+						<li class="sub-item">
+							<a href="#{request.contextPath}/paginas/UC_ManutencaoSaapPendenciaAdmPresidencia/inclusaoInicio.faces" >Incluir</a>
+						</li>
+						<li class="sub-item">
+							<h:commandLink action="#{listarPendenciasAction.iniciar}" id="lnkListarPendencias">Listar</h:commandLink>
+						</li>
+						<li class="sub-item">
+							<a id="link-submenu-item3-2" href="javascript:abrirSubitemMenu('3-2', true);" >Consultar</a>
+							
+							<ul id="submenu-item3-2" style="display:none;">
+								<li class="sub-item"><h:commandLink action="#{saapPendenciaAdmPresidenciaAction.iniciar}">Pendência</h:commandLink></li>
+								<li class="sub-item"><h:commandLink action="#{saapAdmtPendenciaAdmAction.iniciar}">Andamento</h:commandLink></li>
+							</ul>						
+						</li>
+
+					</ul>
+				</li>
+
+				<li>
+					<a id="link-menu-item4" href="javascript:abrirItemMenu(4);" title="Manutenção de Gestão">Gestão</a> 
+					<ul id="menu-item4" style="display:none;">
+						<li class="sub-item">
+							<a href="#{request.contextPath}/paginas/UC_ManutencaoSaapGestaoPresidencia/inclusaoInicio.faces" >Incluir</a>
+						</li>
+						<li class="sub-item">
+							<a href="#{request.contextPath}/paginas/UC_ManutencaoSaapGestaoPresidencia/inicial.faces" >Consultar</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE facelet-taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN" "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
+
+<facelet-taglib xmlns="http://java.sun.com/JSF/Facelet">
+    <namespace>http://meuscomponentes</namespace>
+    <tag>
+        <tag-name>facelet-fileupload</tag-name>
+        <source>componente/facelet-fileupload.xhtml</source>
+    </tag>
+    <tag>
+        <tag-name>richDataTablePaginado</tag-name>
+        <component>
+            <component-type>teste.DataTable</component-type>
+        </component>
+    </tag>
+</facelet-taglib>

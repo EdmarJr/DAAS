@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ 
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xmlns:comps="http://meuscomponentes"
+	lang="pt-br" template="#{msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			#{msg.tela_alteracao_documento}
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236336" />
+
+		<ui:define name="corpo">
+			<div id="conteudo-acessibilidade">
+			<h:form id="alteracao">
+			
+				<a4j:jsFunction name="atribuiSeqDocAdm" action="#{consultarHistoricoDocumentoAction.consultarHistoricoDocumento}" limitToList="true" ajaxSingle="true" reRender="mensagens,formHistoricoDocumento" ignoreDupResponses="true"  >
+						<a4j:actionparam name="seqDocAdm" assignTo="#{consultarHistoricoDocumentoAction.visao.seqDocAdm}" />
+				</a4j:jsFunction>
+				
+				<a4j:jsFunction name="a4jCarregarAnteriorAlteracao"
+							action="#{saapDocAdmPresidenciaAction.carregarDocAnteriorNaAlteracao}"
+							immediate="true"
+							reRender="alteracao"
+							ajaxSingle="true" />
+							
+				<a4j:jsFunction name="a4jCarregarProximoAlteracao"
+							action="#{saapDocAdmPresidenciaAction.carregarDocProximoNaAlteracao}"
+							immediate="true"
+							reRender="alteracao"
+							ajaxSingle="true" />	
+				
+				<h4>Dados do documento</h4>
+
+				<table class="form-table">
+							<tbody>
+								<tr>
+									<td width="25%" class="form-label-primario">
+											N. do registro<br />
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.id }</span>
+									</td>
+									<td width="25%" class="form-label-primario">
+										<label class="form-label-primario">
+											Data de entrada<br />
+											<span class="form-label-secundario">
+											<h:outputText value="#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.tsEntradaDoc }" >
+								 			<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+											</span>
+
+										</label>
+									</td>
+									<td width="25%">
+										<label class="form-label-primario">
+											Gestão<br />
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeMinistroPresidente }</span>
+										</label>
+									</td>
+									<td>
+									
+									<a4j:commandButton value="«" title="#{msg.hint_navegacao_anterior}" 
+									  styleClass="form-button-p02" id="btnAnteriorDetalhe" immediate="true" 
+									  rendered="#{saapDocAdmPresidenciaAction.visao.apresentaAnteriorAlteracao}"
+									  onclick="a4jCarregarAnteriorAlteracao();">
+									</a4j:commandButton>
+									<a4j:commandButton value="»" title="#{msg.hint_navegacao_proximo}" 
+										styleClass="form-button-p02"
+										id="btnProximoDetalhe" immediate="true" 
+										rendered="#{saapDocAdmPresidenciaAction.visao.apresentaProximoAlteracao}"
+										onclick="a4jCarregarProximoAlteracao();">
+									</a4j:commandButton>									
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<label class="form-label-primario">
+											Tipo de documento: <br/>
+										<h:selectOneMenu value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.indTipoDoc }" styleClass="form-text" 
+											label="#{msg.subclasse}" style="width: 140px;" required="false" id="selectTipoDocumento" 
+											onchange="showHideConvite(this.value);alterarDivBotoes();">
+												<f:selectItem itemValue="1" itemLabel="Aviso"/>
+												<f:selectItem itemValue="2" itemLabel="Carta"/>
+												<f:selectItem itemValue="3" itemLabel="Convite"/>
+												<f:selectItem itemValue="4" itemLabel="E-mail"/>
+												<f:selectItem itemValue="5" itemLabel="Memorando"/>
+												<f:selectItem itemValue="6" itemLabel="Ofício"/>												
+												<f:selectItem itemValue="7" itemLabel="Processo"/>
+										</h:selectOneMenu>
+																				
+									</label>
+									</td>
+									<td>
+										<label class="form-label-primario">
+											Arquivado na pasta:<br/>
+											<h:inputText styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeLocalFisicoDoc }" label="${ msg.saapDocAdmPresidencia_descDoc }" size="15" maxlength="20" required="false" id="compsaapDocAdmPresidenciaLocalFisico" onblur="trim(this);"  />
+										</label>
+									</td>
+									<td width="20%">
+										<label class="form-label-primario">
+											Situação:<br/>
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.indSituacaoDocFormatado }</span>
+										</label>
+									</td>								
+									<td width="20%">
+										<label class="form-label-primario">
+											Alterado por:<br/>
+											<span class="form-label-secundario">#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeUsuarioAlteracao}</span>
+										</label>	
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4">
+										<label class="form-label-primario">
+											<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+											N. do documento / Descrição:<br/>
+											<h:inputText styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.descDoc }" label="Número do documento / descrição" size="100" 
+												maxlength="100" required="false" id="compsaapDocAdmPresidenciadescDoc" 
+												onchange="alterarDivBotoes();" onblur="trim(this);" />
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4">
+										<label class="form-label-primario">
+											<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+											Assunto / Evento:<br/>
+											
+											<h:inputTextarea styleClass="form-text" 
+											value="#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.txtAssuntoDoc }" 
+											label="Assunto / Evento" size="100" cols="80" rows="4" maxlength="500"
+											onchange="alterarDivBotoes();"
+											onblur="alterarDivBotoes();" 
+											required="false" id="compsaapDocAdmPresidenciadescAssuntoDoc" 
+											onkeypress="return new UtilFormatador().funcaoContarCaracteres(this, event, 500)" 
+											onkeyup="return new UtilFormatador().funcaoContarCaracteres(this, event, 500)" />
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4">
+										<label class="form-label-primario">
+											Observações:<br/>
+											<h:inputTextarea styleClass="form-text" value="#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.txtObsDoc }" label="${ msg.saapDocAdmPresidencia_descDoc }" cols="80" rows="4" size="100" maxlength="500" required="false" id="compsaapDocAdmPresidenciadescAssuntoObsDoc" onkeypress="return new UtilFormatador().funcaoContarCaracteres(this, event, 500)" onkeyup="return new UtilFormatador().funcaoContarCaracteres(this, event, 500)" />
+										</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						
+						<div id="divConvite" style="display: visible">
+							<h4>Dados do convite</h4>
+							<table class="form-table">
+								<tbody>
+									<tr>
+										<td width="200" colspan="2">
+											<label class="form-label-primario">
+												<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+												Quem convidou:<br />
+												<h:inputText styleClass="form-text" 
+												  value="#{ saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.nomeRespConvite}" 
+												  label="${ msg.saapDocAdmPresidencia_respConvite }" size="100" maxlength="50" 
+												  onchange="alterarDivBotoes();"
+												  required="false" id="compsaapDocAdmPresidenciaRespConvite" onblur="trim(this);" />
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td width="150">
+						
+											<label class="form-label-primario">
+												<cc:label value="#{msg.saapDocAdmPresidencia_dtEventoConvite}:" for="dataInicialConvite" obrigatorio="true" />
+												<rich:calendar datePattern="dd/MM/yyyy" inputClass="form-text" 
+													inputMaxLength="16" inputStyle="width:100px;" style="width:200px"
+													oninputkeydown="alterarDivBotoes();utilformatador.formatarDataDoCampo(event, this)" 
+													oninputkeypress="alterarDivBotoes();utilformatador.formatarDataDoCampo(event, this)" 
+													oninputkeyup="alterarDivBotoes();utilformatador.formatarDataDoCampo(event, this)"
+													value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.dtHrEventoConvite}" 
+													label="${msg.saapGestaoPresidencia_dtInicialVigGestao}"
+													enableManualInput="true" 
+													ondatemouseout="alterarDivBotoes();"
+													title="#{msg['exibir.calendario']}"
+													converterMessage="#{msg.saapDocAdmPresidencia_dtEventoConvite}: #{mensagem['MA007']}"
+													required="false" id="dataInicialConvite" 
+													buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif" >
+													<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+													<f:validator validatorId="ValidadorDeData"/>
+												</rich:calendar>
+												
+											</label>
+										</td>
+										<td width="300">
+											<label class="form-label-primario">
+												<span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+												Hora do evento:<br/>
+												<span class="form-label-secundario">
+												
+												<h:inputText  styleClass="form-text" 
+													value="#{ saapDocAdmPresidenciaAction.visao.horaInicialConvite}" 
+													label="${ msg.saapDocAdmPresidencia_descDoc }" size="5" maxlength="5" 
+													required="false" id="compsaapDocAdmPresidenciaHoraInicio" onblur="trim(this);" 
+													onkeydown="alterarDivBotoes();return new UtilFormatador().formatarHoraDoCampo(event, this)" 
+													onkeypress="alterarDivBotoes();return new UtilFormatador().formatarHoraDoCampo(event, this)" 
+													onkeyup="alterarDivBotoes();new UtilFormatador().formatarHoraDoCampo(event, this)" >
+												</h:inputText>
+												
+												</span>
+											</label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<h4>Arquivos anexos</h4>
+
+						<a4j:outputPanel id="arquivosAnexosAlt" ajaxRendered="true">
+							<ui:repeat value="#{saapDocAdmPresidenciaAction.visao.anexosGravados}" var="anexo">
+								<h:commandLink actionListener="#{saapDocAdmPresidenciaAction.baixarArquivo}" immediate="true">
+									<f:attribute name="nomeArquivo" value="#{anexo.fileName}" />
+									<h:outputText value="#{anexo.fileName}"/>
+								</h:commandLink>
+								<a4j:commandLink actionListener="#{saapDocAdmPresidenciaAction.removerArquivo}" immediate="true" reRender="arquivosAnexosAlt">
+									<f:attribute name="nomeArquivo" value="#{anexo.fileName}" />
+									<img src="/img/ico-fechar.gif" border="0" />
+								</a4j:commandLink><br />
+							</ui:repeat>
+         				</a4j:outputPanel>
+                        <br/>
+						<comps:facelet-fileupload managedbean="#{saapDocAdmPresidenciaAction}"/>
+
+                        <br/>
+                         <br/>
+
+
+				<h4>Andamentos</h4>
+				
+
+				<div class="table-grid-rolagem">
+				<rich:dataTable id="saapDocAdmPresidencias" var="andamentos" rows="25" cellspacing="1"
+	                    binding="#{saapDocAdmPresidenciaAction.visao.dataTableAndamentosAlteracao}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col,col2" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.listaAndamentos}"
+	                    rendered="#{not empty saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.listaAndamentos}">
+	                    	
+						<f:facet name="caption">
+							<h:column>
+								Andamentos
+							</h:column>
+						</f:facet>
+						
+						<h:column id="colidAlt"  >
+							<f:facet name="header">
+								Andamento
+							</f:facet>
+							<h:outputText value="#{andamentos.saapAdmtAdmPresidencia.descAdmtAdm}" styleClass="situacao-inativo" />
+						</h:column>
+						
+						<h:column id="colidAlt2"  >
+							<f:facet name="header">
+								Data
+							</f:facet>
+							<h:outputText value="#{andamentos.saapAdmtAdmPresidencia.tsEntradaAdmt}" >
+								 	<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</h:column>
+						
+						<h:column id="colidAlt3"  >
+							<f:facet name="header">
+								Responsável
+							</f:facet>
+							<h:outputText value="#{andamentos.responsavel}" styleClass="situacao-inativo" />
+						</h:column>
+				</rich:dataTable>
+				</div>
+					
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapDocAdmPresidencias" fastControls="hide" id="datascroller" 
+							renderIfSinglePage="false" oncomplete="configurarEstadoBotoes('listagem', false)" 
+							actionListener="#{saapDocAdmPresidenciaAction.detalhar}" 
+							page="#{saapDocAdmPresidenciaAction.visao.pagina}">
+					
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+	
+				<p class="form-legenda-campo-obrigatorio">
+					(<span class="form-campo-obrigatorio">*</span>) Campos de preenchimento obrigatório
+				</p>
+				<div class="form-barra-botoes" style="display:block" id="divBotoes">
+					<h:commandButton value="#{msg.confirmar}" title="#{msg.hint_botao_gravar}" styleClass="form-button-p03"
+						 action="#{saapDocAdmPresidenciaAction.editar}"/>
+						 
+					<h:commandButton value="Salvar como" title="Salvar como" styleClass="form-button-m01"
+							action="#{saapDocAdmPresidenciaAction.salvarComo}" />
+
+					<h:commandButton id="btnDesativarAlt" value="Desativar" title="Desativar" styleClass="form-button-p03"
+						   action="#{saapDocAdmPresidenciaAction.desativarNaAlteracao}" immediate="true"  onclick="return confirmar(this, '#{mensagem['framework.mensagem.confirma.desativar.um']}')"/>
+
+					<input type="button" value="#{msg.historico}" title="Histórico" class="form-button-p03" onclick="atribuiSeqDocAdm('#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.id}');"/>
+
+					<h:commandButton value="#{msg.andamentos}" title="#{msg.andamentos_cadastrados}" styleClass="form-button-m02" 
+						 actionListener="#{saapAdmtAdmPresidenciaAction.carregarDetalhe}"  
+						 action="${saapAdmtAdmPresidenciaAction.detalhar}" immediate="true">
+						<f:attribute name="visao.docSelecionado" value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.documentoBasico}"/>
+						<f:attribute name="visao.andamentoSelecionadoConsulta" value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.andamentoDocumento}"/>
+						<f:attribute name="caminhoRetorno" value="saapDocAdmPresidenciaAction.editar"/>
+					</h:commandButton>						 
+						   
+					<h:commandButton id="btnImprimir" value="#{msg.imprimir}" title="#{msg.gera_relatorio_conforme_conteudo_apresentado_em_tela}" styleClass="form-button-p03"
+						   action="#{saapDocAdmPresidenciaAction.imprimirDocumento}" immediate="true"  />
+						   
+					<h:commandButton value="#{msg.restaurar}" title="#{msg.hint_botao_restaura}" styleClass="form-button-p03" 
+							action="#{saapDocAdmPresidenciaAction.iniciarEditar}" immediate="true"/>
+							
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p03" 
+						 actionListener="#{saapDocAdmPresidenciaAction.limparPaginacao}"  
+						 action="#{saapDocAdmPresidenciaAction.consultar}" immediate="true">
+					</h:commandButton>						 
+				</div>
+				<!-- Criado por conta da lista de arquivos de upload -->
+				<div class="form-barra-botoes" style="display:none" id="divBotoesA4j">
+					<a4j:commandButton value="#{msg.confirmar}" title="#{msg.hint_botao_gravar}" styleClass="form-button-p03"
+						 action="#{saapDocAdmPresidenciaAction.editar}" oncomplete="alterarDivBotoes();"  
+						 reRender="mensagens"/>
+						 
+					<h:commandButton value="Salvar como" title="Salvar como" styleClass="form-button-m01"
+							action="#{saapDocAdmPresidenciaAction.salvarComo}" />
+
+					<h:commandButton value="Desativar" title="Desativar" styleClass="form-button-p03"
+						   action="#{saapDocAdmPresidenciaAction.desativarNaAlteracao}" immediate="true"  onclick="return confirmar(this, '#{mensagem['framework.mensagem.confirma.desativar.um']}')"/>
+
+					<input type="button" value="#{msg.historico}" title="Histórico" class="form-button-p03" onclick="atribuiSeqDocAdm('#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.id}');"/>
+
+					<h:commandButton value="#{msg.andamentos}" title="#{msg.andamentos_cadastrados}" styleClass="form-button-m02" 
+						 actionListener="#{saapAdmtAdmPresidenciaAction.carregarDetalhe}"  
+						 action="${saapAdmtAdmPresidenciaAction.detalhar}" immediate="true">
+						<f:attribute name="visao.docSelecionado" value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.documentoBasico}"/>
+						<f:attribute name="visao.andamentoSelecionadoConsulta" value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO.andamentoDocumento}"/>
+						<f:attribute name="caminhoRetorno" value="saapDocAdmPresidenciaAction.editar"/>
+					</h:commandButton>						 
+						   
+					<h:commandButton value="#{msg.imprimir}" title="#{msg.gera_relatorio_conforme_conteudo_apresentado_em_tela}" styleClass="form-button-p03"
+						   action="#{saapDocAdmPresidenciaAction.imprimirDocumento}" immediate="true"  />
+						   
+					<h:commandButton value="#{msg.restaurar}" title="#{msg.hint_botao_restaura}" styleClass="form-button-p03" 
+							action="#{saapDocAdmPresidenciaAction.iniciarEditar}" immediate="true"/>
+							
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p03" 
+						 actionListener="#{saapDocAdmPresidenciaAction.limparPaginacao}"  
+						 action="#{saapDocAdmPresidenciaAction.consultar}" immediate="true">
+					</h:commandButton>						 
+				</div>
+				
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consulta}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultaClone}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.entidade.id}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaDetalhe}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.anexos}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.anexosGravados}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.anexosExcluidos}" />
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestao}"/>		
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestoes}" />		
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.idDocumento}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.lista}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.horaInicialConvite}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.voltarPara}"/>
+				
+			</h:form>
+			</div>
+			
+			<!-- Modal Panel histórico do documento  -->
+			<ui:include src="/paginas/UC_ConsultarHistoricoDocumento/inicial.xhtml" />
+			
+		<script>
+						
+			var cmbTipoDocumento= utilobjeto.getObjeto("alteracao:selectTipoDocumento");
+			var nomeRespConvite = utilobjeto.getObjeto("alteracao:compsaapDocAdmPresidenciaRespConvite");
+			var compsaapDocAdmPresidenciaHoraInicio = utilobjeto.getObjeto("alteracao:compsaapDocAdmPresidenciaHoraInicio");
+
+			
+			function showHideConvite(valor) {
+				var divConvites = document.getElementById('divConvite');
+				
+				if (valor == 3) {
+					divConvites.style.display = 'block';
+				} else {
+					nomeRespConvite.value='';
+					compsaapDocAdmPresidenciaHoraInicio.value='';
+					divConvites.style.display = 'none';
+				}
+			}
+
+			function alterarDivBotoes(){
+				var divBotoes = document.getElementById('divBotoes');
+				var divBotoesA4j = document.getElementById('divBotoesA4j');
+				var numDoc = document.getElementById('alteracao:compsaapDocAdmPresidenciadescDoc');
+				var assunto = document.getElementById('alteracao:compsaapDocAdmPresidenciadescAssuntoDoc');
+				var tipoDocumento = document.getElementById('alteracao:selectTipoDocumento');
+
+				if (tipoDocumento.value != 3) {
+					if ((numDoc.value.trim() == '') || (assunto.value.trim() == '')) {
+						divBotoes.style.display = 'none';	
+						divBotoesA4j.style.display = 'block';
+					}else {
+						divBotoes.style.display = 'block';	
+						divBotoesA4j.style.display = 'none';
+					}
+				}else {
+					
+					var quemConvidou = document.getElementById('alteracao:compsaapDocAdmPresidenciaRespConvite');
+					var dataInicialConvite = document.getElementById('alteracao:dataInicialConviteInputDate');
+					var horaInicio = document.getElementById('alteracao:compsaapDocAdmPresidenciaHoraInicio');
+					var dataValida = false;
+					var horaValida = false;
+
+					dataValida = Verifica_Data(dataInicialConvite.value);
+					horaValida = Verifica_Hora(horaInicio.value);
+
+					if ((numDoc.value.trim() == '') || (assunto.value.trim() == '') || (quemConvidou.value.trim() == '') 
+						|| (!dataValida) || (!horaValida))  {
+						divBotoes.style.display = 'none';	
+						divBotoesA4j.style.display = 'block';
+					}else {
+						divBotoes.style.display = 'block';	
+						divBotoesA4j.style.display = 'none';
+					}
+				}
+			}	
+
+			//se existir relatório, abra uma pop-up para exibição do mesmo.
+			if ("#{sessionScope["relatorio"]}" != "") {
+				var utiljanela = new UtilJanela();
+				utiljanela.abrirPopUp("#{request.contextPath}/br.jus.stj.alp01.jsf.servlet.ServletRelatorio.rel", 750, 500, "resizable=yes", "relatorio");
+			}			
+
+			function iniciar() {
+				showHideConvite(cmbTipoDocumento.value);
+			}
+
+			function Verifica_Data(strdata){
+
+				//Se o parâmetro obrigatório for igual à zero, significa que elepode estar vazio, caso contrário, não    
+				if(strdata != ""){    
+				   //Verifica a quantidade de digitos informada esta correta.    
+				   if (strdata.length != 10){
+  		            	return false;    
+		           }    
+				        //Verifica máscara da data    
+  		           if ("/" != strdata.substr(2,1) || "/" != strdata.substr(5,1)){
+			            return false;    
+			        }    
+			        dia = strdata.substr(0,2);    
+			        mes = strdata.substr(3,2);    
+			        ano = strdata.substr(6,4);
+
+			        //Verifica o dia    
+			        if (isNaN(dia)) {
+			            return false;    
+			        }else if (dia > 31){
+			        	return false;
+			        }else if (1 > dia){
+			        	return false;
+				    }   
+			            
+			        if (mes == 4 || mes == 6 || mes == 9 || mes == 11){    
+			            if (dia == "31"){    
+			                return false;    
+			            }    
+			        }    
+			        if (mes == "02"){    
+			            bissexto = ano % 4;    
+			            if (bissexto == 0){    
+			                if (dia > 29){    
+			                    return false;    
+			                }    
+			            }else{    
+			                if (dia > 28){    
+			                    return false;    
+			                }    
+			            }    
+			        }    
+				    //Verifica o mês    
+			        if (isNaN(mes)){    
+			            return false;    
+			        }else if (mes > 12){
+			        	return false;   
+				    }else if (1 > mes) {
+				    	return false;					    
+					}     
+			        //Verifica o ano    
+			        if (isNaN(ano)){    
+			            return false;    
+			        } else {
+			        	return true; 
+				    }
+			    }    
+			}  
+
+			function Verifica_Hora(hora){    
+				//Se o parâmetro obrigatório for igual à zero, significa que elepode estar vazio, caso contrário, não
+			    if(hora != "") {
+					if(5 > hora.length){    
+			            return false;    
+			        }    
+			        if(hora.substr(0,2) > 23 || isNaN(hora.substr(0,2))){    
+			            return false;    
+			        }    
+			        if(hora.substr(3,2) > 59 || isNaN(hora.substr(3,2))){    
+			            return false;    
+				    }else {
+					    return true;
+					}    
+				}    
+			}   
+
+		</script>
+			
+		</ui:define>
+		
+</ui:composition>

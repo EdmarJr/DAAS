@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		
+		<h:form id="formIncluirAviso">
+
+			<p:panel id="panelPai" style="width:1010px">
+		
+				<p:breadCrumb>
+				    <p:menuitem value="Início" />
+				    <p:menuitem value="#{label['breadCrumb.aviso']}" />
+				    <p:menuitem value="#{label['breadCrumb.aviso.alterar']}" />
+				</p:breadCrumb>
+				
+				<h:outputText value="#{label['breadCrumb.aviso.alterar']}" styleClass="title" />
+				<br/>
+				<h:outputText value="#{label['aviso.dados']}" styleClass="sub-title" />
+				<p:separator style="height:1px;" />
+				
+				<h:outputText value="* " styleClass="ast" />
+				<h:outputText value="Endereçado a" styleClass="lbl" />
+				
+				<p:selectOneRadio value="#{alterarAvisoController.tipoEnderecamentoAviso}">
+					<f:selectItems var="tipo" value="#{alterarAvisoController.listTipoEnderecamentoAviso}" itemLabel="#{tipo.descricao}" itemValue="#{tipo}"/>
+					<f:ajax event="change" render="@this listaDeDestinatarios" listener="#{alterarAvisoController.verificarEnderecamento}"/>
+				</p:selectOneRadio>
+				<br/>
+				<h:panelGroup id="listaDeDestinatarios">
+					<h:panelGroup rendered="#{alterarAvisoController.destinatarioEspecificioSelecionado}">
+						<div class="pure-g">
+							<div class="pure-u-2-5">
+								<p:autoComplete id="nomeDestinatario" itemLabel="#{destinatario.nome}" itemValue="#{destinatario}" var="destinatario" size="150"
+									value="#{alterarAvisoController.destinatario}" scrollHeight="150" minQueryLength="3" queryDelay="3" completeMethod="#{alterarAvisoController.completeUsuarios}" emptyMessage="Nenhum resultado encontrado.">
+						            <p:ajax event="itemSelect" update="@this"/>
+						        </p:autoComplete>
+							</div>
+							<div class="pure-u-1-24"></div>
+							<div class="pure-u-1-5">
+								<p:commandButton actionListener="#{alterarAvisoController.adicionarDestinatario()}" update="dataTableDestinatarios nomeDestinatario"  value="Adicionar"/>
+							</div>													
+						</div>
+						<br/>
+						<p:dataTable id="dataTableDestinatarios" value="#{alterarAvisoController.listDestinatario}" var="destinatario" emptyMessage="Nenhum destinatário adicionado">
+							<p:column headerText="Endereçado" >
+								<h:outputText value="#{destinatario.nome}" />
+							</p:column>
+							<p:column headerText="Ação" >
+								<p:commandButton actionListener="#{alterarAvisoController.removerDestinatario(destinatario)}" update="dataTableDestinatarios" value="Excluir"/>
+							</p:column>
+						</p:dataTable>
+					</h:panelGroup>
+				</h:panelGroup>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-2-5">
+						<h:outputText value="* " styleClass="ast" />
+						<h:outputText value="Descrição" styleClass="lbl" />
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-5-5">
+						<p:inputTextarea value="#{alterarAvisoController.descricao}" maxlength="500"/>
+					</div>
+				</div>
+				<br/>
+				<h:panelGroup id="panelSituacaoResolucao">
+					<div class="pure-g">
+						<div class="pure-u-1-5">
+							<h:outputText value="* " styleClass="ast" />
+							<h:outputText value="Situação do Aviso" styleClass="lbl" />
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-1-5">
+							<h:outputText rendered="#{alterarAvisoController.situacaoAvisoEnum.valor.toString() == 'R'}" value=" " styleClass="ast" />
+							<h:outputText rendered="#{alterarAvisoController.situacaoAvisoEnum.valor.toString() == 'R'}" value="Data de solução" styleClass="lbl" />
+						</div>
+					</div>
+					<div class="pure-g">
+						<div class="pure-u-1-5">
+							<p:selectOneMenu value="#{alterarAvisoController.situacaoAvisoEnum}">
+								<f:selectItems value="#{alterarAvisoController.listSituacaoAvisoEnum}" var="situacao" itemValue="#{situacao}" itemLabel="#{msg[situacao.codLabel]}"/>
+								<p:ajax event="change" listener="#{alterarAvisoController.atualizarDataDeSolucao}" update="@this panelSituacaoResolucao"/>
+							</p:selectOneMenu>
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-1-5">
+							<p:calendar rendered="#{alterarAvisoController.situacaoAvisoEnum.valor.toString() == 'R'}" id="dataDeSolucao" value="#{alterarAvisoController.dataDeSolucao}" mindate="#{alterarAvisoController.dataDeInclusao}" maxdate="#{alterarAvisoController.dataLimiteAlterarAviso}" navigator="true" pattern="dd/MM/yyyy">
+								<p:ajax event="dateSelect" update="@this"/>
+							</p:calendar>
+						</div>
+					</div>
+				</h:panelGroup>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-1-5">
+						<h:outputText value="Relacionado a Documento?" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-5">
+						<p:selectOneRadio value="#{alterarAvisoController.relacionadoDocumentoEnum}">
+							<f:selectItems value="#{alterarAvisoController.listRelacionadoDocumentoEnum}" var="relacionado" itemValue="#{relacionado}" itemLabel="#{relacionado.descricao}"/>
+							<f:ajax event="change" render="@this panelRelacionadoDocumento"/>
+						</p:selectOneRadio>
+					</div>
+				</div>
+				<br/>
+				<h:panelGroup id="panelRelacionadoDocumento">
+					<h:panelGroup rendered="#{alterarAvisoController.documentoRelacionadoSelecionado}">
+						<div class="pure-g">
+							<div class="pure-u-1-5">
+								<h:outputText value="Numero do Documento" styleClass="lbl" />
+							</div>
+							<div class="pure-u-1-24"></div>
+							<div class="pure-u-1-5">
+								<h:outputText value="Identificador" styleClass="lbl" />
+							</div>
+						</div>
+						<div class="pure-g">
+							<div class="pure-u-1-5">
+								<h:outputText value="#{alterarAvisoController.numeroDocumento}" maxlength="20"/>
+							</div>
+							<div class="pure-u-1-24"></div>
+							<div class="pure-u-1-5">
+								<h:outputText value="#{alterarAvisoController.identificadorDocumento}"/>
+							</div>
+							<div class="pure-u-1-24"></div>
+						</div>
+						<br/>
+						<div class="pure-g">
+							<div class="pure-u-1-5">
+								<h:outputText value="Classificação do Documento #{alterarAvisoController.classificacaoDocumentoAmigavel(alterarAvisoController.documento.tipoClassificacaoDocumento.toString())}" styleClass="lbl" />
+							</div>
+							<div class="pure-u-1-24"></div>
+							<div class="pure-u-1-5">
+								<h:outputText value="Origem: #{alterarAvisoController.origemDocumentoAmigavel(alterarAvisoController.documento.tipoOrigem.toString())}" styleClass="lbl" />
+							</div>
+						</div>
+					</h:panelGroup>
+					<br/>
+					<br/>
+					<h:panelGroup rendered="#{alterarAvisoController.documentoRelacionadoSelecionado}">
+						<ui:include src="/pages/includes/includeConsultarDocumento.xhtml">
+							<ui:param name="controllerParametro"
+								value="#{alterarAvisoController}" />
+							<ui:param name="documentoParametro"
+								value="#{alterarAvisoController.documento}" />
+						</ui:include>
+					</h:panelGroup>
+				</h:panelGroup>
+				<br/>
+				<div style="float: right;">
+					<p:commandButton value="Confirmar" actionListener="#{alterarAvisoController.salvar}" update="@form"/>
+					<p:commandButton value="Voltar" immediate="true" action="#{alterarAvisoController.voltar()}"/>
+				</div>
+				<br/>
+				<br/>
+				<br/>	
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

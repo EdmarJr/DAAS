@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+
+		<h:form id="documentTransferForm">
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:panel id="documentTransferPanel">
+				<f:facet name="header">
+					<h:outputText style="font-size:14px;" value="Documento" />
+				</f:facet>
+
+				<p:panel header="Transferir" collapsed="false">
+
+					<p:panelGrid id="treePanelGrid" columns="3">
+						<p:panel id="tempPanel" header="Triagem"
+							style="width:350px;height: 200px;">
+							<p:scrollPanel mode="native" style="height: 150px;">
+								<p:tree id="tempTree" value="#{documentController.tempTree}"
+									var="tempDoc" animate="true" selectionMode="single"
+									draggable="true" droppable="true" dragdropScope="documentTree">
+
+									<p:ajax event="dragdrop"
+										listener="#{documentController.onDragDrop}"
+										update=":documentTransferForm:msgs :documentTransferForm:tempPanel :documentTransferForm:actualizePanel :documentTransferForm:confirmDialogVersionFilePanel" />
+
+									<p:treeNode id="tempTreeNodeFolder"
+										expandedIcon="ui-icon ui-icon-folder-open"
+										collapsedIcon="ui-icon ui-icon-folder-collapsed">
+										<h:outputText value="#{tempDoc.name.baseName}" />
+									</p:treeNode>
+
+									<p:treeNode id="tempTreeNodeDocument" type="document"
+										icon="ui-icon ui-icon-document">
+										<h:outputText value="#{tempDoc.name.baseName}" />
+									</p:treeNode>
+								</p:tree>
+							</p:scrollPanel>
+						</p:panel>
+
+						<h:graphicImage alt="Transfer" name="rightTransfer.png"
+							library="images" />
+
+						<p:panel id="actualizePanel" header="Efetivo"
+							style="width:350px;height: 200px;">
+							<p:scrollPanel mode="native" style="height: 150px;">
+								<p:tree id="actualizeTree" animate="true"
+									value="#{documentController.actualizeTree}" var="actualizeDoc"
+									selectionMode="single" draggable="false" droppable="true"
+									dragdropScope="documentTree">
+
+									<p:ajax event="dragdrop"
+										listener="#{documentController.onDragDrop}"
+										update=":documentTransferForm:msgs :documentTransferForm:tempPanel :documentTransferForm:actualizePanel :documentTransferForm:confirmDialogVersionFilePanel" />
+
+									<p:treeNode id="actualizeTreeNodeFolder"
+										expandedIcon="ui-icon ui-icon-folder-open"
+										collapsedIcon="ui-icon ui-icon-folder-collapsed">
+										<h:outputText value="#{actualizeDoc.name.baseName}" />
+									</p:treeNode>
+
+									<p:treeNode id="actualizeTreeNodeDocument" type="document"
+										icon="ui-icon ui-icon-document">
+										<h:outputText id="actualizeTreeNodeDocumentText"
+											value="#{actualizeDoc.name.baseName}" />
+									</p:treeNode>
+								</p:tree>
+							</p:scrollPanel>
+						</p:panel>
+					</p:panelGrid>
+
+					<p:panel id="confirmDialogVersionFilePanel">
+
+						<p:confirmDialog id="confirmDialogVersionFile"
+							message="#{message['message.versioning.existing.file']}"
+							header="#{label['confirm.versioning.header']}" severity="alert"
+							global="true" visible="#{documentController.showConfirmDialog}"
+							hideEffect="explode" showEffect="fade" closable="false"
+							widgetVar="confirmDialogVersionFile">
+
+							<p:panel style="text-align:center;">
+								<p:commandButton ajax="true" value="#{label['button.yes']}"
+									type="button" styleClass="ui-confirmdialog-yes"
+									icon="ui-icon-check">
+									<p:ajax listener="#{documentController.overwriteVersioning}"
+										update=":documentTransferForm:msgs :documentTransferForm:confirmDialogVersionFile" />
+								</p:commandButton>
+								<p:commandButton value="#{label['button.no']}" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:panel>
+						</p:confirmDialog>
+					</p:panel>
+
+					<p:panel>
+						<p:commandButton ajax="false"
+							action="#{documentController.actualize()}" value="Confirmar" />
+					</p:panel>
+				</p:panel>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

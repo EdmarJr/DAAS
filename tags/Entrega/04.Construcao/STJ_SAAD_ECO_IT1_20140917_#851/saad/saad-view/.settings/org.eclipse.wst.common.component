@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="saad-view">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="saad-entity-0.0.3.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/saad-entity/saad-entity">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="saad-business-0.0.3.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/saad-business/saad-business">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="saad-dao-0.0.3.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/saad-dao/saad-dao">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="saad-util-0.0.3.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/saad-util/saad-util">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="saad-view"/>
+        <property name="java-output-path" value="/saad-view/target/classes"/>
+    </wb-module>
+</project-modules>

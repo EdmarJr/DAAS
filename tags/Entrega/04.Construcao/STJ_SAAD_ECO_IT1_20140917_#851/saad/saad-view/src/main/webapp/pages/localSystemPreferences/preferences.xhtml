@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+
+		<h:form id="preferencesForm">
+
+			<h:inputHidden id="inputTextDocumentTypeFieldNameHidden"
+				value="#{localSystemPreferenceController.documentTypeFieldName}" />
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:panel id="preferencesPrincipalPanel">
+				<f:facet name="header">
+					<h:outputText style="font-size:14px;" value="Preferências" />
+				</f:facet>
+
+				<p:panel id="preferencesPanel" header="Configuração"
+					collapsed="false">
+
+					<p:tabView id="preferencesTabView">
+						<p:tab id="generalTab" title="Geral">
+							<p:tabView orientation="left">
+								<p:tab title="Idioma">
+									<p:commandLink ajax="false" value="#{label['english']}"
+										action="#{languageController.setEnglish()}" />
+									&#32;&#32;&#160;&#160;
+									<p:commandLink ajax="false" value="#{label['portuguese']}"
+										action="#{languageController.setPortuguese()}" />
+								</p:tab>
+							</p:tabView>
+						</p:tab>
+						<p:tab id="functionalityTab" title="Funcionalidade">
+							<p:tabView id="functionalityTabView" orientation="left"
+								dynamic="true">
+
+								<p:tab id="documentTypeTab" title="Tipo de Documento">
+
+									<h:panelGrid columns="2" width="100%">
+
+										<p:panel style="text-align: left;">
+											<p:commandButton value="Novo" ajax="false" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-plus"
+												onclick="PF('addDocumentTypeFieldDialogVar').show();" />
+										</p:panel>
+
+										<p:panel style="text-align: right;"
+											rendered="#{!localSystemPreferenceController.documentTypeFieldList.isEmpty()}">
+											<p:commandButton ajax="false"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-disk"
+												action="#{localSystemPreferenceController.saveDocumentTypeFieldVisibility()}"
+												value="Salvar" update=":preferencesForm" />
+										</p:panel>
+
+									</h:panelGrid>
+
+									<p:dataTable id="documentTypeFieldDataTable"
+										var="documentTypeField"
+										value="#{localSystemPreferenceController.documentTypeFieldList}"
+										paginator="#{!localSystemPreferenceController.documentTypeFieldList.isEmpty()}"
+										rowIndexVar="documentTypeFieldIndex" rows="7" lazy="true"
+										paginatorPosition="bottom">
+
+										<f:facet name="header">
+											<h:outputText value="Visibilidade" />
+										</f:facet>
+
+										<p:columnGroup type="header">
+											<p:row>
+												<p:column headerText="Campo" rowspan="2" />
+												<p:column headerText="Tela" colspan="2"
+													style="text-align: center;" />
+												<p:column rowspan="2" width="30px;" />
+											</p:row>
+											<p:row>
+												<p:column headerText="Inclusão" style="text-align: center;" />
+												<p:column headerText="Consulta" style="text-align: center;" />
+											</p:row>
+										</p:columnGroup>
+
+										<p:column>
+											<h:outputText value="#{documentTypeField.name}" />
+										</p:column>
+
+										<p:column headerText="Inclusão" style="text-align: center;">
+											<p:selectBooleanCheckbox style="text-align: center;"
+												value="#{documentTypeField.addVisibility}" />
+										</p:column>
+										<p:column headerText="Consulta" style="text-align: center;">
+											<p:selectBooleanCheckbox style="text-align: center;"
+												value="#{documentTypeField.searchVisibility}" />
+										</p:column>
+
+										<p:column style="text-align: center;">
+											<p:commandLink title="Excluir" style="text-align: center;"
+												action="#{localSystemPreferenceController.deleteDocumentTypeField(documentTypeField)}"
+												update=":preferencesForm">
+												<span style="text-align: center;"
+													class="ui-icon ui-icon-trash" />
+											</p:commandLink>
+										</p:column>
+
+									</p:dataTable>
+
+								</p:tab>
+							</p:tabView>
+						</p:tab>
+					</p:tabView>
+
+				</p:panel>
+
+			</p:panel>
+
+			<p:dialog id="addDocumentTypeFieldDialog"
+				widgetVar="addDocumentTypeFieldDialogVar" modal="true"
+				appendTo="@(body)" resizable="false" showEffect="fade"
+				hideEffect="explode">
+
+				<f:facet name="header">
+					<h:outputText style="font-size:14px;" value="Adicionar campo" />
+				</f:facet>
+
+				<p:panel>
+
+					<f:facet name="header">
+						<h:outputText value="Tipo de Documento" />
+					</f:facet>
+
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Nome:" for="inputTextDocumentTypeFieldName" />
+						<p:inputText id="inputTextDocumentTypeFieldName" value="" />
+					</h:panelGrid>
+
+					<p:panel style="text-align: center;">
+						<p:commandLink ajax="false" value="Confirmar"
+							styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-icon-check ui-confirmdialog-yes"
+							action="#{localSystemPreferenceController.addDocumentTypeField()}"
+							onclick="document.getElementById('preferencesForm:inputTextDocumentTypeFieldNameHidden').value = document.getElementById('preferencesForm:inputTextDocumentTypeFieldName').value;" />
+					</p:panel>
+				</p:panel>
+			</p:dialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

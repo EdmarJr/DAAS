@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head> 
+	<title>SAAD - Sistema de Acompanhamento Administrativo de
+		Documentos</title>
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=8" /> 
+
+	<h:outputStylesheet library="css" name="app.css" />
+	<h:outputStylesheet library="css" name="screen.css" />
+	<h:outputScript library="js" name="locale-primefaces.js"/>
+	<h:outputStylesheet library="templates/bootstrap/css"
+		name="bootstrap.css" />
+	<h:outputStylesheet library="templates/bootstrap/css"
+		name="bootstrapCtis.css" />
+		
+	<h:outputStylesheet library="css/pure-release-0.5.0"
+		name="pure.css" />
+	
+	<ui:param name="basePath" value="#{request.contextPath}" />
+
+</h:head>
+<h:body>
+	
+	<p:layout id="defaultLayout" fullPage="true">
+		<f:event type="preRenderView"
+					listener="#{breadCrumbsSessionController.registrarPagina(view.viewId)}" />
+		<p:layoutUnit id="nortLayout" position="north">
+			<ui:include src="/resources/includes/header.xhtml" />
+		</p:layoutUnit>
+		
+		<p:layoutUnit id="westLayout" position="west" resizable="false" size="200px">
+			<ui:include src="/resources/includes/menu.xhtml" />
+		</p:layoutUnit>
+
+		<p:layoutUnit id="centerLayout" position="center">
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onerror="PF('statusDialog').hide()" oncomplete="PF('statusDialog').hide()" onsuccess="PF('statusDialog').hide()" />
+			 
+			<p:dialog widgetVar="statusDialog" modal="false" draggable="false" closable="false" resizable="false" showHeader="false">
+			    <p:graphicImage library="images" name="ajaxloadingbar.gif" />
+			</p:dialog>
+			
+			<ui:insert name="msgGrowl">
+				<p:growl life="6000" autoUpdate="true" id="msgs" showDetail="false"/>
+			</ui:insert>
+			<div id="container">
+				<div class="dualbrand">
+
+				</div>
+				<div id="content">
+					<ui:insert name="content">
+                		[Template content will be inserted here]
+            		</ui:insert>
+				</div>
+			</div>
+		</p:layoutUnit>
+
+		<p:layoutUnit id="southLayout" position="south">
+			<ui:include src="/resources/includes/footer.xhtml" />
+		</p:layoutUnit>
+
+	</p:layout>
+</h:body>
+</html>

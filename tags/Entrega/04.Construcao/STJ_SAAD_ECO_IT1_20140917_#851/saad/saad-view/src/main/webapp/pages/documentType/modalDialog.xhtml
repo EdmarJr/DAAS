@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:fragment id="documentTypeDialogFragment">
+
+		<p:dialog id="documentTypeDialog" widgetVar="documentTypeDialogWidget"
+			modal="true" appendTo="@(body)" resizable="false" showEffect="fade"
+			hideEffect="explode" header="Dados do tipo de documento">
+
+			<h:form id="documentTypeDialogForm">
+
+				<p:growl id="msgs" showDetail="true" sticky="true" />
+
+				<p:panel id="documentTypeDialogPanel">
+					<f:facet name="header">
+						<h:outputText
+							value="#{documentTypeController.modalUpdate ? 'Atualizar' : 'Incluir'}" />
+					</f:facet>
+
+					<p:panel collapsed="false">
+
+						<h:panelGrid columns="3">
+
+							<h:panelGrid columns="1" cellpadding="5">
+
+								<p:column>
+									<p:outputLabel value="Identificador:"
+										for="inputIdentificationDialog"
+										style="text-align:left;width: 200px;" />
+									<p:inputText id="inputIdentificationDialog"
+										value="#{documentTypeController.documentType.id}" />
+								</p:column>
+								<p:column>
+									<p:outputLabel value="Nome:" for="inputNameDialog"
+										style="text-align:left;width: 200px;" />
+									<p:inputText id="inputNameDialog"
+										value="#{documentTypeController.documentType.nome}" />
+								</p:column>
+								<p:column>
+									<p:outputLabel value="Pasta Física:"
+										for="inputPhysicalCabinetDialog"
+										style="text-align:left;width: 200px;" />
+									<p:inputText id="inputPhysicalCabinetDialog"
+										value="#{documentTypeController.documentType}" />
+								</p:column>
+							</h:panelGrid>
+
+							<p:outputLabel />
+
+							<p:panelGrid id="treePanelGridDialog" columns="1">
+
+								<p:panel id="actualizePanelDialog"
+									header="Visualização da pasta do servior da rede"
+									style="width:350px;height: 200px;">
+									<p:scrollPanel mode="native" style="height: 150px;">
+										<p:tree id="actualizeTreeDialog" animate="true"
+											value="#{documentTypeController.actualizeTree}"
+											var="actualizeDoc" selectionMode="single" draggable="false"
+											droppable="true" dragdropScope="documentTree">
+
+											<p:treeNode id="actualizeTreeNodeFolderDialog"
+												expandedIcon="ui-icon ui-icon-folder-open"
+												collapsedIcon="ui-icon ui-icon-folder-collapsed">
+												<h:outputText value="#{actualizeDoc}" />
+											</p:treeNode>
+
+											<p:treeNode id="actualizeTreeNodeDocumentDialog"
+												type="document" icon="ui-icon ui-icon-document">
+												<h:outputText id="actualizeTreeNodeDocumentTextDialog"
+													value="#{actualizeDoc}" />
+											</p:treeNode>
+										</p:tree>
+									</p:scrollPanel>
+								</p:panel>
+							</p:panelGrid>
+						</h:panelGrid>
+
+					</p:panel>
+
+					<p:panel style="text-align: right;">
+
+						<p:commandButton rendered="#{!documentTypeController.modalUpdate}"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+							value="Confirmar" action="#{documentTypeController.add()}"
+							update=":documentTypeDialogForm:msgs :documentTypeDialogForm:treePanelGridDialog :documentTypeSearchForm:documentTypeDataTable">
+							<p:confirm icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:commandButton rendered="#{documentTypeController.modalUpdate}"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+							value="Confirmar" action="#{documentTypeController.update()}"
+							update=":documentTypeDialogForm:msgs :documentTypeDialogForm:treePanelGridDialog :documentTypeSearchForm:documentTypeDataTable">
+							<p:confirm icon="ui-icon-alert" />
+						</p:commandButton>
+
+					</p:panel>
+
+					<p:panel id="confirmDialogDialogPanel">
+
+						<p:confirmDialog rendered="#{!documentTypeController.modalUpdate}"
+							id="confirmDialogAdd"
+							message="#{message['message.document.type.confirm.add']}"
+							header="#{label['confirm.add.header']}" global="true"
+							severity="alert" hideEffect="explode" showEffect="fade">
+
+							<p:panel style="text-align:center;">
+								<p:commandButton type="button" value="#{label['button.yes']}"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="#{label['button.no']}" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:panel>
+						</p:confirmDialog>
+
+						<p:confirmDialog rendered="#{documentTypeController.modalUpdate}"
+							id="confirmDialogUpdate"
+							message="#{message['message.document.type.confirm.update']}"
+							header="#{label['confirm.update.header']}" global="true"
+							severity="alert" hideEffect="explode" showEffect="fade">
+
+							<p:panel style="text-align:center;">
+								<p:commandButton type="button" value="#{label['button.yes']}"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="#{label['button.no']}" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:panel>
+						</p:confirmDialog>
+
+					</p:panel>
+				</p:panel>
+			</h:form>
+
+		</p:dialog>
+
+	</ui:fragment>
+</ui:composition>

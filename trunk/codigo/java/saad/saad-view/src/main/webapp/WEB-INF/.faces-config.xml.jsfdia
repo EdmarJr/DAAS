@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#*" PATH="/*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:0" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.addDocumentType()}:#pages#documentType#add.xhtml"
+    NAME="output" PATH="/pages/documentType/add.xhtml"
+    TARGET="rules:#pages#documentType#add.xhtml"
+    TITLE="#{menuController.addDocumentType()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.searchDocumentType()}:#pages#documentType#search.xhtml"
+    NAME="output1" PATH="/pages/documentType/search.xhtml"
+    TARGET="rules:#pages#documentType#search.xhtml"
+    TITLE="#{menuController.searchDocumentType()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.addDocument()}:#pages#document#add.xhtml"
+    NAME="output2" PATH="/pages/document/add.xhtml"
+    TARGET="rules:#pages#document#add.xhtml"
+    TITLE="#{menuController.addDocument()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.searchDocument()}:#pages#document#search.xhtml"
+    NAME="output3" PATH="/pages/document/search.xhtml"
+    TARGET="rules:#pages#document#search.xhtml"
+    TITLE="#{menuController.searchDocument()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.stepSearchDocument()}:#pages#document#consultarDocumento.xhtml"
+    NAME="output4" PATH="/pages/document/consultarDocumento.xhtml"
+    TARGET="rules:#pages#document#consultarDocumento.xhtml"
+    TITLE="#{menuController.stepSearchDocument()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.transferDocument()}:#pages#document#transfer.xhtml"
+    NAME="output5" PATH="/pages/document/transfer.xhtml"
+    TARGET="rules:#pages#document#transfer.xhtml"
+    TITLE="#{menuController.transferDocument()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.localSystemPreferences()}:#pages#localSystemPreferences#preferences.xhtml"
+    NAME="output6"
+    PATH="/pages/localSystemPreferences/preferences.xhtml"
+    TARGET="rules:#pages#localSystemPreferences#preferences.xhtml"
+    TITLE="#{menuController.localSystemPreferences()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.auditDocument()}:#pages#audit#document#search.xhtml"
+    NAME="output7" PATH="/pages/audit/document/search.xhtml"
+    TARGET="rules:#pages#audit#document#search.xhtml"
+    TITLE="#{menuController.auditDocument()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.home()}:#pages#index.xhtml"
+    NAME="output8" PATH="/pages/index.xhtml"
+    TARGET="rules:#pages#index.xhtml"
+    TITLE="#{menuController.home()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.includeNotification()}:#pages#notification#includeNotification.xhtml"
+    NAME="output9" PATH="/pages/notification/includeNotification.xhtml"
+    TARGET="rules:#pages#notification#includeNotification.xhtml"
+    TITLE="#{menuController.includeNotification()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.listNotification()}:#pages#notification#minhasNotificacoes.xhtml"
+    NAME="output10" PATH="/pages/notification/minhasNotificacoes.xhtml"
+    TARGET="rules:#pages#notification#minhasNotificacoes.xhtml"
+    TITLE="#{menuController.listNotification()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.consultNotification()}:#pages#notification#consultNotification.xhtml"
+    NAME="output11" PATH="/pages/notification/consultNotification.xhtml"
+    TARGET="rules:#pages#notification#consultNotification.xhtml"
+    TITLE="#{menuController.consultNotification()}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{menuController.consultNotificationCourse()}:#pages#notification#consultNotificationCourse.xhtml"
+    NAME="output12"
+    PATH="/pages/notification/consultNotificationCourse.xhtml"
+    TARGET="rules:#pages#notification#consultNotificationCourse.xhtml"
+    TITLE="#{menuController.consultNotificationCourse()}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#login.xhtml" PATH="/login.xhtml"
+  SHAPE="32,1857,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#login.xhtml:0" NAME="item"
+   PATH="/login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{loginController.confirmar()}:#pages#notification#minhasNotificacoes.xhtml"
+    NAME="output" PATH="/pages/notification/minhasNotificacoes.xhtml"
+    TARGET="rules:#pages#notification#minhasNotificacoes.xhtml"
+    TITLE="#{loginController.confirmar()}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#index.xhtml" PATH="/pages/index.xhtml"
+  SHAPE="304,1313,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#index.xhtml:0" NAME="item"
+   PATH="/pages/index.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{homeController.go()}:#pages#come.xhtml" NAME="output"
+    PATH="/pages/come.xhtml" TARGET="rules:#pages#come.xhtml"
+    TITLE="#{homeController.go()}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#audit#document#search.xhtml"
+  PATH="/pages/audit/document/search.xhtml" SHAPE="304,1201,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#documentType#search.xhtml"
+  PATH="/pages/documentType/search.xhtml" SHAPE="304,529,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#documentType#add.xhtml"
+  PATH="/pages/documentType/add.xhtml" SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#come.xhtml" PATH="/pages/come.xhtml"
+  SHAPE="512,1633,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#localSystemPreferences#preferences.xhtml"
+  PATH="/pages/localSystemPreferences/preferences.xhtml"
+  SHAPE="304,1089,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#document#transfer.xhtml"
+  PATH="/pages/document/transfer.xhtml" SHAPE="304,977,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#document#add.xhtml"
+  PATH="/pages/document/add.xhtml" SHAPE="304,641,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#document#search.xhtml"
+  PATH="/pages/document/search.xhtml" SHAPE="304,753,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#notification#includeNotification.xhtml"
+  PATH="/pages/notification/includeNotification.xhtml"
+  SHAPE="304,1425,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#notification#consultNotification.xhtml"
+  PATH="/pages/notification/consultNotification.xhtml"
+  SHAPE="304,1649,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#notification#consultNotificationCourse.xhtml"
+  PATH="/pages/notification/consultNotificationCourse.xhtml"
+  SHAPE="304,1761,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#notification#minhasNotificacoes.xhtml"
+  PATH="/pages/notification/minhasNotificacoes.xhtml"
+  SHAPE="304,529,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="32,2305,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="visualizarDocumentoRecebido::#pages#document#visualizarDocumentoRecebido.xhtml"
+    NAME="output"
+    PATH="/pages/document/visualizarDocumentoRecebido.xhtml"
+    TARGET="rules:#pages#document#visualizarDocumentoRecebido.xhtml"
+    TITLE="visualizarDocumentoRecebido" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#document#consultarDocumento.xhtml"
+  PATH="/pages/document/consultarDocumento.xhtml" SHAPE="304,529,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#document#visualizarDocumentoRecebido.xhtml"
+  PATH="/pages/document/visualizarDocumentoRecebido.xhtml"
+  SHAPE="240,2321,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

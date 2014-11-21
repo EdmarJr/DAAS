@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:outputText value="Visualiza Documento" styleClass="title" />
+<p:separator style="height: 1px; " />
+<h:panelGrid columns="3" width="100%">
+
+	<p:column>
+		<div class="pure-u-5-24">
+			<p:outputLabel value="Tipo de Documento:" for="selectDocumentType"
+				style="text-align:left;width:100px;" />
+		</div>
+		<div class="pure-u-1-24"></div>
+		<div class="pure-u-5-24">
+			<p:outputLabel value="Número do documento na origem:"
+				for="inputDocumentNumber" style="text-align:left;width:200px;" />
+		</div>
+		<div class="pure-u-1-24"></div>
+		<div class="pure-u-5-24">
+			<p:outputLabel value="Identificador do Documento no STJ:"
+				for="inputIdentityDocument" style="text-align:left;width:200px;" />
+		</div>
+		<div class="pure-u-1-24"></div>
+		<div class="pure-u-5-24" style="display: flex"></div>
+
+		<br />
+		<div class="pure-g">
+			<div class="pure-u-5-24">
+				<p:outputLabel id="selectDocumentType"
+					value="#{documento.tipo.nome}" style="text-align:left;width:200px;">
+				</p:outputLabel>
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-5-24">
+				<p:outputLabel id="inputDocumentNumber" required="true"
+					value="#{documento.numero}" style="text-align:left;width:200px;" />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-5-24">
+				<p:outputLabel id="inputIdentityDocument"
+					value="#{documento.identificacaoDocumentoSTJ}"
+					style="text-align:left;width:200px;" />
+			</div>
+		</div>
+	</p:column>
+</h:panelGrid>
+<p:separator style="height: 1px; " />
+<h:panelGrid columns="2" width="100%">
+	<p:column>
+		<div class="pure-g">
+			<div class="pure-u-5-24">
+				<p:outputLabel for="outputDataOrigem"
+					value="Data do Documento na Origem:" style="text-align: left; " />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-5-24">
+				<p:outputLabel for="outputDataCadastro" value="Data de recebimento:"
+					style="text-align: left; " />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-5-24">
+				<p:outputLabel id="outputSituacao" value="Situação"
+					style="text-align: left; " />
+			</div>
+		</div>
+		<br />
+		<div class="pure-g">
+
+			<div class="pure-u-5-24">
+				<p:outputLabel id="outputDataOrigem" mask="true"
+					pattern="dd/MM/yyyy"
+					value="#{documento.dataOrigemDocumento}" style="text-align: left; " />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-5-24">
+				<p:outputLabel id="outputDataCadastro" mask="true"
+					pattern="dd/MM/yyyy" value="#{documento.dataInclusao}"
+					style="text-align: left; " />
+			</div>
+
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-5-24">
+				<p:outputLabel id="outSimSituacao" rendered="#{documento.situacaoDocumentoEvento.toString().equals('S')}" 
+					 value="Ativo" 
+					style="text-align: left; " />
+				<p:outputLabel id="outNaoSituacao" rendered="#{documento.situacaoDocumentoEvento.toString().equals('N')}"  
+					 value="Inativo" 
+					style="text-align: left; " />
+			</div>
+		</div>
+	
+	
+	</p:column>
+</h:panelGrid>
+<p:separator style="height: 1px; " />
+<h:panelGrid columns="1" width="100%">
+	<p:column>
+
+		<div class="pure-g">
+			<div class="pure-u-5-24">
+				<p:outputLabel id="assunto" value="Assunto"
+					style="text-align:left;width:200px;">
+				</p:outputLabel>
+			</div>
+		</div>
+		<br />
+		<div class="pure-g">
+			<div class="pure-u-5-24">
+				<p:outputLabel id="outputAssunto"
+					value="#{documento.assuntoDocumento}"
+					style="text-align:left;width:100px;">
+				</p:outputLabel>
+			</div>
+		</div>
+	</p:column>
+
+</h:panelGrid>
+
+
+</html>

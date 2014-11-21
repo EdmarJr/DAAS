@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		<script type="text/javascript" src="includeNotification.js" />
+		<h:form id="formIncludeNotification">
+		
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+		
+			<p:panel style="width:1010px">
+		
+				<p:breadCrumb>
+				    <p:menuitem value="Início" />
+				    <p:menuitem value="Avisos" />
+				    <p:menuitem value="Inclusão de Aviso" />
+				</p:breadCrumb>
+				
+				<h:panelGrid width="100%">
+					<h:outputText value="Inclusão de Aviso" styleClass="title" />
+					<h:outputText value="Dados do Aviso" styleClass="sub-title" />
+					<p:separator style="height:1px;" />
+					<p:column>
+						<h:outputText value="* " styleClass="ast" />
+						<h:outputText value="Endereçado a" styleClass="lbl" />
+					</p:column>
+					<p:inputText styleClass="text-field" id="tf_enderecado" value="#{notificationController.enderecado}" />
+					<p:column>
+						<h:outputText value="* " styleClass="ast" />
+						<h:outputText value="Assunto" styleClass="lbl" />
+					</p:column>
+					<p:inputTextarea id="ta_assunto" value="#{notificationController.assunto}" />
+					<h:outputText value="Descrição" styleClass="lbl" />
+					<p:inputText styleClass="text-field" id="tf_descricao" value="#{notificationController.descricao}" />
+					<p:panel style="text-align:right;">
+						<h:outputText value="(*) " styleClass="ast" />
+						<h:outputText value="Campos de preenchimento obrigatório" styleClass="lbl"/>
+					</p:panel>
+				</h:panelGrid>
+			
+				<p:separator style="height:1px;" />
+			
+				<p:panel style="width:100%;text-align:right;">
+					<p:commandButton value="Confirmar" action="#{notificationController.incluir()}" ajax="false" type="submit" update=":formIncludeNotification:msgs" /><p:spacer style="width:10px;" />
+					<p:commandButton type="reset" value="Limpar" ajax="false" /><p:spacer style="width:10px;" />
+					<p:commandButton type="button" value="Voltar" onclick="history.go(-1);" ajax="false" />
+				</p:panel>
+			
+			</p:panel>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>

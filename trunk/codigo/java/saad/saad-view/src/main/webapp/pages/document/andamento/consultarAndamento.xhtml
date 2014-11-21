@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		<h:form id="form">
+			<p:breadCrumb>
+				<p:menuitem value="Início" url="/pages/notification/minhasNotificacoes.xhtml" />
+				<p:menuitem value="Documento" url="#" />
+				<p:menuitem value="Consultar" url="#" />
+				<p:menuitem value="Andamento" url="#" />
+			</p:breadCrumb>
+			
+			<h:outputText value="Consulta de Andamentos" styleClass="title" />
+			<br/>
+			<p:separator style="height:1px;" />
+			
+			<p:panel header="Consulta/Inclusão/Alteração de Andamento"
+				id="panelConsultaDocumento"
+				style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+				toggleable="false">
+
+				<div class="pure-g">
+					<div class="pure-u-7-24">
+						<p:outputLabel style="text-align: left; width:150px; float:left !important"
+							value="#{msg['label.tipo.documento']}" styleClass="lbl" />
+					</div>
+					<div class="pure-u-7-24">
+						<p:outputLabel style="text-align: left; width:150px; float:left !important"
+							value="#{msg['label.title.datatable.identifyer']}" styleClass="lbl" />
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-7-24">
+						<p:selectOneMenu id="tipoDocId" style="width:150px !important"
+							value="#{consultaAlteraAndamentoController.tipoDocumentoSelecionado}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems var="tipoDocumento"
+								value="#{consultaAlteraAndamentoController.tipoDocumentoList}"
+								itemLabel="#{tipoDocumento.nome}" itemValue="#{tipoDocumento}" />
+						</p:selectOneMenu>
+					</div>
+					<div class="pure-u-7-24">
+						<p:inputMask style="width:150px !important; margin-left: 16px;"
+							value="#{consultaAlteraAndamentoController.identificadorDoc}" mask="a**-999999/9999"/>
+					</div>
+					<div class="pure-u-7-24">
+						<p:commandButton value="Pesquisar" update="@form" actionListener="#{consultaAlteraAndamentoController.consultarDocumentos()}"/>
+					</div>
+				</div>
+				<br />
+				<div class="pure-g"></div>
+				<p:dataTable var="documento"
+					value="#{consultaAlteraAndamentoController.listaDocumentosPesquisa}"
+					rendered="#{consultaAlteraAndamentoController.possuiResultadoPesquisa}"
+					paginator="true" rows="15" paginatorPosition="bottom"
+					paginatorAlwaysVisible="true"
+					emptyMessage="Nenhum registro encontrado." id="idTableDocumento">
+					<f:facet name="header">
+						Lista de documentos consultados
+					</f:facet>
+					<p:column headerText="Identificador" id="column_doc" width="10%">
+						<p:commandLink
+							value="#{consultaAlteraAndamentoController.obterFormatoIdentificador(documento)}" update=":form:idDlgAndamento"
+							actionListener="#{consultaAlteraAndamentoController.manterAndamentoDocumento(documento)}" oncomplete="PF('dlgAndamento').show();"/>
+					</p:column>
+					<p:column headerText="Situação" width="10%">
+						<h:outputText
+							value="#{msg[consultaAlteraAndamentoController.obterSituacaoDocumentoEnumPorCharacter(documento.situacao).codLabel]}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+			
+			<!-- DIALOG PARA LISTAGEM INCLUSÃO E ALTERAÇÃO DO ANDAMENTO -->
+			
+			<p:dialog header="Cadastro/Exclusão de andamentos"
+				widgetVar="dlgAndamento"
+				id="idDlgAndamento" height="400" width="850">
+				<h:outputText value="Documento: #{consultaAlteraAndamentoController.obterFormatoIdentificador(consultaAlteraAndamentoController.documentoAlterar)}" styleClass="title" />
+				<br/>
+				<p:separator style="height:1px;" />
+				<div class="pure-g">
+
+					<div class="pure-u-1" style="margin-bottom: 20px;">
+						<h:outputText value="Descrição do Andamento" />
+					</div>
+					<div class="pure-u-4-5" style="margin-bottom: 20px;">
+						<p:inputTextarea
+							value="#{consultaAlteraAndamentoController.descNovoAndamentoDoc}"
+							autoResize="false" rows="5" cols="50" />
+					</div>
+					<div class="pure-u-1" style="margin-bottom: 20px;">
+						<p:commandButton
+							actionListener="#{consultaAlteraAndamentoController.adicionarAndamentoDocumento()}"
+							update="panelConsultaAndamento" value="Adicionar"/>
+					</div>
+					<div class="pure-u-1">
+						<p:panel header="Lista de Andamentos" id="panelConsultaAndamento"
+							style="border: #C4C4C4 solid 1px !important;margin-top: 5px;"
+							toggleable="false">
+							<p:dataTable var="andamento"
+								value="#{consultaAlteraAndamentoController.andamentosDocumentoConsulta}"
+								paginator="true" rows="15" selectionMode="multiple" paginatorPosition="bottom" emptyMessage="Nenhum registro encontrado."
+								selection="#{consultaAlteraAndamentoController.andamentosDocumentoAlterarRemover}"
+								rowKey="#{andamento.id}" id="idTableAndamento">
+								<p:column headerText="Data de Inclusão" id="column_dt_inclusao"
+									width="10%">
+									<h:outputText value="#{andamento.andamentoDocumento}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Responsável" id="column_responsavel"
+									width="10%">
+									<h:outputText value="#{andamento.usuario.nome}" />
+								</p:column>
+								<p:column headerText="Andamento" width="10%">
+									<h:outputText value="#{andamento.descricaoAndamentoDocumento}" />
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</div>
+				<div class="pure-u-1">
+					<p:commandButton style="float:right; margin:15px 15px;" value="Excluir" update="panelConsultaAndamento" actionListener="#{consultaAlteraAndamentoController.removerAndamentosSelecionados()}"/>
+					<p:commandButton style="float:right; margin:15px 15px;" value="Alterar" actionListener="#{consultaAlteraAndamentoController.iniciarAlteracaoAndamento()}" update=":form:idDlgAlteraAndamento"/>
+				</div>
+				</div>
+			</p:dialog>
+			
+				<!-- DIALOG PARA ALTERAÇÃO DO ANDAMENTO -->
+
+			<p:dialog header="Cadastro/Exclusão de andamentos"
+				widgetVar="dlgAlteraAndamento" id="idDlgAlteraAndamento"
+				height="200" width="425">
+				<div class="pure-g">
+					<div class="pure-u-1" style="margin-bottom: 20px;">
+						<h:outputText value="Descrição do Andamento" />
+					</div>
+					<div class="pure-u-4-5" style="margin-bottom: 20px;">
+						<p:inputTextarea
+							value="#{consultaAlteraAndamentoController.andamentoDocumentoAlterar.descricaoAndamentoDocumento}"
+							autoResize="false" rows="5" cols="50" />
+					</div>
+					<div class="pure-u-1" style="margin-bottom: 20px;">
+						<p:commandButton update=":form:panelConsultaAndamento" 
+							actionListener="#{consultaAlteraAndamentoController.finalizarAlteracaoAndamento()}"
+							value="Finalizar Alteracao" 
+							onclick="PF('dlgAlteraAndamento').hide();" />
+					</div>
+				</div>
+			</p:dialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

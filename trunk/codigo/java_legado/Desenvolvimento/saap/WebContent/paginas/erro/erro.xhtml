@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://politec.com.br/componentes" 
+	lang="pt-br" template="#{request.scheme}://#{request.serverName}:#{request.serverPort}/layout/layout.xhtml">
+
+	<ui:define name="headComum">
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/layout.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/layout-simples.css" /> 
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/link.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/formulario.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/nav-abas.css" />
+		
+		<!-- #######
+			INÍCIO // Ext javascript framework
+		####### -->
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/ext-all.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/ext-xtheme-gray.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/ext-form-customized.css" />
+		
+		<script type="text/javascript" src="/js/ext-base.js"></script>
+	   	<script type="text/javascript" src="/js/ext-all.js"></script>
+	   	<script type="text/javascript" src="/js/ext-lang-pt_BR.js"></script>
+	   	<script type="text/javascript" src="/js/ext-popup.js"></script>
+		<!-- #######
+			FIM // Ext javascript framework
+		####### -->
+		
+		<script type="text/javascript" src="/js/acessibilidade.js"></script>
+		<script type="text/JavaScript" src="/js/sistema.js"></script>
+	</ui:define>
+	
+	<ui:define name="principal">
+		<div id="moldura-corpo" style="margin-left: 1px;">
+			<!-- # Box fluído # --> 
+		    <div class="box-tl"><div class="box-tr"><div class="box-tc"></div></div></div>
+		    <div class="box-ml"><div class="box-mr"><div class="box-mc">
+		  	<!-- # Box fluído # -->  
+						<h3>Erro</h3>
+						<div id="conteudo">
+							<div id="area-mensagens">
+								<ul class="msg-erro">
+									<li>A operação não pôde ser completada. Contacte o administrador do sistema.</li>
+								</ul>
+							</div>
+							<div id="printStackTrace" class="x-hidden" style="margin: 10px;">
+								<h:outputText rendered="#{not empty requestScope['javax.servlet.error.exception']}">
+									<pre><code>#{p:stackTrace(requestScope["javax.servlet.error.exception"])}</code></pre>
+								</h:outputText>
+								<h:outputText rendered="#{not empty SPRING_SECURITY_LAST_EXCEPTION}">
+									<pre><code>#{p:stackTrace(SPRING_SECURITY_LAST_EXCEPTION)}</code></pre>
+								</h:outputText>
+								<h:outputText rendered="#{!empty facesContext.maximumSeverity}">
+									<pre><code><h:messages layout="list" showDetail="true" showSummary="false" /></code></pre>
+								</h:outputText>
+							</div>
+						</div>
+						<div class="form-barra-botoes">
+							<input type="button" class="form-button-p03" value="Detalhar" title="Detalhar" id="btnDetalhar" onclick="abrirModal('printStackTrace', {width: 400, height: 100, maximizable: true}, 'btnDetalhar');" />
+							<input type="button" class="form-button-p02" value="OK" title="OK" onclick="location.href='#{request.contextPath}'" />
+						</div>
+			<!-- # Box fluído # --> 
+		    </div></div></div>
+		    <div class="box-bl"><div class="box-br"><div class="box-bc"></div></div></div>
+		  	<!-- # Box fluído # --> 
+		</div>
+	</ui:define>
+	
+</ui:composition>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<p:dataTable var="documento" value="#{bean.lazyDocumentoPendenteDataModel}"
+	paginator="true" rows="15" paginatorPosition="bottom" lazy="true"
+	paginatorAlwaysVisible="true" emptyMessage="Nenhum registro encontrado.">
+	<f:facet name="header">
+			Lista de documentos pendentes.
+	</f:facet>
+	<p:column headerText="Resolver até (Última Tarefa)"
+		id="column_ultima_tarefa" style="color: #{consultaDocumentoController.getCorAvisoDias(documento)}" width="10%">
+		<h:outputText
+			value="#{consultaDocumentoController.buscarDataDaUltimaTarefa(documento)}" />
+		<h:outputText value="#{consultaDocumentoController.getStringNumTarefas(documento)}" />
+	</p:column>
+	<p:column headerText="Identificador" id="column_doc" style="color: #{consultaDocumentoController.getCorAvisoDias(documento)}"
+		width="10%">
+		<h:outputText value="#{documento.identificadorComMascara}" />
+	</p:column>
+	<p:column headerText="Situação" style="color: #{consultaDocumentoController.getCorAvisoDias(documento)}" width="10%">
+		<h:outputText value="#{msg[consultaDocumentoController.obterSituacaoDocumentoEnumPorCharacter(documento.situacao).codLabel]}" />
+	</p:column>
+	<p:column headerText="Data Criação Documento"
+		id="column_dataInclusao_aviso" style="color: #{consultaDocumentoController.getCorAvisoDias(documento)}" width="10%">
+		<h:outputText value="#{documento.dataInclusao}" />
+	</p:column>
+	<p:column width="5%" style="text-align:center !important;">
+		<f:facet name="header">
+			<h:outputText value="Visualização"/>
+		</f:facet>
+		<div class="pure-g">
+			<div class="pure-u-1" style="padding-left:38%;">
+				<h:commandLink ajax="false" style="text-align:center !important;" action="#{consultaDocumentoController.detalharDocumento(documento)}">
+					<span class="ui-icon ui-icon-circle-zoomin"></span>
+				</h:commandLink>
+			</div>
+		</div>
+	</p:column>
+</p:dataTable>
+<h:outputText style="font-weight: bold; margin: 2;" value="Total de documentos pendentes: #{consultaDocumentoController.lazyDocumentoPendenteDataModel.rowCount}" /> <br/>
+<h:panelGrid columns="2">
+	<p:column>
+		<h:outputText value="(*)" />
+	</p:column>
+	<p:column>
+		<h:outputText value="Existe mais de uma tarefa cadastrada para o documento." />
+	</p:column>
+	<p:column>
+		<div style="width: 15px; height: 15px; background: #FF0000"></div>
+	</p:column>
+	<p:column>
+		<h:outputText value="3 dias ou menos (total: #{consultaDocumentoController.totalDocumentosTresDias})." />
+	</p:column>
+	<p:column>
+		<div style="width: 15px; height: 15px; background: #7CFC00"></div>
+	</p:column>
+	<p:column>
+		<h:outputText value="De 3 a 6 dias (total: #{consultaDocumentoController.totalDocumentosSeisDias})." />
+	</p:column>
+		<p:column>
+		<div style="width: 15px; height: 15px; background: #000000"></div>
+	</p:column>
+	<p:column>
+		<h:outputText value="Mais de 6 dias (total: #{consultaDocumentoController.totalDocumentosMaisDeSeisDias})." />
+	</p:column>
+</h:panelGrid>
+</html>

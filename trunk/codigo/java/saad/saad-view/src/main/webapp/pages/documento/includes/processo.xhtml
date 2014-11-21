@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<p:panel header="Processos" id="processo" style="white-space: nowrap; border: #C4C4C4 solid 1px !important;margin-top: 1%;"
+		toggleable="true">
+		
+		<div class="pure-g">
+			<div class="pure-u-1-2">
+				<div class="pure-g">
+					<div class="pure-u-1-24">
+						<p:selectBooleanCheckbox disabled="#{!controller.alterar}" id="relativoProcessoJudicialCheck" />
+					</div>
+					<div class="pure-u-1-2">
+						<p:outputLabel value="Relativo a processo judicial"	for="relativoProcessoJudicialCheck" />
+					</div>
+				</div>				 
+			</div>
+			<div class="pure-u-1-2">
+				<div class="pure-g">
+					<div class="pure-u-1-24">
+						<p:selectBooleanCheckbox disabled="#{!controller.alterar}" id="relativoProcessoAdministrativoCheck" />
+					</div>
+					<div class="pure-u-1-2">
+						<p:outputLabel value="Relativo a processo administrativo" for="relativoProcessoAdministrativoCheck" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<div class="pure-g">
+			<div class="pure-u-1-2">
+				<div class="pure-g">
+					<div class="pure-u-1-5">
+						<p:outputLabel value="Nº do Registro *" for="inputRegistryNumber" />
+					</div>
+					<div class="pure-u-1-2">
+						<p:selectManyCheckbox disabled="#{!controller.alterar}" id="basic" value="#{controller.relacionamentoProcessosSelecionados}">
+								<f:selectItems itemLabel="#{msg[relacionamento.codLabel]}" var="relacionamento" itemValue="#{relacionamento}" />
+						</p:selectManyCheckbox> 
+						<p:inputText disabled="#{!controller.alterar}" id="inputRegistryNumber"	value="#{controller.documento.numeroRegistro}" validator="#{processoValidator.validate}" maxlength="30" size="30" />
+					</div>
+				</div>
+			</div>
+			<div class="pure-u-1-2">
+				<div class="pure-g">
+					<div class="pure-u-2-24">
+						<p:outputLabel value="Nº" for="inputProcessNumber" />
+					</div>
+					<div class="pure-u-1-2">
+						<p:inputText disabled="#{!controller.alterar}" id="inputProcessNumber" value="#{controller.documento.numeroProcessoAdministrativo}" maxlength="30" size="30" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<p:commandButton process="processo" disabled="#{!controller.alterar}" 
+					value="#{msg['botao.consultar.andamento']}" ajax="true"
+					actionListener="#{controller.consultaProcessoJudOuAdmin()}"  />
+		
+	</p:panel>
+	
+</html>

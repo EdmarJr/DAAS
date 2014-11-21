@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+
+		<h:form id="documentTypeAddForm">
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:panel id="documentTypeAddPanel">
+				<f:facet name="header">
+					<h:outputText style="font-size:14px;" value="Tipo de Documento" />
+				</f:facet>
+
+				<p:panel header="Adicionar" collapsed="false">
+
+					<h:panelGrid columns="3">
+
+						<h:panelGrid columns="2" cellpadding="5">
+
+							<p:column>
+								<p:outputLabel value="Identificador:" for="inputIdentification"
+									style="text-align:left;width: 200px;" />
+								<p:inputText id="inputIdentification"
+									value="#{documentTypeController.documentType.identification}" />
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Nome:" for="inputName"
+									style="text-align:left;width: 200px;" />
+								<p:inputText id="inputName"
+									value="#{documentTypeController.documentType.name}" />
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Pasta Física:" for="inputPhysicalCabinet"
+									style="text-align:left;width: 200px;" />
+								<p:inputText id="inputPhysicalCabinet"
+									value="#{documentTypeController.documentType.physicalCabinet}" />
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Pasta do servidor da rede:"
+									for="inputPhysicalServer" style="text-align:left;width: 200px;" />
+								<p:inputText id="inputPhysicalServer"
+									value="#{documentTypeController.documentType.physicalNetworkDirectory}" />
+							</p:column>
+						</h:panelGrid>
+
+						<p:outputLabel />
+
+						<p:panelGrid id="treePanelGrid" columns="1">
+
+							<p:panel id="actualizePanel"
+								header="Visualização da pasta do servior da rede"
+								style="width:350px;height: 200px;">
+								<p:scrollPanel mode="native" style="height: 150px;">
+									<p:tree id="actualizeTree" animate="true"
+										value="#{documentTypeController.actualizeTree}"
+										var="actualizeDoc" selectionMode="single" draggable="false"
+										droppable="true" dragdropScope="documentTree">
+
+										<p:treeNode id="actualizeTreeNodeFolder"
+											expandedIcon="ui-icon ui-icon-folder-open"
+											collapsedIcon="ui-icon ui-icon-folder-collapsed">
+											<h:outputText value="#{actualizeDoc.name.baseName}" />
+										</p:treeNode>
+
+										<p:treeNode id="actualizeTreeNodeDocument" type="document"
+											icon="ui-icon ui-icon-document">
+											<h:outputText id="actualizeTreeNodeDocumentText"
+												value="#{actualizeDoc.name.baseName}" />
+										</p:treeNode>
+									</p:tree>
+								</p:scrollPanel>
+							</p:panel>
+						</p:panelGrid>
+					</h:panelGrid>
+
+				</p:panel>
+
+				<p:panel style="text-align: right;">
+					<p:commandButton type="submit" styleClass="ui-confirmdialog-yes"
+						icon="ui-icon-check" value="Confirmar"
+						action="#{documentTypeController.add()}"
+						update=":documentTypeAddForm:msgs :documentTypeAddForm:treePanelGrid">
+						<p:confirm icon="ui-icon-alert" />
+					</p:commandButton>
+				</p:panel>
+
+				<p:panel id="confirmDialogAddPanel">
+
+					<p:confirmDialog id="confirmDialogAdd"
+						message="Confirma a inclusão do Tipo de Documento para esta unidade ?"
+						header="#{label['confirm.add.header']}" global="true"
+						severity="alert" hideEffect="explode" showEffect="fade">
+
+						<p:panel style="text-align:center;">
+							<p:commandButton type="button" value="#{label['button.yes']}"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="#{label['button.no']}" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:panel>
+					</p:confirmDialog>
+				</p:panel>
+
+
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

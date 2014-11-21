@@ -1,0 +1,275 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="br.jus.stj.saap.entidade">
+	
+	<query name="consultar-gestao-anterior">
+		<![CDATA[		
+		from
+		SaapGestaoPresidencia GESTAO 
+		where 
+		GESTAO.id = 
+		(select max(GESTAO.id) from SaapGestaoPresidencia GESTAO) 
+		]]>
+	</query>
+
+	<query name="consultar-gestao-anterior-alteracao">
+		<![CDATA[		
+		from
+		SaapGestaoPresidencia GESTAO 
+		where 
+		GESTAO.id = 
+		(select max(GESTAO.id)-1 from SaapGestaoPresidencia GESTAO) 
+		]]>
+	</query>
+
+	<query name="consultar-gestoes">
+		<![CDATA[		
+		from 
+		SaapGestaoPresidencia GESTAO 
+		where
+		(GESTAO.nomeMinistroPresidente like upper(?)) AND
+		 ((GESTAO.dtInicialVigGestao >= ? or ? is null) AND 
+		 (GESTAO.dtFinalVigGestao <= ? or ? is null ))
+		]]>
+	</query>
+	
+	<query name="consultar-documentos">
+		<![CDATA[	
+		from SaapDocAdmPresidencia DOC
+		where
+		((DOC.tsEntradaDoc >= ? and DOC.tsEntradaDoc <= ?) or ? is null) AND
+		(DOC.descDoc like upper(?)) AND
+		(DOC.indTipoDoc=? or ? is null) AND
+		(DOC.indSituacaoDoc=? or ?='T') AND
+		(DOC.txtAssuntoDoc like upper(?)) AND
+		(DOC.nomeLocalFisicoDoc like upper(?)) AND
+		((DOC.dtHrEventoConvite >= ? and DOC.dtHrEventoConvite <= ?)  or ? is null)
+		]]>
+	</query>
+	
+	<query name="consultar-andament-pend-filtro-acompanhamento">
+		<![CDATA[
+		select ANDAMENTO
+		from SaapAdmtAdmPresidencia ANDAMENTO,
+			SaapPendenciaAdmPresidencia PEND,
+			SaapAcompPendenciaAdm ACOM,
+			AaUsuario USU
+			
+		where
+		(ANDAMENTO.tsEntradaAdmt between ? and ?) AND
+		(ANDAMENTO.descAdmtAdm like upper(?)) AND
+		(PEND.descEnderecoPendencia like upper(?)) AND
+		(PEND.txtAssuntoPendencia like upper(?)) AND				
+		(USU.nomeNicknameUsuario like upper(?)) AND
+		(PEND.id = ANDAMENTO.saapPendenciaAdmPresidencia.id) AND		
+		(PEND.id = ACOM.saapPendenciaAdmPresidencia.id) AND
+		(ACOM.seqUsuario = USU.id)
+		order by ANDAMENTO.descAdmtAdm, ANDAMENTO.tsEntradaAdmt			
+		]]>
+	</query>	
+
+	<query name="consultar-pendencias">
+		<![CDATA[	
+		from SaapPendenciaAdmPresidencia PEND,
+			SaapAcompPendenciaAdm ACOM,
+			SaapHistPendenciaAdm HIST
+		where
+		((PEND.tsEntradaPendencia between ? and ?) or (? is null)) AND
+		(PEND.descEnderecoPendencia like upper(?)) AND
+		(PEND.txtAssuntoPendencia like upper(?)) AND
+		(PEND.indSituacaoPendencia=? or ?='T') AND
+		(PEND.id = ACOM.saapPendenciaAdmPresidencia.id) AND
+		(PEND.id = HIST.saapPendenciaAdmPresidencia.id) AND
+		(ACOM.txtObsAcompPendencia like upper(?)) order by PEND.tsEntradaPendencia
+		]]>
+	</query>
+
+	
+	<query name="obter-gestao-do-documento">
+	<![CDATA[		
+		from 
+		SaapGestaoPresidencia gest
+		where
+		? between gest.dtInicialVigGestao and isnull(gest.dtFinalVigGestao,?)
+	]]>
+	</query>
+
+    <query name="consultar-anexos">
+    <![CDATA[       
+        from 
+        SaapArqDocAdm anx
+        where
+        anx.saapDocAdmPresidencia.id = ?
+    ]]>
+    </query>
+
+    <query name="consultar-proximo-documento">
+    <![CDATA[     
+	    from 
+	    SaapDocAdmPresidencia doc
+	    where
+	    doc.id > ?
+    ]]>
+    </query>
+
+    <query name="consultar-documento-anterior">
+    <![CDATA[     
+	    from 
+	    SaapDocAdmPresidencia doc
+	    where
+	    doc.id < ?
+	    order by doc.id desc
+    ]]>
+    </query>
+
+    <query name="obter-proximo-sequencial-andamento">
+    <![CDATA[ 
+    	select
+		max(adm.id) 
+		from 
+		SaapAdmtAdmPresidencia adm
+    ]]>
+    </query>
+    
+    <query name="consultar-andamentos">
+    <![CDATA[ 
+	    select adm
+		from 
+		SaapAdmtAdmPresidencia adm
+		where
+		adm.saapDocAdmPresidencia.id = ?
+    ]]>
+    </query>
+
+    <query name="consultar-andamentos-pendencia">
+    <![CDATA[ 
+	    select hist,adm
+		from 
+		SaapAdmtAdmPresidencia adm,
+		SaapHistAdmtAdm hist
+		where
+		adm.saapPendenciaAdmPresidencia.id = ? and
+		adm.id = hist.saapAdmtAdmPresidencia.id
+    ]]>
+    </query>
+
+
+    <query name="desativar-documento">
+    <![CDATA[ 
+		update
+		SaapDocAdmPresidencia
+		set
+		indSituacaoDoc='D'
+		where
+		id=?
+    ]]>
+    </query>
+
+
+    <query name="desativar-pendencia">
+    <![CDATA[ 
+		update
+		SaapPendenciaAdmPresidencia
+		set
+		indSituacaoPendencia='D'
+		where
+		id=?
+    ]]>
+    </query>
+
+
+    <query name="consultar-documento-similar-primeiro">
+    <![CDATA[   
+    	from
+     	SaapDocAdmPresidencia doc
+     	where
+     	doc.indTipoDoc = ? and
+     	doc.descDoc like upper(?)
+     	order by doc.id
+    ]]>
+    </query>
+
+    <query name="consultar-documento-similar-proximo">
+    <![CDATA[   
+    	from
+     	SaapDocAdmPresidencia doc
+     	where
+     	doc.indTipoDoc = ? and
+     	doc.descDoc like upper(?) and
+     	doc.id > ?
+    ]]>
+    </query>
+
+
+    <query name="consultar-documento-similar-anterior">
+    <![CDATA[   
+    	from
+     	SaapDocAdmPresidencia doc
+     	where
+     	doc.indTipoDoc = ? and
+     	doc.descDoc like upper(?) and
+     	doc.id < ?
+	    order by doc.id desc
+    ]]>
+    </query>
+
+
+    <query name="consultar-ultimo-historico-documento">
+    <![CDATA[   
+		from 
+		SaapHistDocAdm hist
+		where
+		hist.tsHistDoc = (select max(temp.tsHistDoc) from SaapHistDocAdm temp where temp.saapDocAdmPresidencia.id=?) and
+		hist.saapDocAdmPresidencia.id=?
+    ]]>
+    </query>
+
+    <query name="consultar-ultimo-historico-pendencia">
+    <![CDATA[   
+		from 
+		SaapHistPendenciaAdm hist
+		where
+		hist.tsHistPendencia = (select max(temp.tsHistPendencia) from SaapHistPendenciaAdm temp where temp.saapPendenciaAdmPresidencia.id=?) and
+		hist.saapPendenciaAdmPresidencia.id=?
+    ]]>
+    </query>
+
+    <query name="consultar-documentos-similares">
+    <![CDATA[   
+    	from
+     	SaapDocAdmPresidencia doc
+     	where
+     	doc.indTipoDoc = ? and
+     	doc.descDoc like upper(?)
+    ]]>
+    </query>
+    
+    <query name="consultar-usuarios-pendencia">
+    <![CDATA[   
+    	select acomp
+    	from
+     	SaapAcompPendenciaAdm acomp
+     	where
+     	acomp.saapPendenciaAdmPresidencia.id = ? 
+     	and acomp.seqUsuario <> ?
+    ]]>
+    </query>    
+    
+	<query name="consultar-andament-pend-filtro">
+		<![CDATA[
+		select ANDAMENTO
+		from SaapAdmtAdmPresidencia ANDAMENTO,
+			SaapPendenciaAdmPresidencia PEND
+		where
+		(ANDAMENTO.tsEntradaAdmt between ? and ?) AND
+		(ANDAMENTO.descAdmtAdm like upper(?)) AND
+		(PEND.descEnderecoPendencia like upper(?)) AND
+		(PEND.txtAssuntoPendencia like upper(?)) AND				
+		(PEND.id = ANDAMENTO.saapPendenciaAdmPresidencia.id)	
+		order by ANDAMENTO.descAdmtAdm, ANDAMENTO.tsEntradaAdmt	
+		]]>
+	</query>    
+	    
+</hibernate-mapping>

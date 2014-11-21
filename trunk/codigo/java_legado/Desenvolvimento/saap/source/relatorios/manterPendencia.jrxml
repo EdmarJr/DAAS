@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="manterPendencia"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Landscape"
+		 pageWidth="842"
+		 pageHeight="595"
+		 columnWidth="802"
+		 columnSpacing="0"
+		 leftMargin="20"
+		 rightMargin="20"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="enderecadoA" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[$P{enderecadoA}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="assuntoDaPendencia" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[$P{assuntoDaPendencia}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="acompanhamento" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[$P{acompanhamento}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="situacao" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[$P{situacao}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataInicio" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[$P{dataInicio}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataFim" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[$P{dataFim}]]></defaultValueExpression>
+	</parameter>
+
+	<field name="tsEntradaPendencia" class="java.util.Date"/>
+	<field name="registradoPor" class="java.lang.String"/>
+	<field name="acompanhamento" class="java.lang.String"/>
+	<field name="situacao" class="java.lang.String"/>
+	<field name="assunto" class="java.lang.String"/>
+	<field name="enderecado" class="java.lang.String"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="131"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="4"
+						width="240"
+						height="19"
+						forecolor="#000080"
+						key="staticText-1"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" size="16" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Superior Tribunal de Justiça]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="21"
+						width="420"
+						height="18"
+						forecolor="#000080"
+						key="staticText-2"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" size="14" isBold="false"/>
+					</textElement>
+				<text><![CDATA[Sistema de Acompanhamento Administrativo da Presidência]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="36"
+						width="170"
+						height="18"
+						forecolor="#000080"
+						key="staticText-3"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" size="14" isBold="false"/>
+					</textElement>
+				<text><![CDATA[Relatório de pendências consultadas]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="73"
+						y="67"
+						width="437"
+						height="15"
+						forecolor="#808080"
+						key="textField-6"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" isBold="false" isItalic="false" isUnderline="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{enderecadoA}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="66"
+						width="80"
+						height="15"
+						forecolor="#808080"
+						key="staticText-17"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Endereçado a:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="114"
+						y="79"
+						width="340"
+						height="15"
+						forecolor="#808080"
+						key="textField-7"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" isBold="false" isItalic="false" isUnderline="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{assuntoDaPendencia}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="78"
+						width="121"
+						height="15"
+						forecolor="#808080"
+						key="staticText-18"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Assunto da pendência:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="705"
+						y="7"
+						width="29"
+						height="14"
+						forecolor="#808080"
+						key="staticText-22"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Data:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="705"
+						y="18"
+						width="29"
+						height="14"
+						forecolor="#808080"
+						key="staticText-23"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Hora:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="737"
+						y="6"
+						width="65"
+						height="14"
+						forecolor="#808080"
+						key="textField-10"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" size="10" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="HH:mm:ss" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="737"
+						y="17"
+						width="52"
+						height="14"
+						forecolor="#808080"
+						key="textField-11"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" size="10" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="705"
+						y="30"
+						width="38"
+						height="14"
+						forecolor="#808080"
+						key="staticText-25"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Página:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="731"
+						y="31"
+						width="31"
+						height="13"
+						forecolor="#808080"
+						key="textField-12"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Lucida Sans"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="759"
+						y="31"
+						width="31"
+						height="13"
+						forecolor="#808080"
+						key="textField-13"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Lucida Sans"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="751"
+						y="31"
+						width="16"
+						height="13"
+						forecolor="#808080"
+						key="staticText-26"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ de ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="90"
+						width="100"
+						height="15"
+						forecolor="#808080"
+						key="staticText-27"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Acompanhamento:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="92"
+						y="91"
+						width="386"
+						height="15"
+						forecolor="#808080"
+						key="textField-14"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{acompanhamento}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="102"
+						width="50"
+						height="15"
+						forecolor="#808080"
+						key="staticText-28"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Situação:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="47"
+						y="103"
+						width="478"
+						height="15"
+						forecolor="#808080"
+						key="textField-15"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{situacao}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="114"
+						width="109"
+						height="15"
+						forecolor="#808080"
+						key="staticText-29"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Período de entrada:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="109"
+						y="115"
+						width="70"
+						height="15"
+						forecolor="#808080"
+						key="textField-16"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" isBold="false" isItalic="false" isUnderline="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{dataInicio}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="80"
+						y="106"
+						width="0"
+						height="10"
+						forecolor="#808080"
+						key="staticText-30"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Texto Estático]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="174"
+						y="114"
+						width="110"
+						height="15"
+						forecolor="#808080"
+						key="textField-21"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{dataFim}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="164"
+						y="114"
+						width="10"
+						height="15"
+						forecolor="#808080"
+						key="staticText-36">
+							<printWhenExpression><![CDATA[Boolean.valueOf(($P{dataInicio} != null && $P{dataInicio} != "") && ($P{dataFim} != null) && $P{dataFim} != "")]]></printWhenExpression>
+						</reportElement>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans"/>
+					</textElement>
+				<text><![CDATA[a]]></text>
+				</staticText>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="32"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="10"
+						y="0"
+						width="269"
+						height="15"
+						forecolor="#FFBC01"
+						key="staticText-31"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Pendências cadastradas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="10"
+						y="17"
+						width="120"
+						height="15"
+						forecolor="#808080"
+						key="staticText-32"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Data / Hora da entrada]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="139"
+						y="17"
+						width="51"
+						height="15"
+						forecolor="#808080"
+						key="staticText-33"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Assunto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="271"
+						y="17"
+						width="85"
+						height="15"
+						forecolor="#808080"
+						key="staticText-34"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Registrado por]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="397"
+						y="17"
+						width="83"
+						height="15"
+						forecolor="#808080"
+						key="staticText-35"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Endereçado a]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="597"
+						y="17"
+						width="95"
+						height="15"
+						forecolor="#808080"
+						key="staticText-37"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Acompanhamento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="711"
+						y="15"
+						width="46"
+						height="15"
+						forecolor="#808080"
+						key="staticText-38"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Situação]]></text>
+				</staticText>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="15"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="2"
+						width="120"
+						height="13"
+						forecolor="#808080"
+						key="textField-17"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{tsEntradaPendencia}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="139"
+						y="2"
+						width="130"
+						height="13"
+						forecolor="#808080"
+						key="textField-18"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{assunto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="395"
+						y="2"
+						width="201"
+						height="13"
+						forecolor="#808080"
+						key="textField-19"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{enderecado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="271"
+						y="2"
+						width="124"
+						height="13"
+						forecolor="#808080"
+						key="textField-20"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{registradoPor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="596"
+						y="2"
+						width="109"
+						height="13"
+						forecolor="#808080"
+						key="textField-22"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{acompanhamento}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="711"
+						y="0"
+						width="91"
+						height="13"
+						forecolor="#808080"
+						key="textField-23"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Sans" pdfFontName="Helvetica" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{situacao}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="2"  isSplitAllowed="true" >
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

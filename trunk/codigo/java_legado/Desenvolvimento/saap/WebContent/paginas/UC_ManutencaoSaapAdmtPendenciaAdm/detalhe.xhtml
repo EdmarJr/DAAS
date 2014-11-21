@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xml:lang="pt-br" lang="pt-br">
+
+	<ui:composition template="${msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			Detalhe dos andamentos da pendência
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236345" />
+
+		<ui:define name="corpo">
+			<form jsfc="h:form" id="formDetalheAndmento">
+
+				<h4>Dados da pendência</h4>
+				<table class="table-grid-detalhar">
+					<tbody>
+						<tr>
+							<td width="25%">
+								<label class="form-label-primario">
+									Data do registro<br />
+									<span class="form-label-secundario">
+										<h:outputText value="#{saapAdmtPendenciaAdmAction.visao.resultadoTO.saapPendenciaAdmPresidencia.tsEntradaPendencia}">
+						 					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+										</h:outputText>
+									</span>
+								</label>
+							</td>
+							<td width="75%">
+								<label class="form-label-primario">
+									Situação da pendência<br />
+									<span class="form-label-secundario">#{saapAdmtPendenciaAdmAction.visao.resultadoTO.saapPendenciaAdmPresidencia.indSituacaoPendenciaFormatado}</span>
+								</label>
+							</td>
+							<td>
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">
+								<label class="form-label-primario">
+									Endereçado a<br />
+									<span class="form-label-secundario">#{saapAdmtPendenciaAdmAction.visao.resultadoTO.saapPendenciaAdmPresidencia.descEnderecoPendencia}</span>
+								</label>
+							</td>
+							
+							<td width="75%">
+								<label class="form-label-primario">
+									Assunto da pendência<br />
+									<span class="form-label-secundario">#{saapAdmtPendenciaAdmAction.visao.resultadoTO.saapPendenciaAdmPresidencia.txtAssuntoPendencia}</span>
+								</label>
+							</td>
+						</tr>	
+					</tbody>
+				</table>
+				
+				<div class="table-grid-rolagem">
+					<label class="form-label-primario">Acompanhamento<br/></label>
+					<rich:dataTable id="saapAcompanhamentos" var="saapAcompanhamento"  
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						renderIfSinglePage="false"
+	                    value="#{saapAdmtPendenciaAdmAction.visao.resultadoTO.listaAcompanhamentos}"
+	                    rendered="#{not empty saapAdmtPendenciaAdmAction.visao.resultadoTO.listaAcompanhamentos}">
+
+						<h:column id="colAndamento">
+							<h:commandLink id="lnkAcomp" actionListener="#{saapAcompPendenciaAdmAction.carregarParametros}" action="${saapAcompPendenciaAdmAction.iniciarManutencaoAcomp}" immediate="true" title="Clique para detalhar o registro." >
+								<f:attribute name="seqPendenciaAdm" value="#{saapAcompanhamento.saapAcompPendenciaAdm.saapPendenciaAdmPresidencia.id}"/>
+								<f:attribute name="caminhoRetorno" value="saapAdmtPendenciaAdmAction.detalhar"/>
+								<h:outputText id="outputTextAcompanhamento" value="#{saapAcompanhamento.acompanhamento}" />        
+							</h:commandLink>
+						</h:column>
+					</rich:dataTable>
+				</div>				
+
+				<div class="table-grid-rolagem">
+					<h4>Andamentos</h4>
+					<rich:dataTable id="saapAdmtAdms" var="saapAdmtAdmPresidenciaTO" rows="25" cellspacing="1"
+	                    binding="#{saapAdmtPendenciaAdmAction.visao.dataTableDetalhe}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col1,align-center,col3" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{saapAdmtPendenciaAdmAction.visao.listaAndamentosDetalhe}"
+	                    rendered="#{not empty saapAdmtPendenciaAdmAction.visao.listaAndamentosDetalhe}">
+
+						<f:facet name="caption">
+							<h:column>
+								Andamentos
+							</h:column>
+						</f:facet>
+
+						<h:column id="colAndamento">
+							<f:facet name="header">
+								Andamento
+							</f:facet>
+							<h:commandLink id="lnkEditar" actionListener="#{saapAdmtPendenciaAdmAction.atribuirAndamento}" action="${saapAdmtPendenciaAdmAction.iniciarEditarAndamentoDetalhe}" immediate="true" title="Clique para detalhar o registro." >
+								<f:attribute name="visao.andamentoSelecionado" value="#{saapAdmtAdmPresidenciaTO.saapAdmtAdmPresidencia}"/>
+								<h:outputText id="outputTextDescAdmtAdm" value="#{saapAdmtAdmPresidenciaTO.saapAdmtAdmPresidencia.descAdmtAdm}" />        
+							</h:commandLink>
+						</h:column>
+
+						<h:column id="colData">
+							<f:facet name="header">
+								Data
+							</f:facet>
+							<h:outputText value="#{saapAdmtAdmPresidenciaTO.saapAdmtAdmPresidencia.tsEntradaAdmt}">
+							 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+							</h:outputText>
+						</h:column>
+
+						<h:column id="colResponsavel">
+							<f:facet name="header">
+								Responsável
+							</f:facet>
+							#{saapAdmtAdmPresidenciaTO.responsavel}
+						</h:column>
+
+					</rich:dataTable>
+				</div>
+
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapAdmtAdms" fastControls="hide" id="datascroller" renderIfSinglePage="false" limitToList="true"
+								actionListener="#{saapAdmtPendenciaAdmAction.consultarListaAndamentosDetalhe}" page="#{saapAdmtPendenciaAdmAction.visao.paginaDetalhe}" reRender="saapAdmtAdms,datascroller">
+
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+
+				<div class="table-grid">
+					<table class="table-grid-detalhar">
+						<tr>
+							<td>
+								<label class="form-label-primario">
+									<br/><span class="form-campo-obrigatorio" title="Campo de preenchimento obrigatório">*</span>
+									Descrição do andamento<br/>
+									<input jsfc="h:inputText" class="form-text" type="text" value="#{saapAdmtPendenciaAdmAction.visao.descricaoAndamentoSelecionado}" size="40" maxlength="100" id="inputDescricaoAndamentoSelecionado" /><h:outputText id="outputTextVazio" value="  " />
+									<a4j:outputPanel id="panelBtnIncluirAndamento" rendered="#{!saapAdmtPendenciaAdmAction.visao.apresentaBtnAlterar }">
+										<input type="submit" jsfc="h:commandButton" value="#{msg.incluir}" title="Inclui um novo registro." class="form-button-p02"
+											action="#{saapAdmtPendenciaAdmAction.incluirAndamentoDetalhe}" />
+									</a4j:outputPanel>
+
+									<a4j:outputPanel id="panelBtnAlterarAndamento" rendered="#{saapAdmtPendenciaAdmAction.visao.apresentaBtnAlterar}">
+										<input type="submit" jsfc="h:commandButton" value="#{msg.alterar}" title="Apresenta tela para alteração de um registro." class="form-button-p02"
+											action="#{saapAdmtPendenciaAdmAction.alterarAndamentoDetalhe}" />	
+										<input jsfc="h:commandButton" value="#{msg.cancelar}" title="Cancela a operação solicitada." class="form-button-p03"
+											action="#{saapAdmtPendenciaAdmAction.cancelarEdicaoAndamentoDetalhe}" immediate="true"/>	
+									</a4j:outputPanel>
+								</label>
+							</td>
+						</tr>
+					</table>
+					<p class="form-legenda-campo-obrigatorio">
+						(<span class="form-campo-obrigatorio">*</span>) Campos de preenchimento obrigatório
+					</p>
+				</div>
+
+				<div class="form-barra-botoes">
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p02"
+							action="#{saapAdmtPendenciaAdmAction.voltarInicio}" rendered="#{saapAdmtPendenciaAdmAction.visao.caminhoRetorno == 'saapAdmtPendenciaAdmAction.consultar'}"/>
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p02"
+							action="#{saapPendenciaAdmPresidenciaAction.voltarDetalhe}" rendered="#{saapAdmtPendenciaAdmAction.visao.caminhoRetorno == 'saapPendenciaAdmPresidenciaAction.detalhar'}"/>
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p02"
+							action="#{saapPendenciaAdmPresidenciaAction.voltarEditar}" rendered="#{saapAdmtPendenciaAdmAction.visao.caminhoRetorno == 'saapPendenciaAdmPresidenciaAction.editar'}"/>
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p02"
+							action="#{listarPendenciasAction.consultar}" rendered="#{saapAdmtPendenciaAdmAction.visao.caminhoRetorno == 'listarPendenciasAction.consultar'}"/>
+
+					<input type="button" value="#{msg.historico}" title="Apresenta lista do histórico de ações aplicadas ao registro." class="form-button-p03"
+						   onclick="consultaHistoricoAndamentosPendenciaA4j('#{saapAdmtPendenciaAdmAction.visao.pendenciaSelecionada.id}');"/>
+				</div>
+
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.consultaTO}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.resultadoTO}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.listaAndamentosDetalhe}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.pagina}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.lista}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.paginaDetalhe}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.andamentoSelecionado}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.andamentoSelecionadoConsulta}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.pendenciaSelecionada}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.apresentaBtnAlterar}"/>
+				<t:saveState value="#{saapAdmtPendenciaAdmAction.visao.caminhoRetorno}"/>
+				<!-- UC Manter Pendência   -->
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.consultarPendenciasTO}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.paginaDetalhe}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.paginaEdicao}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.lista}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.caminhoRetornoInicial}"/>
+				<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.entidade}"/>
+				<!-- UC Listar Pendência   -->
+				<t:saveState value="#{listarPendenciasAction.visao.pagina}"/>
+
+				<a4j:jsFunction name="consultaHistoricoAndamentosPendenciaA4j" action="#{consultarHistoricoAndamentoPendenciaAction.consultarHistoricoAndamentoPendencia}" limitToList="true" ajaxSingle="true" reRender="mensagens,formHistoricoAndamentoPendencia" ignoreDupResponses="true"  >
+						<a4j:actionparam name="seqPendenciaAdm" assignTo="#{consultarHistoricoAndamentoPendenciaAction.visao.seqPendenciaAdm}" />
+				</a4j:jsFunction>
+
+			</form>
+			<script>
+				function iniciar() {
+					var lnk = document.getElementById("formDetalheAndmento:saapAcompanhamentos:0:lnkAcomp");
+					if(lnk){
+						lnk.focus();
+					}
+				}
+			</script>
+
+		<!-- Modal Panel histórico do andamento   -->
+		<ui:include src="/paginas/UC_ConsultarHistoricoAndamentoPendencia/inicial.xhtml" />
+
+		</ui:define>
+
+	</ui:composition>
+
+</html>

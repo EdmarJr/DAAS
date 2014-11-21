@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	lang="pt-br" template="#{msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			#{msg.tela_alteracao_gestao}
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236377" />
+
+		<ui:define name="corpo">
+			<div id="conteudo-acessibilidade">
+			<h:form id="alteracao">
+
+				<h4>#{msg.dados_da_gestao}</h4>
+				<table class="form-table">
+					<tbody>
+						<tr>
+							<td width="35%">
+								<cc:label value="#{msg.saapGestaoPresidencia_dtInicialVigGestao}" for="compsaapGestaoPresidenciadtInicialVigGestao" rendered="#{saapGestaoPresidenciaAction.visao.entidade.dtFinalVigGestaoPreenchido==false}" obrigatorio="true" />
+								<cc:label value="#{msg.saapGestaoPresidencia_dtInicialVigGestao}" for="compsaapGestaoPresidenciadtInicialVigGestaoReadOnly" rendered="#{saapGestaoPresidenciaAction.visao.entidade.dtFinalVigGestaoPreenchido}" obrigatorio="false" />
+
+								<rich:calendar id="compsaapGestaoPresidenciadtInicialVigGestao" inputClass="form-text"
+									datePattern="dd/MM/yyyy" locale="pt-br" style="width:200px"
+									rendered="#{saapGestaoPresidenciaAction.visao.entidade.dtFinalVigGestaoPreenchido==false}" 
+									inputStyle="width:70px;" 
+									oninputkeydown="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeypress="utilformatador.formatarDataDoCampo(event, this)" 
+									oninputkeyup="utilformatador.formatarDataDoCampo(event, this)"
+									required="false" label="${ msg.saapGestaoPresidencia_dtInicialVigGestao }" 
+									enableManualInput="true" 
+									title="#{msg['exibir.calendario']}"
+									converterMessage="#{ msg.saapGestaoPresidencia_dtInicialVigGestao }: #{mensagem['MA007']}"
+									value="#{ saapGestaoPresidenciaAction.visao.entidade.dtInicialVigGestao }"
+									buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif">
+									<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<a4j:support event="oncollapse" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+									<f:validator validatorId="ValidadorDeData"/>
+								</rich:calendar>
+								<h:inputText styleClass="form-text" disabled="true" rendered="#{saapGestaoPresidenciaAction.visao.entidade.dtFinalVigGestaoPreenchido}" value="#{ saapGestaoPresidenciaAction.visao.entidade.dtInicialVigGestao }" label="${ msg.saapGestaoPresidencia_dtFinalVigGestao }" style="width:70px;" id="compsaapGestaoPresidenciadtInicialVigGestaoReadOnly"/>
+							</td>
+							<td>
+								<cc:label value="#{msg.saapGestaoPresidencia_dtFinalVigGestao}" for="compsaapGestaoPresidenciadtFinalVigGestao" obrigatorio="false" rendered="#{saapGestaoPresidenciaAction.visao.entidade.dtFinalVigGestaoPreenchido}" />
+								<h:inputText styleClass="form-text" disabled="true" datePattern="dd/MM/yyyy" value="#{ saapGestaoPresidenciaAction.visao.entidade.dtFinalVigGestao }" label="${ msg.saapGestaoPresidencia_dtFinalVigGestao }" style="width:70px;" id="compsaapGestaoPresidenciadtFinalVigGestao" rendered="#{saapGestaoPresidenciaAction.visao.entidade.dtFinalVigGestaoPreenchido}"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<cc:label value="#{msg.saapGestaoPresidencia_nomeMinistroPresidente}" for="compsaapGestaoPresidencianomeMinistroPresidente" obrigatorio="true" />
+								<h:inputText styleClass="form-text" datePattern="dd/MM/yyyy" value="#{ saapGestaoPresidenciaAction.visao.entidade.nomeMinistroPresidente }" label="${ msg.saapGestaoPresidencia_nomeMinistroPresidente }" size="80" maxlength="50" required="false" id="compsaapGestaoPresidencianomeMinistroPresidente" onblur="trim(this);"/>
+							</td>
+						</tr>
+					</tbody>
+				</table>										
+				<p class="form-legenda-campo-obrigatorio">
+					(<span class="form-campo-obrigatorio">*</span>) #{msg.campos_de_preenchimento_obrigatorio}
+				</p>
+				<div class="form-barra-botoes">
+					<h:commandButton value="#{msg.confirmar}" title="#{msg.hint_botao_gravar}" styleClass="form-button-p03"
+							action="#{saapGestaoPresidenciaAction.editar}" />
+
+					<h:commandButton value="#{msg.restaurar}" title="#{msg.hint_botao_restaura}" styleClass="form-button-p03" 
+							action="#{saapGestaoPresidenciaAction.iniciarEditar}" immediate="true"/>	
+
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p03" 
+						   action="#{saapGestaoPresidenciaAction.consultar}" immediate="true"/>		   
+				</div>
+
+				<t:saveState value="#{saapGestaoPresidenciaAction.visao.consulta}"/>
+				<t:saveState value="#{saapGestaoPresidenciaAction.visao.entidade.id}"/>
+				<t:saveState value="#{saapGestaoPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapGestaoPresidenciaAction.visao.entidade.dtFinalVigGestao}"/>
+				<t:saveState value="#{saapGestaoPresidenciaAction.visao.entidade.dtInicialVigGestao}"/>
+			</h:form>
+			<script>
+				function iniciar() {
+					var form = utilobjeto.getObjeto("alteracao");
+					utilformulario.focoNoPrimeiroObjeto(form);
+				}
+			</script>
+			</div>
+		</ui:define>
+</ui:composition>

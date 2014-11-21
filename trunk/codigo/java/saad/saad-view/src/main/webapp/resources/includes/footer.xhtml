@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" lang="pt-br"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGrid id="footer" columns="1">
+		<p:column>
+				Servi&#231;o de Atendimento ao Cliente - SAC - sac&#64;stj.jus.br
+			</p:column>
+		<p:column>
+				&#169; 1996-2014 - Superior Tribunal de Justi&#231;a. Todos os direitos reservados.
+			</p:column>
+			<p:column style="text-align:center !important;">
+				<h:outputText value="v #{informacoesSistema.version}" />
+			</p:column>
+	</h:panelGrid>
+</ui:composition>

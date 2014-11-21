@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+
+		<h:form id="documentAuditSearchForm">
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:panel id="documentAuditSearchPanel">
+				<f:facet name="header">
+					<h:outputText style="font-size:14px;" value="Auditoria" />
+					<h:outputText style="font-size:14px;" value=" >> " />
+					<h:outputText style="font-size:14px;" value="Documento" />
+				</f:facet>
+
+				<p:panel header="Consulta" collapsed="false" toggleable="true">
+					<h:panelGrid columns="3" width="100%">
+
+						<p:column colspan="3">
+							<p:outputLabel for="inputDocumentNumber"
+								value="Documento:"
+								style="text-align:left;width: 120px;" />
+							<p:inputText id="inputDocumentNumber"
+								value="#{auditController.audit.idDocumento}" size="1" />
+						</p:column>
+
+						<p:column>
+							<p:outputLabel for="inputResponsibleUser" value="Usuário" />
+							<p:inputText id="inputResponsibleUser"
+								value="#{auditController.audit.idUsuario}" />
+						</p:column>
+
+						<p:column>
+							<p:outputLabel for="selectActionOperation" value="Operação:" />
+							<p:selectOneMenu id="selectActionOperation"
+								value="#{auditController.audit.tipoOperacao}">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItems var="actionOperation"
+									value="#{auditController.actionOperation}"
+									itemLabel="#{actionOperation.toString()}"
+									itemValue="#{actionOperation}" />
+							</p:selectOneMenu>
+						</p:column>
+
+						<h:panelGrid columns="1">
+							<f:facet name="header">
+								<p:outputLabel value="Período" />
+							</f:facet>
+							<p:column>
+								<p:outputLabel for="calendarFrom" value="De:" />
+								<p:calendar id="calendarFrom" mask="true" pattern="dd/MM/yyyy"
+									pages="3" value="#{auditController.audit.yieldDate.begin}" />
+							</p:column>
+							<p:column>
+								<p:outputLabel for="calendarTo" value="Até:" />
+								<p:calendar id="calendarTo" mask="true" pattern="dd/MM/yyyy"
+									pages="3" value="#{auditController.audit.yieldDate.end}" />
+							</p:column>
+						</h:panelGrid>
+					</h:panelGrid>
+					<p:panel style="text-align: right;">
+						<p:commandButton ajax="false" action="#{auditController.search()}"
+							value="Pesquisar" />
+					</p:panel>
+				</p:panel>
+
+				<p:panel id="documentAuditDataTablePanel">
+
+					<p:dataTable id="documentAuditDataTable" var="documentAudit"
+						rowIndexVar="documentAuditIndex"
+						value="#{auditController.auditList}" paginator="true" rows="10"
+						lazy="true" paginatorPosition="bottom" scrollable="true"
+						scrollHeight="100%" scrollWidth="100%">
+
+						<p:ajax event="page" listener="#{auditController.dataTableChange}"
+							update="@(this)" />
+
+						<f:facet name="header">
+							<h:outputText value="Registro(s)" />
+						</f:facet>
+
+						<p:column headerText="Documento">
+							<h:outputText value="#{documentAudit.idDocumento}" />
+						</p:column>
+
+						<p:column headerText="Operação">
+							<h:outputText
+								value="#{documentAudit.tipoOperacao.toString()}" />
+						</p:column>
+
+						<p:column headerText="Usuário">
+							<h:outputText value="#{documentAudit.idUsuario}" />
+						</p:column>
+
+						<p:column headerText="Data e Hora">
+							<h:outputText value="#{documentAudit.dataHoraOperacao}">
+								<f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+					</p:dataTable>
+
+				</p:panel>
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<faces-config version="1.2" 
+			  xmlns="http://java.sun.com/xml/ns/javaee" 
+			  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+
+	<application>
+		<action-listener>br.jus.stj.alp01.jsf.excecoes.ExceptionHandler</action-listener>
+
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+		</locale-config>
+		<message-bundle>recursos.mensagem</message-bundle>
+	  	<resource-bundle>
+	        <base-name>recursos/resources</base-name>
+	        <var>msg</var>
+	    </resource-bundle>
+	  	<resource-bundle>
+	        <base-name>recursos/mensagem</base-name>
+	        <var>mensagem</var>
+	    </resource-bundle>
+		<resource-bundle>
+			<base-name>acesso</base-name>
+			<var>acesso</var>
+		</resource-bundle>
+	</application>
+
+	<validator>
+		<validator-id>ValidadorDeData</validator-id>
+		<validator-class>br.jus.stj.saap.apresentacao.validador.ValidadorDeData</validator-class>
+	</validator>
+	
+	<lifecycle>
+		<phase-listener>net.sf.jsfcomp.onload.OnLoadPhaseListener</phase-listener>
+	</lifecycle>	
+
+	<navigation-rule>
+		<navigation-case>
+		<from-outcome>tela.erro</from-outcome>
+		<to-view-id>/paginas/erro/erro.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

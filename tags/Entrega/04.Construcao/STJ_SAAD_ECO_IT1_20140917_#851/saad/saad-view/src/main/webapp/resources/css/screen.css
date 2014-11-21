@@ -1,0 +1,331 @@
+body {
+	margin: 0;
+	padding: 0;
+	/*background-color: #F1F1F1;*/
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	color: #363636;
+	font-size: 10px;
+}
+
+#header {
+	margin: 10px 0px 0px 5px;
+	padding: 0px 0px 0px 0px;
+	height: 50px;
+	border-top: 1px solid #000000;
+	border-left: 1px solid #8c8f91;
+	border-right: 1px solid #8c8f91;
+	border-bottom: 1px solid #8c8f91;
+	padding-top: 0px;
+	width: 99%;
+	background-image:
+		url(#{request.contextPath}/resources/images/header.png);
+	background-repeat: no-repeat;
+	box-shadow: -5px -5px 10px 1px #85B2CB;
+	border-collapse: separate;
+}
+
+#menu {
+	margin: 0px 0px 0px 5px;
+	padding: 0 0px 0px 0px;
+	padding-top: 0px;
+	box-shadow: 3px 3px 15px #d5d5d5;
+	width: 200px;
+	height: 100%;
+}
+
+.ui-panel {
+	background: transparent;
+}
+
+#container {
+	margin: 0px 0px 0px 15px;
+	border-top: 1px solid #000000;
+	border-left: 1px solid #8c8f91;
+	border-right: 1px solid #85B2CB;
+	border-bottom: 2px solid #85B2CB;
+	width: 98%;
+	height: 100%;
+	/*width: 865px;  subtract 40px from banner width for padding */
+	background-image:
+		url(#{request.contextPath}/resources/gfx/headerbkg.png);
+	background-repeat: repeat-x;
+	box-shadow: 3px 3px 15px #85B2CB;
+	border-collapse: separate;
+	float: left;
+	padding-top: 20px;
+}
+
+#content {
+	overflow: auto;
+	height: 95%;
+	width: 100%;
+	background: transparent;
+	padding: 0px 20px;
+}
+
+#login #loginHeader {
+	margin: 110px 0px 0px 250px;
+	height: 27px;
+	border-top: 1px solid #000000;
+	border-left: 1px solid #8c8f91;
+	border-right: 1px solid #8c8f91;
+	border-bottom: 1px solid #8c8f91;
+	padding-top: 0px;
+	width: 50%;
+	background-image:
+		url(#{request.contextPath}/resources/images/headerThin.png);
+	background-repeat: repeat-x;
+	box-shadow: -5px -5px 10px 1px #85B2CB;
+	border-collapse: separate;
+}
+
+#login #loginContent {
+	margin: 0px 0px 0px 250px;
+	width: 50%;
+	border-top: 1px solid #000000;
+	border-left : 1px solid #8c8f91;
+	border-right : 1px solid #8c8f91;
+	border-bottom : 1px solid #8c8f91;
+	padding-top : 0px;
+	background-image : url(#{request.contextPath}/resources/gfx/headerbkg.png);
+	background-repeat: no-repeat;
+	box-shadow: 3px 3px 15px #85B2CB;
+	border-collapse: separate;
+	background-image:
+		url(#{request.contextPath}/resources/gfx/headerbkg.png);
+	border-left: 1px solid #8c8f91;
+	border-right: 1px solid #8c8f91;
+	border-bottom: 1px solid #8c8f91;
+	padding-top: 0px;
+}
+
+#footer {
+	margin: 0px 10px 3px 5px;
+	border-top: 1px solid #8c8f91;
+	border-left: 1px solid #8c8f91;
+	border-right: 1px solid #8c8f91;
+	border-bottom: 1px solid #8c8f91;
+	width: 99%;
+	height: 90%;
+	box-shadow: 10px 10px 5px 1px #85B2CB;
+	border-collapse: separate;
+}
+
+#footer tbody tr:FIRST-CHILD {
+	border: none;
+	text-align: center;
+	color: #1C4257;
+	font-weight: bold;
+}
+
+#footer tbody tr {
+	border: none;
+	text-align: center;
+	color: #1C4257;
+	font-weight: normal;
+}
+
+#aside {
+	width: 275px;
+	float: left;
+	margin: 20px 0px;
+	border: 1px solid #D5D5D5;
+	background: #F1F1F1;
+	background-image: url(#{request.contextPath}/resources/gfx/asidebkg.png);
+	background-repeat: repeat-x;
+	padding: 20px;
+}
+
+#aside ul {
+	padding-left: 30px;
+}
+
+.dualbrand {
+	float: right;
+	padding-right: 10px;
+}
+
+code {
+	
+}
+
+a {
+	color: #4a5d75;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #369;
+	text-decoration: underline;
+}
+
+h1 {
+	color: #243446;
+}
+
+h2 {
+	
+}
+
+h3 {
+	color: #243446;
+}
+
+h4 {
+	
+}
+
+h5 {
+	
+}
+
+h6 {
+	
+}
+/* Member registration styles */
+.form {
+	padding: 1em;
+	font: 80%/1 sans-serif;
+	width: 375px;
+	border: 1px solid #D5D5D5;
+}
+
+label {
+	float: left;
+	width: 15%;
+	margin-left: 20px;
+	margin-right: 0.5em;
+	padding-top: 0.2em;
+	text-align: right;
+	font-weight: bold;
+	color: #363636;
+}
+
+input {
+	margin-bottom: 8px;
+}
+
+.register {
+	float: left;
+	margin-left: 85px;
+}
+
+/*  -----  table style  -------  */
+
+/*  = Simple Table style (black header, grey/white stripes  */
+.simpletablestyle {
+	background-color: #E6E7E8;
+	clear: both;
+	width: 550px;
+}
+
+.simpletablestyle img {
+	border: 0px;
+}
+
+.simpletablestyle td {
+	height: 2em;
+	padding-left: 6px;
+	padding: 5px 5px;
+}
+
+.simpletablestyle th {
+	background: url(#{request.contextPath}/resources/gfx/bkg-blkheader.png)
+		black repeat-x top left;
+	font-weight: normal;
+	padding: 0 10px 0 5px;
+	border-bottom: #999999 dotted 1px;
+}
+
+.simpletablestyle thead {
+	background: url(#{request.contextPath}/resources/gfx/bkg-blkheader.png)
+		black repeat-x top left;
+	height: 31px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: left;
+}
+
+.simpletablestyle .header a {
+	color: #94aebd;
+}
+
+.simpletablestype tfoot {
+	height: 20px;
+	font-weight: bold;
+	background-color: #EAECEE;
+	text-align: center;
+}
+
+.simpletablestyle tr.header td {
+	padding: 0px 10px 0px 5px;
+}
+
+.simpletablestyle .subheader {
+	background-color: #e6e7e8;
+	font-weight: bold;
+	color: #000000;
+	text-align: left;
+}
+
+/* Using new CSS3 selectors for styling*/
+.simpletablestyle tr:nth-child(odd) {
+	background: #f4f3f3;
+}
+
+.simpletablestyle tr:nth-child(even) {
+}
+
+.simpletablestyle td a:hover {
+	color: #3883ce;
+	text-decoration: none;
+}
+
+.title {
+	font-size: 16pt;
+	color: #0E3757;
+}
+
+.ast {
+	color: #D9A007;
+	font-weight: bold;
+}
+
+.lbl {
+	color: #716054;
+	font-weight: bold;
+}
+
+.vl {
+	color: #716054;
+}
+
+.sub-title {
+	font-size: 12pt;
+	font-weight: bold;
+	color: #D9A007;
+}
+
+.text-field {
+	height: 10px;
+}
+
+.to_me {
+	color:#FF0000;
+}
+
+.to_other {
+	color:#008000;
+}
+
+.to_many_with_me {
+	color:#FF8000;
+}
+
+.to_many_without_me .to_undefined {
+	color:#000000;
+}
+
+.to_all {
+	color:#0040FF;
+}

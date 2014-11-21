@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+
+		<h:form id="formMyTasks">
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:tabMenu activeIndex="3">
+				<p:menuitem value="Meus Avisos" outcome="minhasNotificacoes"/>
+				<p:menuitem value="Avisos da Unidade" outcome="listNotification"/>
+				<p:menuitem value="Alertas" outcome="listAlert"/>
+				<p:menuitem value="Minhas Tarefas" outcome="myTasks"/>
+			</p:tabMenu>
+			
+			<p:dataTable
+					var="task" value="#{taskController.listAll()}"
+					paginator="true" rows="14"
+					paginatorPosition="bottom" paginatorAlwaysVisible="true">
+				<f:facet name="header">
+					Lista de Tarefas
+				</f:facet>
+				<p:column id="column_documento" width="12%">
+					<f:facet name="header">
+						<h:outputText value="Documento" />
+					</f:facet>
+					<h:outputText value="#{task.documento}" />
+				</p:column>
+				<p:column id="column_tipo" width="12%">
+					<f:facet name="header">
+						<h:outputText value="Tipo" />
+					</f:facet>
+					<h:outputText value="#{task.tipoDocumento}" />
+				</p:column>
+				<p:column id="column_tarefa" width="52%">
+					<f:facet name="header">
+						<h:outputText value="Tarefa" />
+					</f:facet>
+					<h:outputText value="#{task.tarefa}" />
+				</p:column>
+				<p:column id="column_situacao" width="12%">
+					<f:facet name="header">
+						<h:outputText value="Situação" />
+					</f:facet>
+					<h:outputText value="#{task.situacao}" />
+				</p:column>
+				<p:column id="column_resolver_ate" width="12%">
+					<f:facet name="header">
+						<h:outputText value="Resolver Até" />
+					</f:facet>
+					<h:outputText value="#{task.resolverAte}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+
+			<p:panel style="width:100%;text-align:right;">
+				<h:outputText value="Total de tarefas pendentes: #{taskController.countPending()}" />
+			</p:panel>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

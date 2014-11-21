@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<p:panel header="#{titulo} Externo" style="white-space: nowrap;" id="#{painelPai}EnderecamentoExterno" rendered="#{!controller.documento.isEnderecamentoInterno(tipoEnderecamento)}" >
+	<div class="pure-g">
+		<div class="pure-u-1-2">
+			<p:selectOneRadio
+				value="#{controllerRemetente.tipoEnderecamentoExternoEnum}" disabled="#{!controller.alterar}">
+				<f:selectItems value="#{controllerRemetente.listaTiposEnderacamentoExterno}" var="enderecamento" 
+					itemValue="#{enderecamento}" itemLabel="#{enderecamento.descricao}" />
+				<p:ajax event="change" update="@this @form" listener="#{controllerRemetente.atualizarPainel}"/>
+			</p:selectOneRadio>
+		</div>
+	</div>
+	<p:panel rendered="#{controllerRemetente.isOrgao()}"
+		header="Dados Orgão" styleClass="saad-border-solid">
+		<div class="pure-g">
+			<div class="pure-u-1-4">
+				<p:outputLabel for="#{painelPai}autoCompleteOrgao" value="Orgão:" styleClass="lbl" />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<p:outputLabel for="#{painelPai}selectCargo" value="Cargo:" styleClass="lbl" />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<p:outputLabel for="#{painelPai}selectDestinatario" value="#{titulo}:" styleClass="lbl" />
+			</div>
+		</div>
+		<div class="pure-g">
+			<div class="pure-u-1-4">
+				<p:autoComplete id="#{painelPai}autoCompleteOrgao" scrollHeight="150"
+					minQueryLength="3" queryDelay="3" required="true"
+					requiredMessage="O campo 'Orgão' não pode ficar em branco."
+					itemLabel="#{orgao.nome}" itemValue="#{orgao}" var="orgao"
+					size="150" maxlength="150"
+					value="#{controllerRemetente.enderecamento.orgao}"
+					completeMethod="#{controllerRemetente.autoCompleteOrgao}"
+					emptyMessage="Nenhum resultado encontrado." disabled="#{!controller.alterar}">
+					<p:ajax event="itemSelect"
+						listener="#{controllerRemetente.atualizarListaDeCargos}"
+						update="@this @form" />
+				</p:autoComplete>
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<p:selectOneMenu id="#{painelPai}selectCargo" value="#{controllerRemetente.enderecamento.cargo}"
+					required="true" disabled="#{!controller.alterar}"
+					requiredMessage="O campo 'Cargo' não pode ficar em branco.">
+					<f:selectItem itemValue="null" />
+					<f:selectItems value="#{controllerRemetente.listaCargos}"
+						var="cargo" itemValue="#{cargo}" itemLabel="#{cargo.nome}" />
+					<p:ajax event="change"
+						listener="#{controllerRemetente.atualizarListaDeDestinatarios}"
+						update="@this @form" />
+				</p:selectOneMenu>
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<p:selectOneMenu id="#{painelPai}selectDestinatario"
+					value="#{controllerRemetente.enderecamento.destinatario}"
+					required="true" disabled="#{!controller.alterar}"
+					requiredMessage="O campo 'Destinatário' não pode ficar em branco.">
+					<f:selectItem itemValue="null" />
+					<f:selectItems
+						value="#{controllerRemetente.listaDestinatarios}"
+						var="destinatario" itemValue="#{destinatario}"
+						itemLabel="#{destinatario.nome}" />
+					<f:ajax event="change" render="@this #{painelPai}EnderecamentoExterno" listener="#{controllerRemetente.ativarEnderecamento}"/>
+				</p:selectOneMenu>
+			</div>
+		</div>
+		<br/>		
+	</p:panel>
+	<ui:include src="enderecamentoExternoDestinatarioDocumento.xhtml">
+		<ui:param name="controllerRemetente" value="#{controllerRemetente}" />
+		<ui:param name="controllerDestinatarioDocumento" value="#{controllerRemetente.enderecamentoDestinatarioDocumentoUtil}" />
+		<ui:param name="painelPai" value="#{painelPai}" />
+		<ui:param name="titulo" value="#{titulo}" />
+	</ui:include>
+</p:panel>
+</html>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+	
+	
+		<ui:define name="content">
+		
+		<h:form id="formIncluirAviso">
+			
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+			
+			<p:panel id="panelPai" style="width:1010px">
+		
+				<p:breadCrumb>
+				    <p:menuitem value="Início" />
+				    <p:menuitem value="#{label['breadCrumb.aviso']}" />
+				    <p:menuitem value="#{label['breadCrumb.aviso.detalhar']}" />
+				</p:breadCrumb>
+				
+				<h:outputText value="#{label['breadCrumb.aviso.detalhar']}" styleClass="title" />
+				<br/>
+				<h:outputText value="#{label['aviso.dados']}" styleClass="sub-title" />
+				<p:separator style="height:1px;" />
+				
+				<h:outputText rendered="#{!detalhaAvisoController.enderecamentoEspecifico}" value="Endereçado a&#160;" styleClass="lbl" />
+				
+				<h:outputText value="TODOS" rendered="#{!detalhaAvisoController.enderecamentoEspecifico}"/>
+				<br/>
+				<h:panelGroup id="listaDeDestinatarios" rendered="#{detalhaAvisoController.enderecamentoEspecifico}">
+					<br/>
+					<p:dataTable value="#{detalhaAvisoController.avisoDetalhar.destinatariosAviso}" var="destinatarioAviso" emptyMessage="Nenhum destinatário adicionado">
+						<p:column headerText="Endereçado" >
+							<h:outputText value="#{destinatarioAviso.usuario.nome}" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-2-5">
+						<h:outputText value="Descrição" styleClass="lbl" />
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-5-5">
+						<p:inputTextarea readonly="true" value="#{detalhaAvisoController.avisoDetalhar.descricao}">
+						</p:inputTextarea>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-1-5">
+						<h:outputText value="Data de inclusão" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-5">
+						<h:outputText value="Situação do Aviso" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-5">
+						<h:outputText value=" " styleClass="ast" />
+						<h:outputText value="Data de solução" styleClass="lbl" />
+					</div>
+				</div>
+				<div class="pure-g">
+					<div class="pure-u-1-5">
+						<h:outputText value="#{detalhaAvisoController.avisoDetalhar.dataInclusao}" navigator="true" 
+							pattern="dd/MM/yyyy HH:mm"/>
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-5">
+						<h:outputText value="#{msg[detalhaAvisoController.enumAviso.codLabel]}"/>
+					</div>
+					<div class="pure-u-1-24"></div>
+					<div class="pure-u-1-5">
+						<h:outputText value="#{detalhaAvisoController.avisoDetalhar.dataResolucao}" navigator="true" pattern="dd/MM/yyyy HH:mm"/>
+					</div>
+				</div>
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-1-5">
+						<h:outputText value="Relacionado a Documento?" styleClass="lbl" />
+					</div>
+					<br/>
+					<div class="pure-u-1-5">
+						 <h:outputText value="#{detalhaAvisoController.relacionadoDocumento}"/>
+					</div>
+				</div>
+				<br/>
+				<h:panelGroup id="panelRelacionadoDocumento" rendered="#{detalhaAvisoController.avisoDetalhar.documento != null}">
+					<div class="pure-g">
+						<div class="pure-u-1-5">
+							<h:outputText value="Tipo do Documento" styleClass="lbl" />
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-1-5">
+							<h:outputText value="Numero do Documento" styleClass="lbl" />
+						</div>
+					</div>
+					<div class="pure-g">
+						<div class="pure-u-1-5">
+							<h:outputText value="#{detalhaAvisoController.avisoDetalhar.documento.tipo.nome}"/>
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-1-5">
+							<h:outputText value="#{detalhaAvisoController.avisoDetalhar.documento.numeroDocumentoOrigem}" mask="9?99999999" maxlength="15"/>
+						</div>
+					</div>
+				</h:panelGroup>
+				<br/>
+				<div style="float: right;">
+					<p:commandButton ajax="false" action="#{detalhaAvisoController.alterarAviso()}" value="Alterar" />
+					<p:commandButton ajax="false" value="Voltar" action="#{detalhaAvisoController.voltar()}"/>
+				</div>
+				<br/>
+				<br/>
+				<br/>	
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>

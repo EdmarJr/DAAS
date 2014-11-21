@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div id="header">
+		<div>
+			<a class="navbar-brand" href="#" />
+		</div>
+	</div>
+	<h:form>
+		<div style="margin: 10px 10px 0px 5px; padding: 0px 0px 0px 0px; float: right;" >
+			Usuário: <h:outputText value="#{localUsuarioController.loginBean.usuarioLogado.nome}" />
+		</div>
+		<div style="margin: 10px 10px 0px -27px; padding: 0px 0px 0px 0px; float: left; width: 30%; display: flex;" >
+			<span style="width: 30%;">
+				Local atual:
+			</span>
+			<span style="width: 70%;">
+				<p:selectOneMenu value="#{localUsuarioController.loginBean.unidadeUsuario}">
+					<f:selectItems value="#{localUsuarioController.loginBean.usuarioLogado.locaisUsuarios}" var="unidade" itemValue="#{unidade.local}" itemLabel="#{unidade.local.nome}"/>
+					<p:ajax event="change" listener="#{localUsuarioController.comandoAlterarLocal()}"/>
+				</p:selectOneMenu>
+			</span> 
+		</div>
+	</h:form>
+</ui:composition>

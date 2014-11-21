@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+
+		<h:form id="documentTypeSearchForm">
+
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+
+			<p:panel id="documentTypeSearchPanel">
+				<f:facet name="header">
+					<h:outputText style="font-size:14px;" value="Tipo de Documento" />
+				</f:facet>
+
+				<p:panel header="Configurar" collapsed="false" toggleable="true">
+
+					<p:dataGrid var="documentTypeFieldSearch"
+						value="#{documentTypeController.documentTypeFieldSearchList}"
+						columns="4">
+
+						<p:column>
+							<h:outputLabel value="#{documentTypeFieldSearch.name}:"
+								style="text-align:left;width: 200px;"
+								for="input#{documentTypeFieldSearch.name}" />
+							<h:inputText id="input#{documentTypeFieldSearch.name}"/>
+						</p:column>
+					</p:dataGrid>
+
+					<p:panel style="text-align: right;">
+						<p:commandButton value="Novo" ajax="true"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-plus">
+							<p:ajax listener="#{documentTypeController.loadModal}"
+								update=":documentTypeDialogForm"
+								onsuccess="PF('documentTypeDialogWidget').show();" />
+						</p:commandButton>
+
+						<p:commandButton ajax="false" icon="ui-icon-search"
+							action="#{documentTypeController.search()}" value="Pesquisar"
+							update=":documentTypeSearchForm:documentTypeDataTable" />
+					</p:panel>
+				</p:panel>
+
+				<p:dataTable id="documentTypeDataTable" var="documentType"
+					rowIndexVar="documentTypeIndex"
+					value="#{documentTypeController.documentTypeObjectList}"
+					paginator="#{!documentTypeController.documentTypeObjectList.isEmpty()}"
+					rows="10" lazy="true" paginatorPosition="bottom" scrollable="true"
+					scrollHeight="64%" scrollWidth="100%">
+
+					<f:facet name="header">
+						<h:outputText value="Registro(s)" />
+					</f:facet>
+
+					<p:column width="5%" style="text-align: center;">
+						<p:selectBooleanCheckbox style="text-align: center;"
+							value="#{documentType[0].selected}" />
+					</p:column>
+
+					<p:column headerText="Identificador">
+						<h:outputText value="#{documentType[0].id}" />
+					</p:column>
+
+					<p:column headerText="Nome">
+						<h:outputText value="#{documentType[0].nome}" />
+					</p:column>
+					
+					<p:column headerText="Pasta Física">
+						<h:outputText value="#{documentType[1]}" />
+					</p:column>
+
+					<p:column width="10%">
+
+						<p:commandButton value="Editar" ajax="true"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-pencil">
+							<p:ajax listener="#{documentTypeController.loadModal}"
+								update=":documentTypeDialogForm"
+								onsuccess="PF('documentTypeDialogWidget').show();" />
+							<f:attribute name="documentType" value="#{documentType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<p:panel style="text-align: right;"
+				rendered="#{!documentTypeController.documentTypeObjectList.isEmpty()}">
+				<p:commandButton ajax="false" styleClass="ui-confirmdialog-yes"
+					icon="ui-icon-transferthick-e-w"
+					action="#{documentTypeController.confirmUnitRelationship()}"
+					value="Relacionar à esta unidade"
+					update=":documentTypeSearchForm:documentTypeDataTable" />
+				<p:commandButton ajax="false" styleClass="ui-confirmdialog-yes"
+					icon="ui-icon-trash" action="#{documentTypeController.delete()}"
+					value="Excluir"
+					update=":documentTypeSearchForm:documentTypeDataTable" />
+			</p:panel>
+
+		</h:form>
+
+		<ui:include src="/pages/documentType/modalDialog.xhtml" />
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>SAAD - Sistema de Acompanhamento Administrativo de
+		Documentos</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=8;FF=3;OtherUA=4" /> 
+	<meta http-equiv="Cache-Control" content="no-store,no-cache,must-revalidate"/> 
+	<meta http-equiv="Pragma" content="no-cache"/> 
+	<meta http-equiv="Expires" content="-1"/> 
+
+	<h:outputStylesheet library="css" name="app.css" />
+	<h:outputStylesheet library="css" name="screen.css" />
+	<h:outputStylesheet library="templates/bootstrap/css"
+		name="bootstrap.css" />
+	<h:outputStylesheet library="templates/bootstrap/css"
+		name="bootstrapCtis.css" />
+		
+	<h:outputStylesheet library="css/pure-release-0.5.0"
+		name="pure.css" />
+
+</h:head>
+		
+		
+		<div class="pure-g">
+			<div class="pure-u-1-1">
+				<img src="#{resource['images/header.png']}"/>										
+				<form method="post" id="formularioLogin" action="j_security_check">
+					<br/><br/><br/><br/><br/><br/>
+					<div class="pure-g">
+						<div class="pure-u-1-4">
+						</div>
+						<div class="pure-u-1-2">
+							<p:panel id="panelLogin" header="#{label['header']}" >
+								<div class="pure-g">
+									<div class="pure-u-1-5">
+									</div>
+									<div class="pure-u-1-4">
+										<p:outputLabel value="#{label['user.field']}" style="text-align: right;" />
+									</div>
+									<div class="pure-u-1-3">
+										<input class="form-control" type="text" name="j_username" maxlength="20"
+												style="vertical-align: text-top;"/>
+									</div>
+								</div>
+								<br/>
+								<div class="pure-g">
+									
+									<div class="pure-u-1-5">
+									</div>
+									<div class="pure-u-1-4">
+										<p:outputLabel value="#{label['password.field']}" style="text-align: right;" />
+									</div>
+									<div class="pure-u-1-3">
+										<input class="form-control" style="outline:none; vertical-align: middle;"
+												 type="password" name="j_password" maxlength="20" />
+									</div>
+								</div>
+								<br/>
+								<div class="pure-g">
+									<div class="pure-u-1-3">
+									</div>
+									<div class="pure-u-1-6">
+											<button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" name="login"><span class="ui-button-text ui-c">#{label['button.confirm']}</span></button>
+									</div>
+									<div class="pure-u-1-6">
+										<p:commandButton value="#{label['button.clear']}" type="reset"/>
+									</div>
+									<div class="pure-u-1-4">
+									</div>
+								</div>
+							</p:panel>
+						</div>
+						<div class="pure-u-1-4">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+</html>

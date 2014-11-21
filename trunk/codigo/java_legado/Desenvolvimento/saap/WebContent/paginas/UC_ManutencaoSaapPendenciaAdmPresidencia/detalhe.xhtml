@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ 
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	lang="pt-br" template="#{msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			#{msg.detalhar_pendencia} 
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236357" />		
+
+		<ui:define name="corpo">
+			<div id="conteudo-acessibilidade">
+				<h:form id="detalhe">
+
+					<a4j:jsFunction name="atribuiSeqPendenciaAdm" action="#{consultarHistoricoPendenciaAction.consultarHistoricoPendencia}" 
+						limitToList="true" ajaxSingle="true" reRender="mensagens,formHistoricoPendencia" ignoreDupResponses="true"  >
+							<a4j:actionparam name="seqPendenciaAdm" assignTo="#{consultarHistoricoPendenciaAction.visao.seqPendenciaAdm}" />
+					</a4j:jsFunction>
+
+					<h4>#{msg.dados_da_pendencia}</h4>
+					<table class="form-table">
+						<tr>
+							<td style="width: 20%">
+								<label class="form-label-primario">
+									#{msg.data_do_registro}<br />
+									<span class="form-label-secundario">
+										<h:outputText value="#{ saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.tsEntradaPendencia }" >
+							 			<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</span>
+								</label>
+							</td>
+							<td style="width: 80%">
+								<label class="form-label-primario">
+									#{msg.situacao_da_pendencia}<br />
+									<span class="form-label-secundario">#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.indSituacaoPendenciaFormatado}</span>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label class="form-label-primario">
+									#{msg.enderecado}<br />
+									<span class="form-label-secundario">#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.descEnderecoPendencia}</span>
+								</label>
+							</td>
+							<td>
+								<label class="form-label-primario">
+									#{msg.assunto_da_pendencia}<br />
+										<span class="form-label-secundario">#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.txtAssuntoPendencia}</span>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<a4j:outputPanel id="outputPanelAcomp" ajaxRendered="true" rendered="#{not empty saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.acompanhamentosPendencia}">							
+									<label class="form-label-primario">#{msg.acompanhamento}</label><br />
+									<ui:repeat id="repeatAcomp" value="#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.acompanhamentosPendencia}" var="acompanhamentoPendencia">
+										<h:commandLink id="lnkAcomp" actionListener="#{saapAcompPendenciaAdmAction.carregarParametros}" action="${saapAcompPendenciaAdmAction.iniciarManutencaoAcomp}" immediate="true" title="#{msg.hint_botao_detalhar}">
+											<f:attribute name="seqPendenciaAdm" value="#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.id}"/>
+											<f:attribute name="caminhoRetorno" value="saapPendenciaAdmPresidenciaAction.detalhar"/>
+											<span style="form-label-secundario">#{acompanhamentoPendencia.acompanhamento}</span><br/>
+										</h:commandLink>
+									</ui:repeat>
+		         				</a4j:outputPanel>
+							</td>
+						</tr>
+					</table>
+
+					<h:outputText rendered="#{not empty saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.andamentosPendencia}">
+						<h4>#{msg.andamentos}</h4>
+						<div class="table-grid-rolagem">
+						<rich:dataTable id="saapDocAdmPresidencias" var="andamentos" rows="25" cellspacing="1"
+			                    binding="#{saapPendenciaAdmPresidenciaAction.visao.dataTableAndamentosDetalhe}" 
+			                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+								columnClasses="col,col2" captionClass="table-grid-titulo-tabela"
+								headerClass="table-grid-titulo-coluna"
+								rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+								renderIfSinglePage="false"
+			                    value="#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.andamentosPendencia}">
+
+								<f:facet name="caption">
+									<h:column>
+										#{msg.andamentos}
+									</h:column>
+								</f:facet>
+
+								<h:column id="colid"  >
+									<f:facet name="header">
+										#{msg.andamento}
+									</f:facet>
+									<h:outputText value="#{andamentos.saapAdmtAdmPresidencia.descAdmtAdm}"/>
+								</h:column>
+
+								<h:column id="colid2"  >
+									<f:facet name="header">
+										#{msg.data}
+									</f:facet>
+									<h:outputText value="#{andamentos.saapAdmtAdmPresidencia.tsEntradaAdmt}" >
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+									</h:outputText>
+								</h:column>
+
+								<h:column id="colid3"  >
+									<f:facet name="header">
+										#{msg.responsavel}
+									</f:facet>
+									<h:outputText value="#{andamentos.responsavel}"/>
+								</h:column>
+						</rich:dataTable>
+						</div>
+
+						<table>
+							<tr>
+								<td align="left">
+									<rich:datascroller for="saapDocAdmPresidencias" fastControls="hide" id="datascroller" renderIfSinglePage="false" oncomplete="configurarEstadoBotoes('listagem', false)" 
+										actionListener="#{saapPendenciaAdmPresidenciaAction.consultarDetalharPendencia}" page="#{saapPendenciaAdmPresidenciaAction.visao.paginaDetalhe}">
+
+									    <f:facet name="first_disabled">
+								            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+								        </f:facet>
+							            <f:facet name="first">
+								            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+								        </f:facet>
+								        <f:facet name="previous_disabled">
+								        	<img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+								        </f:facet>
+								        <f:facet name="previous">
+								            <img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+								        </f:facet>
+								        <f:facet name="next_disabled">
+								            <img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+								        </f:facet>
+								        <f:facet name="next">
+								          	<img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+								        </f:facet>
+										<f:facet name="last_disabled">
+								            <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+								        </f:facet>	
+										<f:facet name="last">
+								           <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+								        </f:facet>
+								   </rich:datascroller>	
+								</td>
+							</tr>
+						</table>
+					</h:outputText>
+
+					<div class="form-barra-botoes">
+						<h:commandButton value="#{msg.alterar}" title="#{msg.hint_botao_alterar}" styleClass="form-button-p02" 
+							action="#{saapPendenciaAdmPresidenciaAction.iniciarEditar}" 
+							rendered="#{!saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.inativo}" 
+							actionListener="#{saapPendenciaAdmPresidenciaAction.recuperaParametro}">
+							<f:param value="saapPendenciaAdmPresidenciaAction.detalhar" name="caminhoRetornoInicial" id="caminhoRetornoInicial" />
+						</h:commandButton>
+						<h:commandButton value="#{msg.alterar}" title="#{msg.hint_botao_alterar}" styleClass="form-button-p02-disabled" disabled="true"
+							   rendered="#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.inativo}"/>
+						<h:outputText value="  " />
+
+						<input id="btnDesativarAtivo" type="submit" jsfc="h:commandButton" value="#{msg.desativar}" title="#{msg.altera_a_situacao}" 
+							class="form-button-p03" action="#{saapPendenciaAdmPresidenciaAction.desativarPendencia}" 
+							onclick="return confirmar(this, '#{mensagem['MA022']}')" rendered="#{!saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.inativo}" />
+						<input id="btnDesativarInativo" type="submit" jsfc="h:commandButton" value="#{msg.desativar}" title="#{msg.altera_a_situacao}" 
+							class="form-button-p03-disabled" disabled="true"
+							rendered="#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.inativo}" />
+
+						<input type="button" value="#{msg.historico}" title="#{msg.hint_botao_historico}" class="form-button-p03" 
+							onclick="atribuiSeqPendenciaAdm('#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.id}');"/>
+						<h:outputText value="  " />							
+
+						<h:commandButton value="#{msg.andamentos}" title="#{msg.hint_botao_andamentos}" styleClass="form-button-m01"
+							actionListener="#{saapAdmtPendenciaAdmAction.recuperaParametro}"
+							action="#{saapAdmtPendenciaAdmAction.detalhar}">
+							<f:param value="#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO.pendenciaBasica.id}" name="idPendenciaSelecionada" id="idPendenciaSelecionada" />
+							<f:param value="saapPendenciaAdmPresidenciaAction.detalhar" name="caminhoRetorno" id="caminhoRetorno" />
+						</h:commandButton>
+						<h:outputText value="  " />
+
+						<input jsfc="h:commandButton" value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" class="form-button-p02"
+							action="#{saapPendenciaAdmPresidenciaAction.voltarInicio}"/>
+	 				</div>
+
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.consulta}"/>
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.consultarPendenciasTO}"/>
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.pendenciaDetalhadaTO}"/>
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.consultaExecutada}"/>
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.entidade}"/>
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.pagina}"/>
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.paginaVoltar}"/>
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.paginaDetalhe}"/>
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.lista}"/>
+					<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestao}"/>			
+					<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestoes}"/>
+					<t:saveState value="#{saapPendenciaAdmPresidenciaAction.visao.caminhoRetornoInicial}"/>
+				</h:form>
+			</div>
+
+			<!-- Modal Panel histórico da Pendência  -->
+			<ui:include src="/paginas/UC_ConsultarHistoricoPendencia/inicial.xhtml" />
+
+			<script>
+				var acompanhamentos = utilobjeto.getObjeto("detalhe:repeatAcomp:0:lnkAcomp");
+				var form = utilobjeto.getObjeto("detalhe");
+				function iniciar() {
+					posicionaFocoPrimeiroCampo();
+				}
+				function posicionaFocoPrimeiroCampo() {
+					if (acompanhamentos != null) {
+						document.getElementById('detalhe:repeatAcomp:0:lnkAcomp').focus();
+					}else {
+						
+						utilformulario.focoNoPrimeiroObjeto(form);
+					}	
+				}					
+				
+			</script>
+		</ui:define>
+</ui:composition>

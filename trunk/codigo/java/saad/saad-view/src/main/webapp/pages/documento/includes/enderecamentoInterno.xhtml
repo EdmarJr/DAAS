@@ -1,0 +1,42 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<p:panel header="#{titulo} Interno" id="#{painelPai}RemetenteInterno" rendered="#{controller.documento.isEnderecamentoInterno(tipoEnderecamento)}">
+	<div class="pure-g">
+		<div class="pure-u-1-3">
+			<p:outputLabel for="#{painelPai}LocaisDestinatarioInterno" value="Local:" styleClass="lbl" />
+		</div>
+		<div class="pure-u-1-3">
+			<p:outputLabel for="#{painelPai}InputRemetenteInterno" value="Servidor:" styleClass="lbl" />
+		</div>
+	</div>
+	<div class="pure-g">
+		<div class="pure-u-7-24">
+			<p:selectOneMenu id="#{painelPai}LocaisDestinatarioInterno"  required="true" disabled="#{!controller.alterar}"
+				value="#{controllerRemetente.enderecamento.local}">
+				<f:selectItem itemValue="#{null}" itemLabel="Selecione" />
+				<f:selectItems
+					value="#{controllerRemetente.listaLocais}"
+					var="r" itemLabel="#{r.nome}" itemValue="#{r}" />
+					<f:ajax event="change" listener="#{controllerRemetente.atualizarRemetenteInterno}" render="@this #{painelPai}InputRemetenteInterno" />
+			</p:selectOneMenu>
+		</div>
+		<div class="pure-u-1-24"></div>
+		<div class="pure-u-7-24">
+			<p:selectOneMenu id="#{painelPai}InputRemetenteInterno" required="true" disabled="#{!controller.alterar}" value="#{controllerRemetente.enderecamento.usuario}">
+				<f:selectItem itemValue="" itemLabel="" />
+				<f:selectItems value="#{controllerRemetente.listaRemetente}" var="r" itemLabel="#{r.nome}" itemValue="#{r}" />
+				<f:ajax event="change" render="@this" listener="#{controllerRemetente.ativarEnderecamento}" />
+			</p:selectOneMenu>
+		</div>
+	</div>
+	<br />
+</p:panel>
+</html>

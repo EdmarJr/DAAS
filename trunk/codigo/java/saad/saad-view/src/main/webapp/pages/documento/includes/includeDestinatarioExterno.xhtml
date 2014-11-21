@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<p:panel header="Dados do #{titulo}" rendered="#{destinatario.id != null}" styleClass="saad-border-solid">
+	<div class="pure-g">
+		<div class="pure-u-1-3">
+			<h:outputText value="Nome: " styleClass="lbl"/>
+			<h:outputText value="#{destinatario.nome}" />
+		</div>
+		<div class="pure-u-1-3">
+			<h:outputText value="Sexo: " styleClass="lbl"/>
+			<h:outputText value="#{msg[destinatario.sexoAmigavel]}" />
+		</div>
+		<div class="pure-u-1-3">
+			<h:outputText value="Telefone: " styleClass="lbl"/>
+			<h:outputText value="#{destinatario.telefone}" >
+				<f:convertNumber pattern="(##) #####-####" locale="pl_PL"/>
+			</h:outputText>
+		</div>			
+	</div>
+	<br/>
+	<div class="pure-g">
+		<div class="pure-u-1-3">
+			<h:outputText value="E-mail:" styleClass="lbl" />
+			<h:outputText value="#{destinatario.email}" />
+		</div>
+		<div class="pure-u-1-3">
+			<h:outputText value="Logradouro: " styleClass="lbl"/>
+			<h:outputText value="#{destinatario.endereco}" />
+		</div>
+		<div class="pure-u-1-3">
+			<h:outputText value="Bairro: " styleClass="lbl"/>
+			<h:outputText value="#{destinatario.bairro}" />
+		</div>				
+	</div>
+	<br/>
+	<div class="pure-g">
+		<div class="pure-u-1-3">
+			<h:outputText value="Complemento: " styleClass="lbl"/>
+			<h:outputText value="#{destinatario.complementoEndereco}" />
+		</div>
+		<div class="pure-u-1-3">
+			<h:outputText value="Cidade: " styleClass="lbl"/>
+			<h:outputText value="#{destinatario.cidade}" />
+		</div>
+		<div class="pure-u-1-3">
+			<h:outputText value="UF: " styleClass="lbl"/>
+			<h:outputText style="text-transform:uppercase" value="#{destinatario.uf}" />
+		</div>
+	</div>
+	<br/>
+	<div class="pure-g">				
+		<div class="pure-u-1-3">
+			<h:outputText value="CEP: " styleClass="lbl"/>
+			<h:outputText value="#{destinatario.cep}" >
+				<f:convertNumber pattern="#####-###" locale="pl_PL"/>
+			</h:outputText>			
+		</div>
+	</div>
+</p:panel>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<c:set property="documentoRetorno" value="#{documentoParametro}" target="#{includeConsultarDocumentoController}"/>
+	
+	<p:panel header="Consultar Documento" styleClass="saad-titulo-painel" id="includeConsultarDocumento">
+		<div class="pure-g">
+			<div class="pure-u-1-4">
+				<h:outputText value="* Tipo de Documento" styleClass="lbl" />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<h:outputText value="Situação do Documento" styleClass="lbl" />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<h:outputText value="Classificação" styleClass="lbl" />
+			</div>
+		</div>
+		<div class="pure-g">
+			<div class="pure-u-1-4">
+				<p:selectOneMenu value="#{includeConsultarDocumentoController.documento.tipo}">
+					<f:selectItems value="#{includeConsultarDocumentoController.listTipoDocumento}" var="t" itemValue="#{t}" itemLabel="#{t.nome}"/>
+				</p:selectOneMenu>
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<p:selectOneMenu value="#{includeConsultarDocumentoController.documento.situacao}">
+					<f:selectItem itemLabel="" itemValue="0"/>
+					<f:selectItems value="#{includeConsultarDocumentoController.listSituacaoDocumentoEnum}" var="t" itemValue="#{t.valor}" itemLabel="#{msg[t.codLabel]}"/>
+				</p:selectOneMenu>
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<p:selectOneMenu value="#{includeConsultarDocumentoController.documento.tipoClassificacaoDocumento}">
+					<f:selectItem itemLabel="" itemValue="0"/>
+					<f:selectItems value="#{includeConsultarDocumentoController.listClassificacaoEnum}" var="t" itemValue="#{t.valor}" itemLabel="#{msg[t.codLabel]}"/>
+				</p:selectOneMenu>
+			</div>
+		</div>
+		<br/>
+		<div class="pure-g">
+			<div class="pure-u-1-4">
+				<h:outputText value="Origem" styleClass="lbl" />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<h:outputText value="Nº do Documento" styleClass="lbl" />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<h:outputText value="Identificador" styleClass="lbl" />
+			</div>
+		</div>
+		<div class="pure-g">
+			<div class="pure-u-1-4">
+				<p:selectOneMenu value="#{includeConsultarDocumentoController.documento.tipoOrigem}">
+					<f:selectItem itemLabel="" itemValue="0"/>
+					<f:selectItems value="#{includeConsultarDocumentoController.listTipoOrigemDocumentoEnum}" var="t" itemValue="#{t.valor}" itemLabel="#{msg[t.codLabel]}"/>
+				</p:selectOneMenu>
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<h:inputText value="#{includeConsultarDocumentoController.documento.numero}" />
+			</div>
+			<div class="pure-u-1-24"></div>
+			<div class="pure-u-1-4">
+				<p:inputMask value="#{includeConsultarDocumentoController.identificadorDocumento}" mask="a**-999999/9999"/>
+			</div>
+		</div>
+		<br/>
+		<p:panel styleClass="saad-text-aling-left">
+			<p:commandButton ajax="true" action="#{includeConsultarDocumentoController.consultar()}" value="Consultar" 
+				update="includeConsultarDocumento"/>
+		</p:panel>
+		<br/>
+		<p:dataTable id="includeResultadoDaConsuta" var="documento" emptyMessage="Nenhum registro encontrado."
+			rendered="#{includeConsultarDocumentoController.consultado}" selection="#{controllerParametro.documento}" 
+			selectionMode="single" rowKey="#{documento}" paginator="true" rowIndexVar="documentIndex" 
+			value="#{includeConsultarDocumentoController.listDocumentoResultado}" rows="10" paginatorPosition="bottom" lazy="true">
+			<p:ajax event="rowSelect" process="@this" update="#{formularioPai}" />
+			<p:ajax event="rowUnselect" process="@this" update="#{formularioPai}"/>
+
+			<f:facet name="header">
+				<h:outputText value="Documento(s) encontrado(s)" />
+			</f:facet>
+		
+			<p:column headerText="Nº do Registro">
+				<h:outputText value="#{documento.numeroRegistro}" />
+			</p:column>
+
+			<p:column headerText="Data da Entrada">
+				<h:outputText value="#{documento.dataInclusao}">
+					<f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Tipo do Documento">
+				<h:outputText value="#{documento.tipo.nome}" />
+			</p:column>
+
+			<p:column headerText="Responsável">
+				<h:outputText
+					value="#{documento.enderecamento.nomeEnderecado}" />
+			</p:column>
+
+			<p:column headerText="Nº do Documento">
+				<h:outputText value="#{documento.identificadorComMascara}" />
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+	
+</html>

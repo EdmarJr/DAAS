@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE faces-config PUBLIC
+        "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>saapdocadmpresidencia.iniciar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapDocAdmPresidencia/inicial.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapdocadmpresidencia.incluir</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapDocAdmPresidencia/inclusao.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>saapdocadmpresidencia.incluirInicio</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapDocAdmPresidencia/inclusaoInicio.xhtml</to-view-id>
+		</navigation-case>		
+
+		<navigation-case>
+			<from-outcome>saapdocadmpresidencia.editar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapDocAdmPresidencia/alteracao.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapdocadmpresidencia.detalhar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapDocAdmPresidencia/detalhe.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapgestaopresidencia.iniciar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapGestaoPresidencia/inicial.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapgestaopresidencia.incluir</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapGestaoPresidencia/inclusao.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapgestaopresidencia.editar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapGestaoPresidencia/alteracao.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapgestaopresidencia.detalhar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapGestaoPresidencia/detalhe.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saappendenciaadmpresidencia.iniciar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapPendenciaAdmPresidencia/inicial.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saappendenciaadmpresidencia.detalhar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapPendenciaAdmPresidencia/detalhe.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saappendenciaadmpresidencia.incluir</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapPendenciaAdmPresidencia/inclusao.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saappendenciaadmpresidencia.editar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapPendenciaAdmPresidencia/alteracao.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapacomppendenciaadm.iniciar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapAcompPendenciaAdm/inicial.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapacomppendenciaadm.incluir</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapAcompPendenciaAdm/inclusao.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapacomppendenciaadm.editar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapAcompPendenciaAdm/alteracao.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapacomppendenciaadm.detalhar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapAcompPendenciaAdm/detalhe.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapAdmtAdmPresidenciaAction.iniciar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapAdmtAdmPresidencia/inicial.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapAdmtAdmPresidenciaAction.detalhar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapAdmtAdmPresidencia/detalhe.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapAdmtPendenciaAdmAction.iniciar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapAdmtPendenciaAdm/inicial.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>saapAdmtPendenciaAdmAction.detalhar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapAdmtPendenciaAdm/detalhe.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>listarPendenciasAction.iniciar</from-outcome>
+			<to-view-id>/paginas/UC_ManutencaoSaapPendenciaAdmPresidencia/listar.xhtml</to-view-id>
+		</navigation-case>
+
+	</navigation-rule>
+</faces-config>

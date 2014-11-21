@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ 
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	lang="pt-br" template="#{msg.layout}/layout.xhtml">
+
+
+		
+		<ui:define name="titulo">
+			#{msg.tela_consulta_documento}
+		</ui:define>
+
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236330" />
+
+		<ui:define name="corpo">
+			<div id="conteudo-acessibilidade">
+			<h:form id="listagem">
+			
+				<h4>Dados da consulta</h4>
+				
+						<table class="form-table">
+							<tr>
+								<td width="33%">
+									<label class="form-label-primario">
+										#{msg.n_do_registro}<br />
+										<input jsfc="h:inputText" class="form-text" type="text" 
+											value="#{ saapDocAdmPresidenciaAction.visao.consulta.id }"
+											onchange="configurarImprimir(false);" 
+											size="20" maxlength="10" id="compsaapDocAdmPresidenciaid" 
+											onkeydown="return utilformatador.formatarNumericoDoCampo(event, this)" 
+											onkeypress="return utilformatador.formatarNumericoDoCampo(event, this)" 
+											onkeyup="return utilformatador.formatarNumericoDoCampo(event, this)"/>
+									</label>									
+								</td>
+								<td width="33%">
+									<label class="form-label-primario" for="form-select">
+										Situação do documento<br />
+										<h:selectOneMenu value="#{saapDocAdmPresidenciaAction.visao.consulta.indSituacaoDoc}" styleClass="form-text"
+											onchange="configurarImprimir(false);"  
+											label="#{msg.subclasse}" style="width: 100px;" required="false" id="selectSituacao">
+												<f:selectItem itemValue="A" itemLabel="Ativo"/>
+												<f:selectItem itemValue="D" itemLabel="Inativo"/>
+												<f:selectItem itemValue="T" itemLabel="Todos"/>												
+										</h:selectOneMenu>
+
+									</label>
+								</td>
+								<td width="33%">
+									<label class="form-label-primario">
+										Arquivado na pasta<br />
+										<h:inputText styleClass="form-text" onchange="configurarImprimir(false);"  
+										value="#{saapDocAdmPresidenciaAction.visao.consulta.nomeLocalFisicoDoc}" 
+										size="20" maxlength="20" required="false" 
+										id="idLocalFisico" onblur="trim(this);"/>
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td width="33%">
+									<label class="form-label-primario" for="form-select">
+										Tipo de documento<br />
+										<h:selectOneMenu value="#{saapDocAdmPresidenciaAction.visao.consulta.indTipoDoc}" styleClass="form-text" 
+											label="#{msg.subclasse}" style="width: 200px;" required="false" id="selectTipoDocumento" 
+											onchange="showHideConvite(this.value);configurarImprimir(false);">
+												<f:selectItem itemValue="1" itemLabel="Aviso"/>
+												<f:selectItem itemValue="2" itemLabel="Carta"/>
+												<f:selectItem itemValue="3" itemLabel="Convite"/>
+												<f:selectItem itemValue="4" itemLabel="E-mail"/>
+												<f:selectItem itemValue="5" itemLabel="Memorando"/>
+												<f:selectItem itemValue="6" itemLabel="Ofício"/>												
+												<f:selectItem itemValue="7" itemLabel="Processo"/>
+										</h:selectOneMenu>
+
+									</label>
+								</td>
+								<td colspan="2">
+									<label class="form-label-primario">
+										N. do documento / Descrição<br />
+										<h:inputText styleClass="form-text" 
+										value="#{ saapDocAdmPresidenciaAction.visao.consulta.descDoc }" 
+										label="${ msg.saapDocAdmPresidencia_descDoc }" size="67" maxlength="100"
+										onchange="configurarImprimir(false);"   
+										required="false" id="compsaapDocAdmPresidenciadescDoc" onblur="trim(this);" />
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label class="form-label-primario">
+										Gestão:<br/>
+										
+										<h:selectOneMenu required="false" class="form-select" style="width: 300px;"
+			                                label="#{msg.ppgClassificacao_turma}" id="cmbGestoes" 
+			                                value="#{saapDocAdmPresidenciaAction.visao.gestao}">
+			                                <f:selectItem itemValue="" itemLabel="Selecione"/>
+			                                <f:selectItems value="#{saapDocAdmPresidenciaAction.visao.gestoes}"  />
+			                            <a4j:support ajaxSingle="true" event="onchange" oncomplete="configurarImprimir(false);"
+		                                    reRender="dataInicial,dataFinal" ignoreDupResponses="true" 
+		                                    action="#{saapDocAdmPresidenciaAction.carregarDatas}">
+		                                </a4j:support>
+			                            </h:selectOneMenu>
+										<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestoes}" />		
+										
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label class="form-label-primario">
+										Assunto / Evento:<br/>
+										<h:inputTextarea value="#{saapDocAdmPresidenciaAction.visao.consulta.txtAssuntoDoc}" 
+											label="${msg.saapDocAdmPresidencia_descDoc}" styleClass="form-text"
+											rows="2" required="false" id="compsaapDocAdmPresidenciaAssunto"
+											onkeypress="configurarImprimir(false); return new UtilFormatador().funcaoContarCaracteres(this, event, 500);" 
+											onkeyup="configurarImprimir(false); return new UtilFormatador().funcaoContarCaracteres(this, event, 500);"
+											onblur="trim(this);" cols="86"  /> 
+									</label>
+								</td>
+							</tr>
+						</table>
+						<table class="form-table">
+							<tr>
+								<td width="45%">
+									<h4>Período de entrada</h4>
+									<label class="form-label-primario">
+										<table class="form-table">
+											<tr>
+												<td>
+													<label class="form-label-primario-2" for="dataInicial">
+														Data início	</label><br />
+													<rich:calendar datePattern="dd/MM/yyyy" inputClass="form-text" 
+																inputMaxLength="16" inputStyle="width:100px;" 
+																style="width:200px" locale="pt-br" 
+																oninputkeydown="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)" 
+																oninputkeypress="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)" 
+																oninputkeyup="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)"
+																value="#{saapDocAdmPresidenciaAction.visao.consultarDocumentosTO.dataInicial }" 
+																label="#{msg['data.inicio']}" 
+																required="false" id="dataInicial" enableManualInput="true"
+																converterMessage="#{msg['data.inicio']}: #{mensagem['MA007']}"
+																title="#{msg['exibir.calendario']}"		
+																horizontalOffset="130"
+																verticalOffset="-100"
+																disabled="#{saapDocAdmPresidenciaAction.visao.desabilitarPeriodo}"	
+																ondateselect="configurarImprimir(false);"													
+																buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif">
+															<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+															<f:validator validatorId="ValidadorDeData"/>
+													</rich:calendar>											
+																
+												
+												</td>
+												<td>
+													<label class="form-label-primario-2" for="dataFinal">
+														Data fim</label><br/>
+														<rich:calendar datePattern="dd/MM/yyyy" inputClass="form-text" inputMaxLength="16" 
+															inputStyle="width:100px;" style="width:200px" locale="pt-br"
+															oninputkeydown="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)" 
+															oninputkeypress="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)" 
+															oninputkeyup="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)"
+															value="#{saapDocAdmPresidenciaAction.visao.consultarDocumentosTO.dataFinal}" 
+															label="#{msg['data.fim']}" 
+															required="false" id="dataFinal" enableManualInput="true"
+															converterMessage="#{msg['data.fim']}: #{mensagem['MA007']}"
+															title="#{msg['exibir.calendario']}"
+															horizontalOffset="130"
+															ondateselect="configurarImprimir(false);"
+															verticalOffset="-100"					
+															disabled="#{saapDocAdmPresidenciaAction.visao.desabilitarPeriodo}"									
+															buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif" >
+															<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+															<a4j:support event="oncollapse" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+															<f:validator validatorId="ValidadorDeData"/>
+														</rich:calendar>											
+													
+												</td>
+											</tr>
+										</table>
+									</label>
+								</td>
+								<td>
+								</td>
+								<td>
+									<fieldset id="fieldConvite" style="display: none">
+										<h4>Período do evento</h4>
+										<label class="form-label-primario">
+											<table class="form-table">
+												<tr>
+													<td nowrap="nowrap" valign="middle" style="width: 40%">
+														<label class="form-label-primario-2" for="dataInicialConvite">
+															Data início<br /></label> 
+															<rich:calendar datePattern="dd/MM/yyyy" inputClass="form-text" locale="pt-br"
+																inputMaxLength="16" inputStyle="width:100px;" style="width:200px"
+																oninputkeydown="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)" 
+																oninputkeypress="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)" 
+																oninputkeyup="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)"
+																value="#{saapDocAdmPresidenciaAction.visao.consultarDocumentosTO.dataInicialConvite }"
+																ondateselect="configurarImprimir(false);"
+																converterMessage="#{msg['data.inicio']}: #{mensagem['MA007']}"
+																label="#{msg['data.inicio']}" enableManualInput="true"
+																horizontalOffset="130"
+																verticalOffset="-100"														
+																required="false" id="dataInicialConvite"
+																buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif" >
+																<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+																<f:validator validatorId="ValidadorDeData"/>
+															</rich:calendar>
+														
+													</td>
+													<td nowrap="nowrap" valign="middle">
+														<label class="form-label-primario-2" for="dataFinalConvite">
+															Data fim<br /></label> 
+														<rich:calendar datePattern="dd/MM/yyyy" inputClass="form-text" 
+															inputMaxLength="16" inputStyle="width:100px;" style="width:200px" 
+															value="#{ saapDocAdmPresidenciaAction.visao.consultarDocumentosTO.dataFinalConvite }" 
+															label="#{msg['data.fim']}"
+															oninputkeydown="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)" 
+															oninputkeypress="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)" 
+															oninputkeyup="configurarImprimir(false);utilformatador.formatarDataDoCampo(event, this)"
+															converterMessage="#{msg['data.fim']}: #{mensagem['MA007']}"														
+															required="false" id="dataFinalConvite"  enableManualInput="true"
+															ondateselect="configurarImprimir(false);"
+															buttonIcon="#{request.scheme}://#{request.serverName}:#{request.serverPort}/img/ico-calendario.gif" >
+															<a4j:support event="oninputblur" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+															<a4j:support event="oncollapse" ajaxSingle="true" reRender="mensagens" limitToList="true"/>
+															<f:validator validatorId="ValidadorDeData"/>
+														</rich:calendar>	
+														
+														</td>
+												</tr>
+												<tr>
+													<td nowrap="nowrap" valign="middle" style="width: 40%">
+														<label class="form-label-primario-2">
+															Hora início<br />
+															<h:inputText  styleClass="form-text" 
+																value="#{saapDocAdmPresidenciaAction.visao.consultarDocumentosTO.horaInicialConvite }" 
+																label="${msg.saapDocAdmPresidencia_descDoc}" size="10" 
+																maxlength="5" required="false" id="compsaapDocAdmPresidenciaHoraInicio" 
+																onblur="trim(this);" 
+																onchange="configurarImprimir(false);"  
+																onkeydown="return new UtilFormatador().formatarHoraDoCampo(event, this)" 
+																onkeypress="return new UtilFormatador().formatarHoraDoCampo(event, this)" 
+																onkeyup="return new UtilFormatador().formatarHoraDoCampo(event, this)" />
+														</label> 
+													</td>
+													<td nowrap="nowrap" valign="middle">
+														<label class="form-label-primario-2" for="form-text-data">
+															Hora fim<br />
+															<h:inputText  styleClass="form-text" 
+															value="#{ saapDocAdmPresidenciaAction.visao.consultarDocumentosTO.horaFinalConvite }" 
+															label="${ msg.saapDocAdmPresidencia_descDoc }" size="10" maxlength="5" required="false"
+															onchange="configurarImprimir(false);"   
+															id="compsaapDocAdmPresidenciaHoraFim" onblur="trim(this);" 
+															onkeydown="return new UtilFormatador().formatarHoraDoCampo(event, this)" 
+															onkeypress="return new UtilFormatador().formatarHoraDoCampo(event, this)" 
+															onkeyup="return new UtilFormatador().formatarHoraDoCampo(event, this)" />
+														</label>
+													</td>
+												</tr>
+											</table>
+										</label>
+									</fieldset>
+								</td>
+							</tr>
+						</table>
+						
+				<br />
+				<div class="form-barra-botoes-consultar">
+					<h:commandButton value="#{msg.consultar}" title="#{msg.hint_botao_consulta}" styleClass="form-button-p03"
+							action="#{saapDocAdmPresidenciaAction.consultar}" actionListener="#{saapDocAdmPresidenciaAction.limparPaginacao}" />
+				
+					<h:commandButton value="#{msg.limpar}" title="#{msg.hint_botao_limpar}" styleClass="form-button-p03" 
+						   action="#{saapDocAdmPresidenciaAction.iniciar}" immediate="true" />
+				
+					<h:commandButton value="#{msg.novo}" title="#{msg.hint_botao_novo}" styleClass="form-button-p03"
+							action="#{saapDocAdmPresidenciaAction.iniciarIncluir}" immediate="true" />
+				</div>
+				
+				
+				<h:outputText rendered="#{not empty saapDocAdmPresidenciaAction.visao.lista}">
+				<div class="table-grid-rolagem">
+					<rich:dataTable id="saapDocAdmPresidencias" var="saapDocAdmPresidencia" rows="25" cellspacing="1"
+	                    binding="#{saapDocAdmPresidenciaAction.visao.dataTable}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col1, align-center,align-center,col3,col4,col5" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{saapDocAdmPresidenciaAction.visao.lista}">
+	                    	
+						<f:facet name="caption">
+							<h:column>
+								Documentos
+							</h:column>
+						</f:facet>
+
+						<rich:column id="colCodigo" width="20">
+							<f:facet name="header">
+								<input type="checkbox" title="#{msg.hint_checkbox_lista_todos}" onclick="javascript: selecionarTodos(this, 'visao.entidades[].id');controlaDesativar(this);" />	
+							</f:facet>
+							
+								<h:outputText rendered="#{saapDocAdmPresidencia.inativo==false}"> 	
+										<cc:checkbox id="checkbox" name="visao-entidades[]-id" styleClass="form-check-radio-grid"
+											value="#{saapDocAdmPresidenciaAction.visao.idSelecionado}" onclick="configurarBotoes(this)" title="#{msg.hint_checkbox_lista}">
+											<f:selectItem itemValue="#{saapDocAdmPresidencia.id}" itemLabel="" />
+										</cc:checkbox>							
+								</h:outputText>
+
+
+								<h:outputText rendered="#{saapDocAdmPresidencia.inativo==true}"> 	
+										<cc:checkbox id="checkboxInativo" name="visao-entidades[]-id" disabled="true" styleClass="form-check-radio-grid"
+											value="#{saapDocAdmPresidenciaAction.visao.idSelecionado}" onclick="configurarBotoes(this)" title="#{msg.hint_botao_seleciona}">
+											<f:selectItem itemValue="#{saapDocAdmPresidencia.id}" itemLabel="" />
+										</cc:checkbox>							
+								</h:outputText>
+
+								
+						</rich:column>
+						
+						<h:column id="colid" >
+							<f:facet name="header">
+								N. registro
+							</f:facet>
+							<h:outputText value="#{saapDocAdmPresidencia.id}" style="#{saapDocAdmPresidencia.cssAtivoInativo}" title="#{msg.hint_botao_detalhar}"/>						</h:column>
+										 
+						<h:column id="coltsEntradaDoc" >
+							<f:facet name="header">
+								Data de entrada
+							</f:facet>
+								<h:outputText value="#{saapDocAdmPresidencia.tsEntradaDoc}" style="#{saapDocAdmPresidencia.cssAtivoInativo}">
+								 	<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+						</h:column>
+
+						<h:column id="colindTipoDoc" >
+							<f:facet name="header">
+								Tipo de documento
+							</f:facet>
+							<h:outputText value="#{saapDocAdmPresidencia.indTipoDocFormatado}" style="#{saapDocAdmPresidencia.cssAtivoInativo}" />
+						</h:column>
+
+						<h:column id="coldescDoc" styleClass="#{saapDocAdmPresidencia.cssAtivoInativo}">
+							<f:facet name="header">
+								N. do documento / Descrição
+							</f:facet>
+							 <input type="hidden" id="selecionado" name="selecionado" value="0" /> 
+							<h:commandLink id="lnkDetalhar"  action="${saapDocAdmPresidenciaAction.detalhar}" onclick="setInscricao('#{saapDocAdmPresidencia.id}')" immediate="true">
+								<f:param name="visao.consulta.gestao" value="#{saapDocAdmPresidencia.id}" />
+								<h:outputText value="#{saapDocAdmPresidencia.descDoc}" style="#{saapDocAdmPresidencia.cssLinkAtivoInativo}" title="#{msg.hint_botao_detalhar}"/>        
+							</h:commandLink>
+
+						</h:column>								 
+
+					</rich:dataTable>
+				</div>
+					
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapDocAdmPresidencias" fastControls="hide" id="datascroller" renderIfSinglePage="false" oncomplete="configurarEstadoBotoes('listagem', false)" 
+									       actionListener="#{saapDocAdmPresidenciaAction.consultar}" page="#{saapDocAdmPresidenciaAction.visao.pagina}">
+					
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+				
+				<div class="form-barra-botoes" id="divBotoes" style="display: block">
+					<h:commandButton id="btnAlterar" value="#{msg.alterar}" title="#{msg.hint_botao_alterar}" styleClass="form-button-p02-disabled"
+							action="#{saapDocAdmPresidenciaAction.iniciarEditar}" immediate="true" disabled="true" />
+					
+					<h:commandButton id="btnDesativar" value="#{msg.desativar}" title="#{msg.hint_botao_desativar}" styleClass="form-button-p03-disabled"
+						   action="#{saapDocAdmPresidenciaAction.desativar}" immediate="true" disabled="true" onclick="return confirmar(this, '#{mensagem['framework.mensagem.confirma.desativar']}')"/>
+
+					<input type="submit" jsfc="h:commandButton" value="#{msg.imprimir}" title="#{msg.gera_relatorio_conforme_conteudo_apresentado_em_tela}" class="form-button-p03"
+							action="#{saapDocAdmPresidenciaAction.imprimir}"/>
+							
+				</div>
+				
+				<div class="form-barra-botoes" id="divBotoesDes" style="display: none">
+					<h:commandButton id="btnAlterarDes" value="#{msg.alterar}" title="#{msg.hint_botao_alterar}" styleClass="form-button-p02-disabled"
+							action="#{saapDocAdmPresidenciaAction.iniciarEditar}" immediate="true" disabled="true" />
+					
+					<h:commandButton id="btnDesativarDes" value="#{msg.desativar}" title="#{msg.hint_botao_desativar}" styleClass="form-button-p03-disabled"
+						   action="#{saapDocAdmPresidenciaAction.desativar}" immediate="true" disabled="true" onclick="return confirmar(this, '#{mensagem['framework.mensagem.confirma.desativar']}')"/>
+
+					<input type="submit" jsfc="h:commandButton" value="#{msg.imprimir}" title="#{msg.gera_relatorio_conforme_conteudo_apresentado_em_tela}" class="form-button-p03-disabled"
+						action="#{saapDocAdmPresidenciaAction.imprimir}" disabled="true"/>
+							
+				</div>
+				
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultaExecutada}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consulta}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultaClone}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.voltarPara}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultarDocumentosTO}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.lista}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestao}"/>						
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaDetalhe}"/>
+				</h:outputText>
+			</h:form>
+			</div>
+		
+			<script>
+			
+			var utilobjeto 		= new UtilObjeto();
+			var form 			= utilobjeto.getObjeto("listagem");
+			var cmbTipoDocumento= utilobjeto.getObjeto("listagem:selectTipoDocumento");
+			
+			function showHideConvite(valor) {
+				var fieldSet = document.getElementById('fieldConvite');	
+				
+				if (valor == 3) {
+					fieldSet.style.display = 'block';
+				} else {
+					fieldSet.style.display = 'none';
+				}
+			}
+
+			function setInscricao(i){ 
+                    document.getElementById('selecionado').value = i; 
+                    return true; 
+            } 
+
+			//<![CDATA[  
+			function configurarBotoes(checkbox) {
+				var checks = document.getElementsByName(checkbox.name);
+				var checados = [];
+				for (var i = 0; i < checks.length; i++) {
+					if (checks[i].checked) {
+						checados[checados.length] = true;
+					}
+				}
+				var btn = document.getElementById(checkbox.form.name + ":btnAcompanhar");
+				if (btn) {
+					btn.disabled = (checados.length < 1);
+					configurarEstadoElemento(btn);
+				}
+				btn = document.getElementById(checkbox.form.name + ":btnDesativar");
+				if (btn) {
+					btn.disabled = (checados.length < 1);
+					configurarEstadoElemento(btn);
+				}
+
+				btn = document.getElementById(checkbox.form.name + ":btnAlterar");
+				if (btn) {
+					btn.disabled = (checados.length < 1 || checados.length > 1);
+					configurarEstadoElemento(btn);
+				}
+
+				btn = document.getElementById(checkbox.form.name + ":btnDesativarDes");
+				if (btn) {
+					btn.disabled = (checados.length < 1);
+					configurarEstadoElemento(btn);
+				}
+
+				btn = document.getElementById(checkbox.form.name + ":btnAlterarDes");
+				if (btn) {
+					btn.disabled = (checados.length < 1 || checados.length > 1);
+					configurarEstadoElemento(btn);
+				}
+			}
+
+			//se existir relatório, abra uma pop-up para exibição do mesmo.
+			if ("#{sessionScope["relatorio"]}" != "") {
+				var utiljanela = new UtilJanela();
+				utiljanela.abrirPopUp("#{request.contextPath}/br.jus.stj.alp01.jsf.servlet.ServletRelatorio.rel", 750, 500, "resizable=yes", "relatorio");
+			}
+			function iniciar() {
+				if ("#{sessionScope["relatorio"]}" == "") {
+					try {
+						document.getElementById('listagem:saapDocAdmPresidencias:0:checkbox:0').focus();
+					}catch(e){}
+				}
+				showHideConvite(cmbTipoDocumento.value);
+				posicionaFocoPrimeiroCampo();
+			}
+
+			function posicionaFocoPrimeiroCampo() {
+				document.getElementById('listagem:compsaapDocAdmPresidenciaid').focus();
+			}	
+
+			function controlaDesativar(valor) {
+				btn = document.getElementById("listagem:btnDesativar");
+				btnDes = document.getElementById("listagem:btnDesativarDes");
+				if (valor.checked) {
+					if (btn) {
+						btn.disabled = false;
+						btnDes.disabled = false;
+						configurarEstadoElemento(btn);
+						configurarEstadoElemento(btnDes);
+					}						
+				}else {
+					desabilitaBotaoDesativar();						
+				}
+			}	
+
+			function desabilitaBotaoDesativar() {
+				var btn = utilobjeto.getObjeto("listagem:btnDesativar");
+				var btnDes = utilobjeto.getObjeto("listagem:btnDesativarDes");
+				btn.className = "form-button-p03-disabled";
+				btn.disabled = true;
+				btnDes.className = "form-button-p03-disabled";
+				btnDes.disabled = true;
+			}					
+
+			function configurarImprimir(valor) {
+				var divbotoes = document.getElementById('divBotoes');	
+				var divBotoesDes = document.getElementById('divBotoesDes');
+				if (divbotoes != null) {
+					if (valor) {
+						divbotoes.style.display = 'block';
+						divBotoesDes.style.display = 'none';
+					}else {
+						divbotoes.style.display = 'none';
+						divBotoesDes.style.display = 'block';
+					}
+				}	
+			}				
+
+			function limparDatas() {
+				var dataInicial = document.getElementById("listagem:dataInicial");
+				var dataFinal = document.getElementById("listagem:dataFinal");
+				var gestoes = document.getElementById("listagem:cmbGestoes");
+
+				if (gestoes.value.trim() = '') {
+					dataInicial.value = '';
+					dataFinal.value='';
+				}
+			}
+			// ]]>
+			
+			</script>	
+			
+			<style>
+			.form-label-primario-2 {
+				color		:#666;
+				font-weight	:bold;
+				_font-size:1.2em;
+			}
+			
+			</style>
+			
+			
+		</ui:define>
+		
+</ui:composition>

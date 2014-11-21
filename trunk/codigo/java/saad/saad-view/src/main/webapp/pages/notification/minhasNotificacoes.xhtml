@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		<h:form id="formMinhasNotificacoes">
+			<p:growl id="msgs" showDetail="true" sticky="true" />
+			<p:tabView activeIndex="0">
+				<p:tab id="tabMeusAvisos" title="Meus Avisos">
+					<ui:include src="/pages/notification/dataTables/meusAvisos.xhtml">
+						<ui:param name="bean"
+							value="#{consultaAvisoController}" />
+					</ui:include>
+				</p:tab>
+				<p:tab id="tabAvisosUnidade" title="Avisos da Unidade">
+					<ui:include
+						src="/pages/notification/dataTables/avisosUnidade.xhtml">
+						<ui:param name="bean"
+							value="#{consultaAvisoController}" />
+					</ui:include>
+				</p:tab>
+  				<p:tab id="tabMeusAlertas" title="Documentos Pendentes">
+					<ui:include
+						src="/pages/notification/dataTables/documentosPendentes.xhtml">
+						<ui:param name="bean"
+							value="#{consultaDocumentoController}" />
+					</ui:include>
+				</p:tab> 
+ 				<p:tab id="tabMinhasTarefas" title="Minhas Tarefas Pendentes">
+					<ui:include
+						src="/pages/notification/dataTables/minhasPendencias.xhtml">
+						<ui:param name="bean"
+							value="#{consultaDocumentoController}" />
+					</ui:include>
+				</p:tab>  
+			</p:tabView>
+		</h:form>
+	</ui:define>
+</ui:composition>

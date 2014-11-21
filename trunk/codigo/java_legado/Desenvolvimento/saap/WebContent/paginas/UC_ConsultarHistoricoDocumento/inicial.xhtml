@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes" xml:lang="pt-br" lang="pt-br"> 
+
+	<div id="divHistDoc" style="font-size:1.2em;font-family:verdana;padding:10px" class="x-hidden">	
+		<h:form id="formHistoricoDocumento">
+			<a4j:outputPanel id="panelHistoricoDocumento" rendered="#{not empty consultarHistoricoDocumentoAction.visao.lista}">
+
+				<div class="table-grid-rolagem">
+					<rich:dataTable id="saapHistDocAdms" var="saapHistDocAdm" rows="5" cellspacing="1"
+	                    binding="#{consultarHistoricoDocumentoAction.visao.dataTable}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="align-center,col2,col3" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{consultarHistoricoDocumentoAction.visao.lista}"
+	                    rendered="#{not empty consultarHistoricoDocumentoAction.visao.lista}">
+
+						<f:facet name="caption">
+							<h:column>
+								#{msg.historico_do_documento}
+							</h:column>
+						</f:facet>
+
+						<h:column id="coltsHistDoc">
+							<f:facet name="header">
+								#{msg.data}
+							</f:facet>
+							<h:outputText value="#{saapHistDocAdm.tsHistDoc}">
+							 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+							</h:outputText>
+						</h:column>
+
+						<h:column id="colnomeAcaoHistDoc">
+							<f:facet name="header">
+								#{msg.acao}
+							</f:facet>
+							#{saapHistDocAdm.nomeAcaoHistDoc}
+						</h:column>
+
+						<h:column id="colseqUsuario">
+							<f:facet name="header">
+								#{msg.responsavel}
+							</f:facet>
+							#{saapHistDocAdm.saapDocAdmPresidencia.nomeRespConvite}
+						</h:column>
+					</rich:dataTable>
+				</div>
+
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapHistDocAdms" fastControls="hide" id="datascroller" renderIfSinglePage="false" limitToList="true"
+							actionListener="#{consultarHistoricoDocumentoAction.consultar}" page="#{consultarHistoricoDocumentoAction.visao.pagina}" reRender="saapHistDocAdms,datascroller">
+
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" alt="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" alt="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" alt="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" alt="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+				<div class="form-barra-botoes">
+					<input type="button" id="btnFechar" class="form-button-p03" value="Fechar" title="#{msg.hint_botao_fechar}" onclick="fecharPopup();"/>
+				</div>
+
+				<t:saveState value="#{consultarHistoricoDocumentoAction.visao.lista}"/>
+				<t:saveState value="#{consultarHistoricoDocumentoAction.visao.pagina}"/>
+				<t:saveState value="#{consultarHistoricoDocumentoAction.visao.seqDocAdm}"/>
+				<script type="text/javascript">
+					//<![CDATA[  
+					function fecharPopup() {
+						limpaListaHistoricoA4j();
+						fecharModal('divHistDoc');
+					}
+					abrirModal('divHistDoc', {title:'',width: 640, height: 480, listeners : {'hide' : {fn: fecharPopup}}},'lupa');
+					// ]]>
+				</script>
+				<a4j:jsFunction name="limpaListaHistoricoA4j" action="#{consultarHistoricoDocumentoAction.limpaListaHistorico}" limitToList="true" ajaxSingle="true" reRender="formHistoricoDocumento, listaHistorico" ignoreDupResponses="true"  />
+			</a4j:outputPanel>
+		</h:form>
+	</div>
+</ui:composition>

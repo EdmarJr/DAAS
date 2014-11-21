@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+		<script type="text/javascript" src="includeNotification.js" />
+		<h:form id="formIncluirAviso">
+						
+			<p:panel id="panelPai" style="width:1010px">
+		
+				<p:breadCrumb>
+				    <p:menuitem value="Início" />
+				    <p:menuitem value="Avisos" />
+				    <p:menuitem value="Consultar" />
+				</p:breadCrumb>
+				
+				<h:outputText value="Consulta de Avisos" styleClass="title" />
+				<br/>
+				<h:outputText value="Dados do Aviso" styleClass="sub-title" />
+				<p:separator style="height:1px;" />
+				
+				<h:outputText value="* " styleClass="ast" />
+				<h:outputText value="Endereçado a" styleClass="lbl" />
+				
+				<p:selectOneRadio value="#{consultarAvisoController.tipoEnderecamentoAviso}">
+					<f:selectItems var="tipo" value="#{consultarAvisoController.listTipoEnderecamentoAviso}" itemLabel="#{tipo.descricao}" itemValue="#{tipo}"/>
+					<f:ajax event="change" render="@this listaDeDestinatarios"/>
+				</p:selectOneRadio>
+				<br/>
+				<h:panelGroup id="listaDeDestinatarios">
+					<h:panelGroup rendered="#{consultarAvisoController.destinatarioEspecificioSelecionado}">
+						<div class="pure-g">
+							<div class="pure-u-2-5">
+								<p:autoComplete id="nomeDestinatario" itemLabel="#{destinatario.nome}" itemValue="#{destinatario}" var="destinatario" size="150"
+									value="#{consultarAvisoController.destinatario}" completeMethod="#{consultarAvisoController.completeUsuarios}" emptyMessage="Nenhum resultado encontrado.">
+						            <p:ajax event="itemSelect" update="@this"/>
+						        </p:autoComplete>
+						        <pe:keyFilter for="nomeDestinatario" regEx="/[a-z]/i"/>
+							</div>
+							<div class="pure-u-1-24"></div>
+							<div class="pure-u-1-5">
+								<p:commandButton actionListener="#{consultarAvisoController.adicionarDestinatario()}" update="dataTableDestinatarios nomeDestinatario"  value="Adicionar"/>
+							</div>													
+						</div>
+						<br/>
+						<p:dataTable id="dataTableDestinatarios" value="#{consultarAvisoController.listDestinatario}" var="destinatario" emptyMessage="Nenhum destinatário adicionado">
+							<p:column headerText="Endereçado" >
+								<h:outputText value="#{destinatario.nome}" />
+							</p:column>
+							<p:column headerText="Ação" >
+								<p:commandButton actionListener="#{consultarAvisoController.removerDestinatario(destinatario)}" update="dataTableDestinatarios" value="Excluir"/>
+							</p:column>
+						</p:dataTable>
+					</h:panelGroup>
+				</h:panelGroup>
+				<br/>
+				<h:panelGroup id="panelSituacaoResolucao">			
+					<div class="pure-g">
+						<div class="pure-u-1-5">
+							<h:outputText value="Data de inclusão" styleClass="lbl" />
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-1-5">
+							<h:outputText value="* " styleClass="ast" />
+							<h:outputText value="Situação do Aviso" styleClass="lbl" />
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-1-5">
+							<h:outputText value="Data de solução" styleClass="lbl" />
+						</div>
+					</div>
+					<div class="pure-g">
+						<div class="pure-u-1-5">
+							<p:calendar id="dataDeInclusao" value="#{consultarAvisoController.dataDeInclusao}" mask="true" pattern="dd/MM/yyyy" maxdate="#{consultarAvisoController.dataDeSolucao}">
+								<p:ajax event="dateSelect" update="@this dataDeSolucao" />
+							</p:calendar>
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-1-5">
+							<p:selectOneMenu value="#{consultarAvisoController.situacaoAvisoEnum}">
+								<f:selectItems value="#{consultarAvisoController.listSituacaoAvisoEnum}" var="situacao" itemValue="#{situacao}" itemLabel="#{msg[situacao.codLabel]}"/>
+								<p:ajax event="change" listener="#{consultarAvisoController.atualizarDataDeSolucao}" update="@this panelSituacaoResolucao"/>
+							</p:selectOneMenu>
+						</div>
+						<div class="pure-u-1-24"></div>
+						<div class="pure-u-1-5">
+							<p:calendar id="dataDeSolucao" value="#{consultarAvisoController.dataDeSolucao}" mask="true" pattern="dd/MM/yyyy" mindate="#{consultarAvisoController.dataDeInclusao}">
+								<p:ajax event="dateSelect" update="@this dataDeInclusao" />
+							</p:calendar>
+						</div>
+					</div>
+				</h:panelGroup>				
+				<br/>
+				<div class="pure-g">
+					<div class="pure-u-1-5">
+						<h:outputText value="Relacionado a Documento?" styleClass="lbl" />
+					</div>
+					<div class="pure-u-1-5">
+						<p:selectOneRadio value="#{consultarAvisoController.relacionadoDocumentoEnum}">
+							<f:selectItems value="#{consultarAvisoController.listRelacionadoDocumentoEnum}" var="relacionado" itemValue="#{relacionado}" itemLabel="#{relacionado.descricao}"/>
+							<f:ajax event="change" render="@this panelRelacionadoDocumento"/>
+						</p:selectOneRadio>
+					</div>
+				</div>
+				<br/>
+				<h:panelGroup id="panelRelacionadoDocumento">
+					<h:panelGroup rendered="#{consultarAvisoController.documentoRelacionadoSelecionado}">
+						<ui:include src="/pages/includes/includeConsultarDocumento.xhtml">
+							<ui:param name="controllerParametro"
+								value="#{consultarAvisoController}" />
+							<ui:param name="documentoParametro"
+								value="#{consultarAvisoController.documento}" />
+						</ui:include>
+					</h:panelGroup>
+				</h:panelGroup>
+				<br/>
+				<div style="float: right;">
+					<p:commandButton value="Confirmar" actionListener="#{consultarAvisoController.consultar()}" update="@form"/>
+					<p:commandButton value="Limpar" actionListener="#{consultarAvisoController.limparTela()}"  immediate="true" update="@form"/>
+					<p:commandButton value="Voltar" action="#{consultarAvisoController.voltar()}" ajax="false"/>
+				</div>
+				<br/>
+				<br/>
+				<br/>
+				<p:dataTable id="resultadoConsulta" var="aviso" emptyMessage="Nenhum registro encontrado."
+					rendered="#{consultarAvisoController.temResultado()}"
+					selection="#{consultarAvisoController.avisoSelecionado}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+					selectionMode="single" rowKey="#{aviso.id}" paginator="true"
+					rowIndexVar="documentIndex" value="#{consultarAvisoController.listResultadoConsulta}"
+					rows="10" paginatorPosition="bottom" lazy="true">
+					<p:ajax event="rowSelectCheckbox" process="@this" />
+					<p:ajax event="rowUnselectCheckbox" process="@this" />
+					<p:ajax event="toggleSelect" process="@this" />
+					<f:facet name="header">
+						<h:outputText value="Registro(s)" />
+					</f:facet>
+				
+					<p:column headerText="Endereçados">
+							<h:outputText value="#{aviso.obterListaDestinatariosFormatado()}"  />				
+					</p:column>
+					<p:column headerText="Data de Inclusão">
+						<h:outputText value="#{aviso.dataInclusao}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Situações do Aviso">
+						<h:outputText value="#{msg[consultarAvisoController.obterSituacaoAviso(aviso.situacao).codLabel]}" />
+					</p:column>				
+					<p:column headerText="Documento">
+						<h:outputText value="#{consultarAvisoController.obterFormatoIdentificador(aviso.documento)}" />
+					</p:column>					
+					<p:column headerText="Data de Solução">
+						<h:outputText value="#{aviso.dataResolucao}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<br/>
+				<div style=" text-align: right;">
+					<p:panel rendered="#{consultarAvisoController.temResultado()}">
+						<p:commandButton value="Alterar" icon="ui-icon-pencil" action="#{consultarAvisoController.comandoAlterar()}" ajax="false"/>
+						<p:commandButton value="Excluir" icon="ui-icon-trash" actionListener="#{consultarAvisoController.comandoExcluir()}"  update="resultadoConsulta"/>
+						<p:commandButton ajax="false"  value="Imprimir" icon="ui-icon-document">
+						 	<p:dataExporter type="pdf" target="avisoDataTable" fileName="Avisos"  encoding="ISO-8859-1" />
+						</p:commandButton>
+					</p:panel>
+				</div>	
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

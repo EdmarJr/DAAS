@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:cc="http://politec.com.br/componentes"
+	xml:lang="pt-br" lang="pt-br">
+
+	<ui:composition template="${msg.layout}/layout.xhtml">
+
+		<ui:define name="titulo">
+			#{msg.detalhe_dos_andamentos_do_documento}
+		</ui:define>
+		
+		<ui:param name="caminhoAjuda" value="#{request.contextPath}/paginas/ajuda/ajuda.htm#_Toc239236339" />
+
+		<ui:define name="corpo">
+			<form jsfc="h:form" id="formDetalheAndmento">
+
+				<h4>#{msg.dados_do_documento}</h4>
+				<table class="table-grid-detalhar">
+					<tbody>
+						<tr>
+							<td width="25%">
+								<label class="form-label-primario">
+									#{msg.n_do_registro}<br />
+									<span class="form-label-secundario">#{ saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.id }</span>
+								</label>
+							</td>
+							<td width="25%">
+								<label class="form-label-primario">
+									#{msg.data_de_entrada}<br />
+									<span class="form-label-secundario">
+										<h:outputText value="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.tsEntradaDoc}">
+						 					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+										</h:outputText>
+									</span>
+								</label>
+							</td>
+							<td width="25%">
+								<label class="form-label-primario">
+									#{msg.gestao}<br />
+									<span class="form-label-secundario">#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.nomeMinistroPresidente}</span>
+								</label>
+							</td>
+							<td>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label class="form-label-primario">
+									#{msg.tipo_de_documento}: <br/>
+									<span class="form-label-secundario">
+										<h:outputText id="outputTextOficio" value="Ofício" rendered="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.indTipoDoc == '6'}" />
+										<h:outputText id="outputTextAviso" value="Aviso" rendered="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.indTipoDoc == '1'}" />
+										<h:outputText id="outputTextCarta" value="Carta" rendered="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.indTipoDoc == '2'}" />
+										<h:outputText id="outputTextConvite" value="Convite" rendered="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.indTipoDoc == '3'}" />
+										<h:outputText id="outputTextEmail" value="E-mail" rendered="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.indTipoDoc == '4'}" />
+										<h:outputText id="outputTextMemorando" value="Memorando" rendered="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.indTipoDoc == '5'}" />
+										<h:outputText id="outputTextProcesso" value="Processo" rendered="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.indTipoDoc == '7'}" />
+									</span>
+								</label>
+							</td>
+							<td>
+								<label class="form-label-primario">
+									#{msg.arquivado_na_pasta}:<br/>
+									<span class="form-label-secundario">#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.nomeLocalFisicoDoc}</span>
+								</label>
+							</td>
+							<td width="20%">
+								<label class="form-label-primario">
+									#{msg.situacao}:<br/>
+									<span class="form-label-secundario">
+										<h:outputText id="outputTextAtivo" value="Ativo" rendered="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.indSituacaoDoc == 'A'}" />
+										<h:outputText id="outputTextDesativado" value="Desativado" rendered="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.indSituacaoDoc == 'D'}" />
+									</span>
+								</label>
+							</td>
+							<td width="20%">
+								<label class="form-label-primario">
+									#{msg.alterado_por}:<br/>
+									<span class="form-label-secundario">#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.alteradoPor}</span>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<label class="form-label-primario">
+									#{msg.n_do_documento_descricao}:<br/>
+									<span class="form-label-secundario">#{saapAdmtAdmPresidenciaAction.visao.resultadoTO.saapDocAdmPresidencia.descDoc}</span>
+								</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="table-grid-rolagem">
+					<h4>#{msg.andamentos}</h4>
+					<rich:dataTable id="saapAdmtAdms" var="saapAdmtAdmPresidenciaTO" rows="25" cellspacing="1"
+	                    binding="#{saapAdmtAdmPresidenciaAction.visao.dataTableDetalhe}" 
+	                    sortMode="multiple" selfSorted="true" styleClass="table-grid"
+						columnClasses="col1,align-center,col3" captionClass="table-grid-titulo-tabela"
+						headerClass="table-grid-titulo-coluna"
+						rowClasses="table-grid-linha-alternada1, table-grid-linha-alternada2"
+						renderIfSinglePage="false"
+	                    value="#{saapAdmtAdmPresidenciaAction.visao.listaAndamentosDetalhe}"
+	                    rendered="#{not empty saapAdmtAdmPresidenciaAction.visao.listaAndamentosDetalhe}">
+
+						<f:facet name="caption">
+							<h:column>
+								#{msg.andamentos}
+							</h:column>
+						</f:facet>
+
+						<h:column id="colAndamento">
+							<f:facet name="header">
+								#{msg.andamento}
+							</f:facet>
+							<h:commandLink id="lnkEditar" actionListener="#{saapAdmtAdmPresidenciaAction.atribuirAndamento}" action="${saapAdmtAdmPresidenciaAction.iniciarEditarAndamentoDetalhe}" immediate="true" title="#{msg.editar_descricao_do_andamento}" >
+								<f:attribute name="visao.andamentoSelecionado" value="#{saapAdmtAdmPresidenciaTO.saapAdmtAdmPresidencia}"/>
+								<h:outputText id="outputTextDescAdmtAdm" value="#{saapAdmtAdmPresidenciaTO.saapAdmtAdmPresidencia.descAdmtAdm}" />        
+							</h:commandLink>
+						</h:column>
+
+						<h:column id="colData">
+							<f:facet name="header">
+								#{msg.data}
+							</f:facet>
+							<h:outputText value="#{saapAdmtAdmPresidenciaTO.saapAdmtAdmPresidencia.tsEntradaAdmt}">
+							 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+							</h:outputText>
+						</h:column>
+
+						<h:column id="colResponsavel">
+							<f:facet name="header">
+								#{msg.responsavel}
+							</f:facet>
+							#{saapAdmtAdmPresidenciaTO.responsavel}
+						</h:column>
+
+					</rich:dataTable>
+				</div>
+
+				<table>
+					<tr>
+					<td align="left">
+						<rich:datascroller for="saapAdmtAdms" fastControls="hide" id="datascroller" renderIfSinglePage="false" limitToList="true"
+								actionListener="#{saapAdmtAdmPresidenciaAction.consultarListaAndamentosDetalhe}" page="#{saapAdmtAdmPresidenciaAction.visao.paginaDetalhe}" reRender="saapAdmtAdms,datascroller">
+
+						    <f:facet name="first_disabled">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+				            <f:facet name="first">
+					            <img src="/img/ico-paginador-primeira.gif" title="#{msg.hint_paginacao_primeiro}" />
+					        </f:facet>
+					        <f:facet name="previous_disabled">
+					        	<img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="previous">
+					            <img src="/img/ico-paginador-anterior.gif" title="#{msg.hint_paginacao_anterior}" />
+					        </f:facet>
+					        <f:facet name="next_disabled">
+					            <img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+					        <f:facet name="next">
+					          	<img src="/img/ico-paginador-proxima.gif" title="#{msg.hint_paginacao_proximo}" />
+					        </f:facet>
+							<f:facet name="last_disabled">
+					            <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>	
+							<f:facet name="last">
+					           <img src="/img/ico-paginador-ultima.gif" title="#{msg.hint_paginacao_ultimo}" />
+					        </f:facet>
+					   </rich:datascroller>	
+					</td>
+					</tr>
+				</table>
+
+				<div class="table-grid">
+					<table class="table-grid-detalhar">
+						<tr>
+							<td>
+								<label class="form-label-primario">
+									<br/><span class="form-campo-obrigatorio" title="#{msg.campo_de_preenchimento_obrigatorio}">*</span>
+									#{msg.descricao_do_andamento}<br/>
+									<input jsfc="h:inputText" class="form-text" type="text" value="#{ saapAdmtAdmPresidenciaAction.visao.descricaoAndamentoSelecionado }" size="40" maxlength="100" id="inputDescricaoAndamentoSelecionado" /><h:outputText id="outputTextVazio" value="  " />
+									<a4j:outputPanel id="panelBtnIncluirAndamento" rendered="#{ !saapAdmtAdmPresidenciaAction.visao.apresentaBtnAlterar }">
+										<input type="submit" jsfc="h:commandButton" value="#{msg.incluir}" title="Inclui um novo registro." class="form-button-p02"
+											action="#{saapAdmtAdmPresidenciaAction.incluirAndamentoDetalhe}" />
+									</a4j:outputPanel>
+
+									<a4j:outputPanel id="panelBtnAlterarAndamento" rendered="#{saapAdmtAdmPresidenciaAction.visao.apresentaBtnAlterar }">
+										<input type="submit" jsfc="h:commandButton" value="#{msg.alterar}" title="#{msg.apresenta_tela_para_alteracao_de_um_registro}" class="form-button-p02"
+											action="#{saapAdmtAdmPresidenciaAction.alterarAndamentoDetalhe}" />	
+										<input jsfc="h:commandButton" value="#{msg.cancelar}" title="Cancela a operação solicitada." class="form-button-p03"
+											action="#{saapAdmtAdmPresidenciaAction.cancelarEdicaoAndamentoDetalhe}" immediate="true"/>	
+									</a4j:outputPanel>
+								</label>
+							</td>
+						</tr>
+					</table>
+					<p class="form-legenda-campo-obrigatorio">
+						(<span class="form-campo-obrigatorio">*</span>) #{msg.campos_de_preenchimento_obrigatorio}
+					</p>
+				</div>
+
+				<div class="form-barra-botoes">
+					<input jsfc="h:commandButton" value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" class="form-button-p02"
+						   action="#{saapAdmtAdmPresidenciaAction.voltarInicio}" rendered="#{saapAdmtAdmPresidenciaAction.visao.caminhoRetorno == 'saapAdmtAdmPresidenciaAction.consultar'}"/>
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p02" immediate="true"
+						 action="#{saapDocAdmPresidenciaAction.voltarInicioDetalhe}" rendered="#{saapAdmtAdmPresidenciaAction.visao.caminhoRetorno == 'saapDocAdmPresidenciaAction.detalhar'}"/>
+					<h:commandButton value="#{msg.voltar}" title="#{msg.hint_botao_voltar}" styleClass="form-button-p02" immediate="true"
+						 action="#{saapDocAdmPresidenciaAction.iniciarEditar}" rendered="#{saapAdmtAdmPresidenciaAction.visao.caminhoRetorno == 'saapDocAdmPresidenciaAction.editar'}"/>
+
+					<input type="button" value="#{msg.historico}" title="#{msg.apresenta_lista_do_historico_de_acoes_aplicadas_ao_registro}" class="form-button-p03"
+						   onclick="consultaHistoricoAndamentosA4j('#{saapAdmtAdmPresidenciaAction.visao.docSelecionado.id}');"/>
+				</div>
+
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.consultaTO}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.resultadoTO}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.listaAndamentosDetalhe}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.lista}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.paginaDetalhe}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.andamentoSelecionado}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.andamentoSelecionadoConsulta}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.docSelecionado}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.apresentaBtnAlterar}"/>
+				<t:saveState value="#{saapAdmtAdmPresidenciaAction.visao.caminhoRetorno}"/>
+
+				<!-- UC Manter Documento   -->
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.documentoDetalhadoTO}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.lista}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consulta}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultaClone}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.consultarDocumentosTO}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.pagina}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaVoltar}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.paginaDetalhe}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestao}"/>
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.idDocumento}"/>				
+				<t:saveState value="#{saapDocAdmPresidenciaAction.visao.gestoes}"/>
+
+				<a4j:jsFunction name="consultaHistoricoAndamentosA4j" action="#{consultarHistoricoAndamentosAction.consultarHistoricoAndamentos}" limitToList="true" ajaxSingle="true" reRender="mensagens,formHistoricoAndamentos" ignoreDupResponses="true"  >
+						<a4j:actionparam name="seqDocAndamento" assignTo="#{consultarHistoricoAndamentosAction.visao.seqDocAndamento}" />
+				</a4j:jsFunction>
+				
+					
+			</form>
+			<script>
+				function iniciar() {
+					var lnk = document.getElementById("formDetalheAndmento:saapAdmtAdms:0:lnkEditar");
+					if(lnk){
+						lnk.focus();
+					}
+				}
+			</script>
+
+		<!-- Modal Panel histórico do andamento   -->
+		<ui:include src="/paginas/UC_ConsultarHistoricoAndamentos/inicial.xhtml" />
+
+		</ui:define>
+
+	</ui:composition>
+
+</html>

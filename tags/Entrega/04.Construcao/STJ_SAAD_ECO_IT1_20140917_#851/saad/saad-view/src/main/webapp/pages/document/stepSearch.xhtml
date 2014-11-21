@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		<script type="text/javascript" src="includeNotification.js" />
+		<h:form id="documentStepSearchForm" prependId="false">
+
+			<p:growl id="msgss" showDetail="true" life="#{msg['msg.time.life']}"/>
+			<p:panel id="documentSearchPanel">
+				<p:breadCrumb>
+					<p:menuitem value="Início" url="/pages/notification/minhasNotificacoes.xhtml" />
+					<p:menuitem value="Consultar" url="#" />
+					<p:menuitem value="Documento" url="#" />
+				</p:breadCrumb>
+
+				<p:panel>
+					<h:outputText value="Consulta Documento" styleClass="title" />
+					<br />
+
+					<p:separator style="height: 1px; " />
+
+					<p:panel collapsed="false" toggleable="true">
+
+						<h:panelGrid columns="2" style="width:400px;">
+
+							<p:column>
+								<p:outputLabel value="Tipo de Documento:"
+									for="selectDocumentType" style="text-align:left;width:100%;" />
+								<p:selectOneMenu id="selectDocumentType" required="true"
+									value="#{consultaAndamentoDocumentoController.filtro.documento.tipo}"
+									style="text-align:left;width:100%;">
+									<f:selectItem itemLabel="Selecione" value="#{null}"/>
+									<f:selectItems var="tipoDocumento"
+										value="#{consultaAndamentoDocumentoController.tiposDocumentosDisponiveisConsulta}"
+										itemLabel="#{tipoDocumento.nome}" itemValue="#{tipoDocumento}" />
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="Situação do Documento:"
+									for="selectStatusDemand"
+									style="text-align: left; width: 100%; " />
+								<p:selectOneMenu id="selectStatusDemand" required="true"
+									value="#{consultaAndamentoDocumentoController.filtro.documento.situacao}"
+									style="text-align: left; width: 100%; ">
+									<f:selectItem itemLabel="Selecione" value="#{null}"/>
+									<f:selectItems var="situacao"
+										value="#{consultaAndamentoDocumentoController.obterListaSituacaoDocumento()}"
+										itemLabel="#{msg[situacao.codLabel]}"
+										itemValue="#{situacao.valor}" />
+								</p:selectOneMenu>
+							</p:column>
+						</h:panelGrid>
+						<br />
+						<h:panelGrid columns="1"  style="width: 80px;">
+							<p:column>
+								<p:outputLabel for="inputRegistryNumber"
+									value="Identificador do Documento no STJ:"
+									style="text-align:left; width:200px;" />
+								<p:inputMask id="inputRegistryNumber" mask="a**-999999/9999" style="width: 10px;" 
+									value="#{consultaAndamentoDocumentoController.numero}" 	>
+								</p:inputMask>
+							</p:column>
+						</h:panelGrid>
+						<br/>
+						<div class="pure-g">
+							<div class="pure-u-1">
+								<p:outputLabel value="Data de origem" style="text-align: left;" />
+							</div>
+							<div class="pure-u-1-4">
+									<p:outputLabel for="outputDataOrigemDe" style="text-align: left;" value="De: "/>
+							</div>
+							<div class="pure-u-1-4">
+									<p:outputLabel for="outputDataOrigemAte" style="text-align: left;" value="Até: "/>
+							</div>
+							<div class="pure-u-12-24"></div>
+							<div class="pure-u-1-4" style="margin-right: 12px;">
+									<p:calendar id="outputDataOrigemDe" mask="true" size="10"
+										binding="#{startDateComponent}"
+										value="#{consultaAndamentoDocumentoController.filtro.dataOrigemDe}"
+										pattern="dd/MM/yyyy" />
+							</div>
+							<div class="pure-u-1-4">
+									<p:calendar id="outputDataOrigemAte" mask="true"
+										value="#{consultaAndamentoDocumentoController.filtro.dataOrigemAte}"
+										pattern="dd/MM/yyyy">
+										<f:validator validatorId="intervaloDataValidator" />
+										<f:attribute name="startDateComponent"
+											value="#{startDateComponent}" />
+									</p:calendar>
+							</div>
+							
+								<div class="pure-u-1" style="margin-top: 20px;">
+									<p:outputLabel style="text-align: left;" value="Data de recebimento" />
+								</div>
+								<div class="pure-u-1-4">
+										<p:outputLabel for="outputDataRecebimentoDe" style="text-align: left;" value="De: "/>
+								</div>
+								<div class="pure-u-1-4">
+										<p:outputLabel for="outputDataRecebimentoAte" style="text-align: left;" value="Até: "/>
+								</div>
+								<div class="pure-u-12-24"></div>
+								<div class="pure-u-1-4" style="margin-right: 12px;">
+									<p:calendar id="outputDataRecebimentoDe" mask="true"
+										binding="#{startDateTempComponent}"
+										value="#{consultaAndamentoDocumentoController.filtro.dataRecebimentoDe}"
+										pattern="dd/MM/yyyy" />
+								</div>
+								<div class="pure-u-1-4">
+									<p:calendar id="outputDataRecebimentoAte" mask="true"
+										value="#{consultaAndamentoDocumentoController.filtro.dataRecebimentoAte}"
+										pattern="dd/MM/yyyy">
+										<f:validator validatorId="intervaloDataTempValidator" />
+										<f:attribute name="startDateTempComponent"
+											value="#{startDateTempComponent}" />
+									</p:calendar>
+								</div>
+							
+							</div>
+						<p:panel style="text-align: right;">
+							<p:commandButton ajax="true"
+								action="#{consultaAndamentoDocumentoController.comandoConsultar()}"
+								value="Consultar" update="@form" style="width: 15%; " />
+							<p:spacer width="10px" height="0px" />
+							<p:commandButton value="Limpar" immediate="true" update="@form" actionListener="#{consultaAndamentoDocumentoController.limparTela()}"
+								style="width: 15%; ">
+							</p:commandButton>
+						</p:panel>
+					</p:panel>
+
+					<p:dataTable id="documentDataTable" var="documento" emptyMessage="Nenhum registro encontrado" rendered="#{not empty consultaAndamentoDocumentoController.documentosConsulta}"
+						rowIndexVar="documentIndex" selectionMode="single"
+						selection="#{consultaAndamentoDocumentoController.documentoSelecionado}"
+						rowKey="#{documento.id}"
+						value="#{consultaAndamentoDocumentoController.documentosConsulta}"
+						paginator="#{!documentController.documentList.isEmpty()}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+						rows="14" lazy="true" paginatorPosition="bottom" scrollable="false"
+						scrollWidth="100%">
+
+						<p:ajax event="rowSelect"
+							listener="#{consultaAndamentoDocumentoController.onRowSelectNavigate}" global="true"
+							immediate="true" update=":documentStepSearchForm" />
+						<f:facet name="header">
+							<h:outputText value="Registro(s)" />
+						</f:facet>
+
+						<p:column headerText="Nº do Registro">
+							<h:outputText value="#{documento.numeroRegistro}" />
+						</p:column>
+
+						<p:column headerText="Data da Entrada">
+							<h:outputText value="#{documento.dataInclusao}">
+								<f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Tipo do Documento">
+							<h:outputText value="#{documento.tipo.nome}" />
+						</p:column>
+
+						<p:column headerText="Responsável">
+							<h:outputText
+								value="#{documento.enderecamento.nomeEnderecado}" />
+						</p:column>
+
+						<p:column headerText="Nº do Documento">
+							<h:outputText value="#{documento.identificadorComMascara}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Acompanhamento" />
+							</f:facet>
+							<p:commandLink ajax="false" type="button" immediate="true"
+								action="#{consultaAndamentoDocumentoController.detalharDocumento(documento)}"
+								value="Visualizar" />
+						</p:column>
+
+					</p:dataTable>
+					<p:panel style="text-align: right;"
+						rendered="#{not empty consultaAndamentoDocumentoController.documentosConsulta}">
+						<p:commandButton value="#{msg['botao.alterar']}" ajax="false"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-pencil"
+							action="#{consultaAndamentoDocumentoController.comandoAlterar()}" />
+
+						<p:commandButton icon="ui-icon-trash"
+							value="#{msg['botao.excluir']}" update="@form"
+							actionListener="#{consultaAndamentoDocumentoController.validarRegistroExclusao()}">
+						</p:commandButton>
+
+						<p:commandButton ajax="false" value="Imprimir"
+							icon="ui-icon-document" immediate="true">
+							<p:dataExporter pageOnly="true" type="pdf" target="documentDataTable"
+								fileName="Documentos " encoding="ISO-8859-1" />
+						</p:commandButton>
+					</p:panel>
+				</p:panel>
+
+			</p:panel>
+
+			<p:dialog id="confirmDialogDel" widgetVar="confirmDialogDelVar"
+				header="#{msg['label.confirmar.exclusao']}" resizable="false" width="280px" height="80px" >
+					<h:panelGrid columns="1" width="100%" style="text-align: center;">
+						<p:column>
+							<h:outputText
+								value="Confirma a exclusão do Documento para esta unidade?" />
+							<br />
+						</p:column>
+						<p:column >
+							<br />
+							<br />
+							<p:commandButton value="#{label['button.yes']}"
+								icon="ui-icon-check"  update="@form"
+								actionListener="#{consultaAndamentoDocumentoController.comandoExcluir()}" onclick="PF('confirmDialogDelVar').hide();">
+							</p:commandButton>
+							<p:commandButton value="#{label['button.no']}" type="button"
+								icon="ui-icon-close" onclick="PF('confirmDialogDelVar').hide();" />
+						</p:column>
+					</h:panelGrid>
+			</p:dialog>
+			
+		</h:form>
+
+	</ui:define>
+</ui:composition>

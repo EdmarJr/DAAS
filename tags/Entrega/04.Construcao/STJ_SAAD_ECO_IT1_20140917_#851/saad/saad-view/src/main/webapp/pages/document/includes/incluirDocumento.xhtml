@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<div class="pure-g" style="margin-bottom: 10px;">
+	<div class="pure-u-5-24" style="display: flex">
+		<div class="pure-u-2-24">
+			<p:selectBooleanCheckbox value="#{documento.relacionadoAEvento}"
+				id="relativoEvento">
+				<p:ajax event="change"
+					listener="#{documentController.behavior.aoMudarRelacionamentoAEvento(documento)}"
+					update="panelEvento"></p:ajax>
+			</p:selectBooleanCheckbox>
+		</div>
+		<div class="pure-u-4-24">
+			<p:outputLabel value="Relacionado a um evento?" for="relativoEvento" />
+		</div>
+	</div>
+</div>
+<div class="pure-g">
+	<div class="pure-u-5-24">
+		<p:outputLabel value="Tipo de Documento:" for="selectDocumentType"
+			style="text-align:left;width:100px;" />
+	</div>
+	<div class="pure-u-1-24"></div>
+	<div class="pure-u-5-24">
+		<p:outputLabel value="Número de documento STJ:"
+			for="inputDocumentNumber" style="text-align:left;width:200px;" />
+	</div>
+	<div class="pure-u-1-24"></div>
+	<div class="pure-u-5-24">
+		<p:outputLabel value="Identificador do Documento no STJ:"
+			for="inputIdentityDocument" style="text-align:left;width:200px;" />
+	</div>
+	<div class="pure-u-1-24"></div>
+</div>
+<div class="pure-g">
+	<div class="pure-u-5-24">
+		<p:selectOneMenu required="true" id="selectDocumentType"
+			value="#{documento.tipo}" style="text-align:left;width:100px;">
+			<f:selectItem itemLabel="Selecione" itemValue="#{null}" />
+			<f:selectItems var="documentType"
+				value="#{documentController.tiposDocumentosDisponiveis}"
+				itemLabel="#{documentType.nome}" itemValue="#{documentType}" />
+			<f:ajax event="change"
+				listener="#{documentController.behavior.aoMudarTipoDocumento(documento)}"
+				render="inputIdentityDocument"/>
+		</p:selectOneMenu>
+	</div>
+	<div class="pure-u-1-24"></div>
+	<div class="pure-u-5-24">
+		<p:inputText id="inputDocumentNumber" required="true"
+			value="#{documento.numero}" maxlength="20" size="20" />
+	</div>
+	<div class="pure-u-1-24"></div>
+	<div class="pure-u-5-24">
+		<p:inputText id="inputIdentityDocument" required="true"
+			readonly="true" value="#{documento.identificadorComMascara}" />
+	</div>
+</div>
+<div class="pure-g">
+	<div class="pure-u-5-24">
+		<p:outputLabel for="outputDataOrigem"
+			value="Data do documento STJ:" style="text-align: left; " />
+	</div>
+	<div class="pure-u-1-24"></div>
+	<div class="pure-u-5-24">
+		<p:outputLabel for="outputDataCadastro" value="Data de recebimento:"
+			style="text-align: left; " />
+	</div>
+</div>
+<div class="pure-g">
+	<div class="pure-u-5-24">
+		<p:calendar id="outputDataOrigem" mask="true" pattern="dd/MM/yyyy"
+			required="true" pages="1" value="#{documento.dataOrigemDocumento}" />
+	</div>
+	<div class="pure-u-1-24"></div>
+	<div class="pure-u-5-24">
+		<p:calendar id="outputDataCadastro" mask="true" pattern="dd/MM/yyyy"
+			pages="1" value="#{documento.dataRecebimentoExpedicao}" />
+	</div>
+</div>
+<br />
+<div class="pure-g">
+	<div class="pure-u-5-24">
+		<p:outputLabel for="pasta" value="Arquivado na pasta:"
+			style="text-align:left; width: 50%;" />
+	</div>
+</div>
+<div class="pure-g">
+	<div class="pure-u-5-24">
+		<p:inputText id="pasta" value="#{documento.pastaFisica}"
+			style="width: 50%;" maxlength="100" size="100" />
+	</div>
+	<div class="pure-u-1-24"></div>
+	<div class="pure-u-18-24">
+		<p:outputLabel for="selectStatusDocument"
+			style="width:140px;padding-top: 9px;" value="Situação do Documento:" />
+		<p:selectOneRadio id="selectStatusDocument"
+			value="#{documento.situacao}">
+			<f:selectItems var="situacao"
+				value="#{documentController.obterSituacoesPossiveis()}"
+				itemLabel="#{msg[situacao.codLabel]}" itemValue="#{situacao.valor}" />
+		</p:selectOneRadio>
+	</div>
+
+</div>
+<br />
+
+<p:outputLabel for="assunto" value="Assunto:"
+	style="text-align:left; width: 50%;" />
+<p:inputTextarea id="assunto" style="width: 50%; "
+	value="#{documento.assuntoDocumento}" required="true">
+</p:inputTextarea>
+
+
+
+
+
+</html>

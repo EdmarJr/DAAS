@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- Esta configuracao deve ser utilizada somente no desenvolvimento
+	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver"/>
+		<property name="url" value="jdbc:jtds:sqlserver://bsbserv014:1433/sqlsaap" />
+		<property name="username" value="saap"/>
+		<property name="password" value="saap"/>
+		<property name="defaultAutoCommit"><value>false</value></property>
+	</bean>
+	 -->
+		<!-- 
+	<bean id="myDataSourceSarh" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver"/>
+		<property name="url" value="jdbc:jtds:sqlserver://bsbserv014:1433/servidor_ppg"/>
+		<property name="username" value="stj"/>
+		<property name="password" value="stj"/>
+		<property name="defaultAutoCommit"><value>false</value></property>
+	</bean> 	
+		-->
+	
+	<!-- Utilizar esta configuracao na producao --> 		
+	<bean id="myDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/jdbc/saap</value>
+		</property>
+	</bean>
+	
+	<!-- 
+	<bean id="myDataSourceSarh" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/jdbc/sarh</value>
+		</property>
+	</bean> 	
+ 	-->
+
+	<bean id="mySessionFactory" class="br.jus.stj.alp01.negociospring.FabricaEntidadesAnotadas">
+		    <property name="dataSource" ref="myDataSource"/>
+            <property name="hibernateProperties">
+                  <props>
+                       <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+                       <prop key="hibernate.default_schema">saap</prop>
+                       <prop key="hibernate.show_sql">true</prop>
+                       <prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+                       <prop key="hibernate.jdbc.batch_size">25</prop>
+				  </props>
+            </property>            
+		    <property name="annotatedPackages">
+     			<list>
+       				<value>br.jus.stj.saap.entidade</value>
+     			</list>
+   			</property>
+   			 <property name="mappingResources">
+     			<list>
+       				<value>hql.xml</value>
+     			</list>
+   			</property>
+
+	</bean>
+		<!-- 
+	<bean id="mySessionFactorySarh" class="br.jus.stj.alp01.negociospring.FabricaEntidadesAnotadas">
+		    <property name="dataSource" ref="myDataSourceSarh"/>
+            <property name="hibernateProperties">
+                  <props>
+                       <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+                       <prop key="hibernate.show_sql">true</prop>
+                       <prop key="hibernate.default_schema">dbo</prop>
+                       <prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+				  </props>
+            </property>            
+		    <property name="annotatedPackages">
+     			<list>
+       				<value>br.jus.stj.saap.autenticacao</value>
+     			</list>
+   			</property>
+	</bean>	
+-->
+	<bean id="myTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="mySessionFactory"/>
+	</bean>
+		<!-- 
+	<bean id="myTransactionManagerSarh" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="mySessionFactorySarh"/>
+	</bean>	
+	-->
+	<tx:annotation-driven transaction-manager="myTransactionManager"/>
+		<!-- <tx:annotation-driven transaction-manager="myTransactionManagerSarh"/>		-->
+	<context:annotation-config/>
+	
+	<context:component-scan base-package="br.jus.stj.saap"/>
+	
+</beans>

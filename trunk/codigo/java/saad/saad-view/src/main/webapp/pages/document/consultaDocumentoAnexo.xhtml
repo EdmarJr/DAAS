@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/resources/templates/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:my="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="content">
+		
+		<h:form id="documentStepSearchForm" prependId="false">
+			<p:growl id="msgss" showDetail="true" life="#{msg['msg.time.life']}" />
+			<p:panel id="documentSearchPanel">
+				<p:breadCrumb>
+					<p:menuitem value="Início" url="/pages/notification/minhasNotificacoes.xhtml" />
+					<p:menuitem value="Documento" url="#" />
+					<p:menuitem value="Consultar" url="#" />
+					<p:menuitem value="Anexos" url="#" />
+				</p:breadCrumb>
+				<p:panel>
+					<h:outputText value="Consulta Anexos" styleClass="title" />
+					<br/>
+					<h:outputText value="Dados da Consulta" styleClass="sub-title" />
+					<p:separator style="height:1px;" />
+					
+					<p:panel collapsed="false" toggleable="true">
+						<h:panelGrid columns="2" style="width:400px;">
+							<p:column>
+								<p:outputLabel value="Tipo de Documento:"
+									for="selectDocumentType" style="text-align:left;width:100%;" />
+								<p:selectOneMenu id="selectDocumentType" required="true"
+									value="#{consultaDocumentoAnexoController.tipoDocumentoSelecionado}"
+									style="text-align:left;width:100%;">
+									<f:selectItem itemLabel="Selecione" value="#{null}" />
+									<f:selectItems var="tipoDocumento"
+										value="#{consultaDocumentoAnexoController.tipoDocumentoList}"
+										itemLabel="#{tipoDocumento.nome}" itemValue="#{tipoDocumento}" />
+								</p:selectOneMenu>
+							</p:column>
+							<!-- <p:column>
+								<p:outputLabel value="Situação do Documento:"
+									for="selectStatusDemand"
+									style="text-align: left; width: 100%; " />
+								<p:selectOneMenu id="selectStatusDemand" required="true"
+									value="#{consultaAndamentoDocumentoController.filtro.documento.situacao}"
+									style="text-align: left; width: 100%; ">
+									<f:selectItem itemLabel="Selecione" value="#{null}"/>
+									<f:selectItems var="situacao"
+										value="#{consultaAndamentoDocumentoController.obterListaSituacaoDocumento()}"
+										itemLabel="#{msg[situacao.codLabel]}"
+										itemValue="#{situacao.valor}" />
+								</p:selectOneMenu>
+							</p:column> -->
+						</h:panelGrid>
+						<br />
+<!-- 						<h:panelGrid columns="1" style="width: 80px;">
+							<p:column>
+								<p:outputLabel for="inputRegistryNumber"
+									value="Identificador do Documento no STJ:"
+									style="text-align:left; width:200px;" />
+								<p:inputMask id="inputRegistryNumber" mask="a**-999999/9999"
+									style="width: 10px;"
+									value="#{consultaAndamentoDocumentoController.numero}">
+								</p:inputMask>
+							</p:column>
+						</h:panelGrid> -->
+						<br />
+						<p:panel style="text-align: right;">
+							<p:commandButton ajax="true"
+								action="#{consultaDocumentoAnexoController.consultarAnexos()}"
+								value="Consultar" update="@form" style="width: 15%; " />
+							<p:spacer width="10px" height="0px" />
+							<p:commandButton value="Limpar" immediate="true" update="@form"
+								actionListener="#{consultaDocumentoAnexoController.limparTela()}"
+								style="width: 15%; ">
+							</p:commandButton>
+							<p:commandButton type="button" value="Voltar" onclick="history.go(-1);" ajax="false" />
+						</p:panel>
+					</p:panel>
+
+					<p:dataTable id="documentDataTable" var="anexo"
+						emptyMessage="Nenhum registro encontrado"
+						rendered="#{not empty consultaDocumentoAnexoController.listaAnexosDocumentoPesquisa}"
+						rowIndexVar="documentIndex" rowKey="#{anexo.id}"
+						value="#{consultaDocumentoAnexoController.listaAnexosDocumentoPesquisa}"
+						paginator="#{!documentController.documentList.isEmpty()}"
+						rows="14" paginatorPosition="bottom"
+						scrollable="false" scrollWidth="100%">
+
+						<f:facet name="header">
+							<h:outputText value="Registro(s)" />
+						</f:facet>
+						<p:column headerText="Nome Arquivo" sortBy="#{anexo.nomeArquivo}">
+							<p:commandLink id="downloadLink" value="#{anexo.nomeArquivo}" ajax="false" actionListener="#{consultaDocumentoAnexoController.prepDownload(anexo)}">
+								<p:fileDownload value="#{consultaDocumentoAnexoController.download}" />
+							</p:commandLink> 
+						</p:column>
+						<p:column headerText="Nº do Documento" sortBy="#{anexo.documento.identificadorComMascara}">
+							<h:outputText value="#{anexo.documento.identificadorComMascara}" />
+						</p:column>
+						<p:column headerText="Data da Entrada" sortBy="#{anexo.documento.dataInclusao}">
+							<h:outputText value="#{anexo.documento.dataInclusao}">
+								<f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Tipo do Documento" sortBy="#{anexo.documento.tipo.nome}">
+							<h:outputText value="#{anexo.documento.tipo.nome}" />
+						</p:column>
+
+						<p:column headerText="Remetente" sortBy="#{documento.enderecamentoRemetente.nomeEnderecado}">
+							<h:outputText value="#{anexo.documento.enderecamentoRemetente.nomeEnderecado}" />
+						</p:column>
+						
+						<p:column headerText="Destinatário" sortBy="#{documento.enderecamentoDestinatario.nomeEnderecado}">
+							<h:outputText value="#{anexo.documento.enderecamentoDestinatario.nomeEnderecado}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

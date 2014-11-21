@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:p="http://primefaces.org/ui">
+	<ui:composition>
+		<h:head>
+			<h2><h:outputText value="#{msg['error.page.mensagem']}" /></h2>
+		</h:head>
+		
+		<h:body>
+			<p:fieldset legend="#{msg['botao.detalhar']}" toggleable="true" toggleSpeed="500" collapsed="true">
+				<b>Causa:</b>#{causa}
+				<br/>
+				<b>Stack:</b> <br /> #{stack}
+			</p:fieldset>
+			
+			<!-- Este dialog é apenas para contornar um bug do primefaces 4 que impede a contração do fieldset -->
+			<p:dialog></p:dialog>
+		</h:body>
+		
+	</ui:composition>
+</html>
+		
